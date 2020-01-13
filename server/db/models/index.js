@@ -8,6 +8,15 @@ const Order = require('./order')
  *    BlogPost.belongsTo(User)
  */
 
+// require models
+// const Product = require('./product')
+// const Order = require('./order')
+
+// associations
+// User.hasMany(Order)
+// Order.belongsTo(User)
+// Product.belongsToMany(Order, {through: 'ProductInOrder'})
+
 /**
  * We'll export all of our models here, so that any time a module needs a model,
  * we can just require it from 'db/models'
