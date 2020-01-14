@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+const {User, ProductOrder} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -11,6 +11,69 @@ router.get('/', async (req, res, next) => {
       attributes: ['id', 'email']
     })
     res.json(users)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/', async (req, res, next) => {
+  try {
+    const user = await User.create(req.body)
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.userId)
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:userId', async (req, res, next) => {
+  try {
+    const user = await User.update(req.body, {
+      returning: true,
+      where: {
+        id: req.params.userId
+      }
+    })
+    if (!user) {
+      const err = new Error('user not found')
+      err.status = 404
+      throw err
+    }
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/:userId', async (req, res, next) => {
+  try {
+    await User.destroy({
+      where: {
+        id: req.params.userId
+      }
+    })
+    res.status(204)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:userId/orderHistory', async (req, res, next) => {
+  try {
+    await Order.findAll({
+      where: {
+        userId: req.params.userId
+      },
+      include: [{model: ProductOrder, include: [{model: Product}]}]
+    })
   } catch (err) {
     next(err)
   }
