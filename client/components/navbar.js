@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>Apple Store</h1>
-    <nav>
+  <div className="navbar">
+    <h1 className="main-logo">🍎 Apple</h1>
+    <nav className="login-form">
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
@@ -19,8 +19,22 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
+          <NavLink activeClassName="active" className="main-links" to="/login">
+            Login
+          </NavLink>
+          <NavLink activeClassName="active" className="main-links" to="/signup">
+            Sign Up
+          </NavLink>
+          <NavLink
+            activeClassName="active"
+            className="main-links"
+            to="/allProducts"
+          >
+            Shop All
+          </NavLink>
+          <NavLink activeClassName="active" className="main-links" to="/cart">
+            My Cart
+          </NavLink>
         </div>
       )}
     </nav>
