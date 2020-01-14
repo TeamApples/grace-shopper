@@ -10,8 +10,23 @@ const Navbar = ({handleClick, isLoggedIn}) => (
     <nav className="login-form">
       {isLoggedIn ? (
         <div>
+          <NavLink
+            activeClassName="active"
+            className="main-links"
+            to="/allProducts"
+          >
+            Shop
+          </NavLink>
+          <NavLink activeClassName="active" className="main-links" to="/">
+            Home Page
+          </NavLink>
+          <NavLink activeClassName="active" className="main-links" to="/cart">
+            My Cart
+          </NavLink>
           {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
+          <NavLink activeClassName="active" className="main-links" to="/home">
+            Home
+          </NavLink>
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -34,6 +49,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </NavLink>
           <NavLink activeClassName="active" className="main-links" to="/cart">
             My Cart
+          </NavLink>
+          <NavLink activeClassName="active" className="main-links" to="/home">
+            Home
           </NavLink>
         </div>
       )}
