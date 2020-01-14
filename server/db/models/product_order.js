@@ -8,6 +8,10 @@ const ProductOrder = db.define('products_order', {
     validate: {
       notEmpty: true
     }
+  },
+  productQty: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 })
 
