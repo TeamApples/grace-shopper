@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 
 class AllProducts extends Component {
   componentDidMount() {
-    console.log(this.props)
     this.props.onLoadProducts()
   }
 
