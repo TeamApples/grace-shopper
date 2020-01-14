@@ -3,7 +3,13 @@ const db = require('../db.js')
 
 const Order = db.define('order', {
   status: {
-    type: Sequelize.ENUM('processing', 'shipped', 'cancelled', 'completed'),
+    type: Sequelize.ENUM(
+      'pending',
+      'processing',
+      'shipped',
+      'cancelled',
+      'completed'
+    ),
     allowNull: false,
     validate: {
       notEmpty: true

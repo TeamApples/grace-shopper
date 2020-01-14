@@ -16,7 +16,7 @@ const Product = db.define('product', {
       notEmpty: true
     }
   },
-  invoiceQuantity: {
+  inventoryQty: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
