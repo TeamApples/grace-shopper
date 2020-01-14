@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background-image: url('https://wallpapercave.com/wp/vFQ0LIf.jpg');
 }
 
 a {
@@ -18,4 +19,21 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+.main-logo {
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+.login-form {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  background-color: gray;
+}
+.navbar {
+  background-color: rgb(46, 41, 41);
+}
+.links.active {
+  background-color: red;
 }
