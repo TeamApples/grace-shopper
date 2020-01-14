@@ -10,7 +10,7 @@ const ProductData = [
   {
     name: 'MacBook Pro 13',
     price: 2150,
-    invoiceQuantity: 4,
+    inventoryQty: 4,
     category: 'Mac',
     description:
       'MacBook Pro elevates the notebook to a whole new level of performance and portability. Wherever your ideas take you, you’ll get there faster than ever with high‑performance processors and memory, advanced graphics, blazing‑fast storage, and more — all in a compact 3-pound package.',
@@ -20,7 +20,7 @@ const ProductData = [
   {
     name: 'iPad Air',
     price: 599,
-    invoiceQuantity: 3,
+    inventoryQty: 3,
     category: 'iPad',
     description:
       'iPad Air brings more of our most powerful technologies to more people than ever. The A12 Bionic chip with Neural Engine. A 10.5‑inch Retina display with True Tone. Support for Apple Pencil and the Smart Keyboard. And at just one pound and 6.1 mm thin, carrying all that power is effortless.',
@@ -30,7 +30,7 @@ const ProductData = [
   {
     name: 'iPhone 11 Pro',
     price: 1150,
-    invoiceQuantity: 2,
+    inventoryQty: 2,
     category: 'iPhone',
     description:
       'Meet the first triple‑camera system to combine cutting‑edge technology with the legendary simplicity of iPhone. Capture up to four times more scene. Get beautiful images in drastically lower light. Shoot the highest‑quality video in a smartphone — then edit with the same tools you love for photos. You’ve never shot with anything like it.',
@@ -40,7 +40,7 @@ const ProductData = [
   {
     name: 'Apple Watch Series 5',
     price: 399,
-    invoiceQuantity: 1,
+    inventoryQty: 1,
     category: 'Watch',
     description:
       'This watch has a display that never sleeps. With the new Always-On Retina display, you always see the time and your watch face.',
@@ -50,7 +50,7 @@ const ProductData = [
   {
     name: 'Apple TV 4K',
     price: 179,
-    invoiceQuantity: 4,
+    inventoryQty: 4,
     category: 'TV',
     description:
       'Apple TV 4K lets you watch movies and shows in amazing 4K HDR and with Dolby Atmos sound.1 It has great content from apps like Amazon Prime Video, Netflix, and ESPN2 — and streaming now, original shows and movies from Apple TV+.3 You can use Siri to control it all with just your voice. And Apple TV 4K is even easier to enjoy with a reimagined Home screen and new experiences designed to make TV more immersive and personal.',
