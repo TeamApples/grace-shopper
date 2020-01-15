@@ -15,12 +15,7 @@ class Cart extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   handleSubmit(event) {
-    const orderSubmit = this.props.orderSubmit
     event.preventDefault()
-    orderSubmit(this.state)
-    this.setState({
-      inCart: []
-    })
   }
 
   render() {
@@ -68,12 +63,7 @@ const mapStateToProps = function(state) {
 }
 
 const mapDispatchToProps = function(dispatch) {
-  return {
-    onLoadCart: function() {
-      const action = addProductToCart()
-      dispatch(action)
-    }
-  }
+  return {}
 }
 
 const cartContainer = connect(mapStateToProps, mapDispatchToProps)(Cart)
