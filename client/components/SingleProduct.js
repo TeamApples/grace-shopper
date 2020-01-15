@@ -7,7 +7,7 @@ import {addProductToCart} from '../store/cart'
 class SingleProduct extends Component {
   constructor(props) {
     super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
