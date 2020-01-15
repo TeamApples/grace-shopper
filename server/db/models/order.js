@@ -4,16 +4,13 @@ const db = require('../db.js')
 const Order = db.define('order', {
   status: {
     type: Sequelize.ENUM(
-      'pending',
+      'cart',
       'processing',
       'shipped',
       'cancelled',
       'completed'
     ),
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    defaultValue: 'cart'
   },
   shippingMethod: {
     type: Sequelize.STRING,
