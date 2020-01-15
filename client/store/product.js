@@ -3,21 +3,6 @@ import axios from 'axios'
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS'
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT'
 // const SELECT_PRODUCT = 'SELECT_PRODUCT'
-const ADD_TO_CART = 'ADD_TO_CART'
-
-const addToCart = function(product) {
-  return {
-    type: ADD_TO_CART,
-    inCart: product
-  }
-}
-
-export const addToCartThunk = product => {
-  return async dispatch => {
-    const {data} = await axios.post('/api/cart', product)
-    dispatch(addToCart(data))
-  }
-}
 
 const getAllProducts = products => {
   return {
@@ -70,8 +55,6 @@ export const singleProductReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_SINGLE_PRODUCT:
       return action.singleProduct
-    case ADD_TO_CART:
-      return {...state, inCart: action.inCart}
     default:
       return state
   }
