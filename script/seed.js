@@ -3,6 +3,7 @@
 const db = require('../server/db')
 const User = require('../server/db/models/user')
 const Product = require('../server/db/models/product')
+const ProductOrder = require('../server/db/models/product_order')
 const Order = require('../server/db/models/order')
 
 //Mock seed-data //
@@ -110,28 +111,43 @@ const OrderData = [
   {
     status: 'processing',
     shippingMethod: 'Ground',
-    paymentMethod: 'Bitcoin'
+    paymentMethod: 'Bitcoin',
+    userId: 1
   },
   {
     status: 'cancelled',
     shippingMethod: 'Ground',
-    paymentMethod: 'PayPal'
+    paymentMethod: 'PayPal',
+    userId: 2
   },
   {
     status: 'shipped',
     shippingMethod: 'Ground',
-    paymentMethod: 'Amex'
+    paymentMethod: 'Amex',
+    userId: 2
   },
   {
     status: 'completed',
     shippingMethod: 'Ground',
-    paymentMethod: 'Visa'
+    paymentMethod: 'Visa',
+    userId: 3
   },
   {
     status: 'processing',
     shippingMethod: 'Ground',
-    paymentMethod: 'Visa'
+    paymentMethod: 'Visa',
+    userId: 3
   }
+]
+
+const ProductOrderData = [
+  {orderId: 1, productId: 2, productQty: 2, productPrice: 200},
+  {orderId: 2, productId: 2, productQty: 1, productPrice: 900},
+  {orderId: 2, productId: 3, productQty: 1, productPrice: 300},
+  {orderId: 3, productId: 4, productQty: 3, productPrice: 10},
+  {orderId: 3, productId: 5, productQty: 2, productPrice: 20},
+  {orderId: 3, productId: 4, productQty: 1, productPrice: 70},
+  {orderId: 4, productId: 1, productQty: 1, productPrice: 40}
 ]
 
 const seed = async () => {
@@ -150,6 +166,11 @@ const seed = async () => {
   await Promise.all(
     OrderData.map(order => {
       return Order.create(order)
+    })
+  )
+  await Promise.all(
+    ProductOrderData.map(productOrder => {
+      return ProductOrder.create(productOrder)
     })
   )
 }

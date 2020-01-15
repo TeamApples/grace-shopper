@@ -1,18 +1,24 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
+import {GOT_USERS} from '../store/user'
+import {render} from 'enzyme'
 
 /**
  * COMPONENT
  */
-export const UserHome = props => {
-  const {email} = props
+class UserHome extends Component {
+  componentDidMount() {}
 
-  return (
-    <div>
-      <h3>Welcome, {email}</h3>
-    </div>
-  )
+  render() {
+    const {email} = props
+    return (
+      <div>
+        <h3>Welcome, {email}</h3>
+      </div>
+    )
+  }
 }
 
 /**
@@ -20,11 +26,15 @@ export const UserHome = props => {
  */
 const mapState = state => {
   return {
-    email: state.user.email
+    user: state.user
   }
 }
 
-export default connect(mapState)(UserHome)
+const mapDispatchToProps = function(dispatch) {
+  return {}
+}
+
+export default connect(mapState, mapDispatchToProps)(UserHome)
 
 /**
  * PROP TYPES
