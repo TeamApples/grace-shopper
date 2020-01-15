@@ -9,19 +9,37 @@ import {logout} from '../store'
 //need props.image
 
 class Cart extends React.Component {
+  constructor(props) {
+    super(props)
+    console.log(props, 'props')
+    this.state = {
+      inCart: []
+    }
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+  handleSubmit(event) {
+    const orderSubmit = this.props.orderSubmit
+    event.preventDefault()
+    orderSubmit(this.state)
+    this.setState({
+      inCart: []
+    })
+  }
+
   render() {
     return (
       <div>
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <div>
-            <h1>Your Cart Total Is: {props.total}</h1>
+            <h1>Your Cart Total Is: $$$</h1>
             <button type="submit">Submit</button>
           </div>
 
           <div>
             <h2>Shopping Cart:</h2>
-            <div>{props.image}</div>
-            <div>{props.name}</div>
+            <div>image</div>
+            <div>product name</div>
             <div>Quantity:</div>
             <select>
               <option>1</option>
@@ -29,13 +47,8 @@ class Cart extends React.Component {
               <option>3</option>
               <option>4</option>
               <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
             </select>
-            <div>{props.price}</div>
+            <div>Total Price $$</div>
             <div />
           </div>
         </form>
@@ -44,8 +57,24 @@ class Cart extends React.Component {
   }
 }
 
-export default App
+const mapStateToProps = function(state) {
+  return {
+    inCart: state.inCart
+  }
+}
 
+const mapDispatchToProps = function(dispatch) {
+  return {
+    onLoadCart: function() {
+      const action = gotCart()
+      dispatch(action)
+    }
+  }
+}
+
+const cartContainer = connect(mapStateToProps, mapDispatchToProps)(Cart)
+
+export default cartContainer
 /**
  * CONTAINER
  //  */
