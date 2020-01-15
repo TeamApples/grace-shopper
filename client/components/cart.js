@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link, NavLink} from 'react-router-dom'
 import {logout} from '../store'
+import {addProductToCart} from '../store/cart'
 
 // need props.total
 // need handleSubmit
@@ -11,11 +12,6 @@ import {logout} from '../store'
 class Cart extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props, 'props')
-    this.state = {
-      inCart: []
-    }
-
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   handleSubmit(event) {
@@ -59,14 +55,14 @@ class Cart extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    inCart: state.inCart
+    cart: state.cart
   }
 }
 
 const mapDispatchToProps = function(dispatch) {
   return {
     onLoadCart: function() {
-      const action = gotCart()
+      const action = addProductToCart()
       dispatch(action)
     }
   }

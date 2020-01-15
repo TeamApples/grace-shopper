@@ -1,20 +1,19 @@
 const ADD_TO_CART = 'ADD_TO_CART'
 
-const initialState = {
-  cart: []
-}
+const cart = []
 
-const addProductToCart = function(product) {
+export const addProductToCart = function(product) {
   return {
     type: ADD_TO_CART,
     product
   }
 }
 
-export const singleProductReducer = (state = initialState, action) => {
+export const cartReducer = (state = cart, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      return {...state, cart: [...state.cart, action.product]}
+      console.log('we are in action')
+      return [...state, action.product]
     default:
       return state
   }

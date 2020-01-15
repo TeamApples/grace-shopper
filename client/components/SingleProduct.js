@@ -2,10 +2,20 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {loadOneProduct} from '../store/product'
 import {connect} from 'react-redux'
+import {addProductToCart} from '../store/cart'
 
 class SingleProduct extends Component {
+  constructor(props) {
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
   componentDidMount() {
     this.props.onLoadSingleProduct()
+  }
+
+  handleClick() {
+    this.props.addToCart(this.props.singleProduct)
   }
 
   render() {
@@ -16,6 +26,9 @@ class SingleProduct extends Component {
         <img src={singleProduct.image} />
         <h2>${singleProduct.price}</h2>
         <p>{singleProduct.description}</p>
+        <button type="submit" onClick={this.handleClick}>
+          Add to Cart
+        </button>
       </div>
     )
   }
@@ -31,6 +44,10 @@ const mapDispatchToProps = function(dispatch, urlProps) {
     onLoadSingleProduct: function() {
       const productId = urlProps.match.params.productId
       const action = loadOneProduct(productId)
+      dispatch(action)
+    },
+    addToCart: function(product) {
+      const action = addProductToCart(product)
       dispatch(action)
     }
   }
