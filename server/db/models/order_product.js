@@ -1,13 +1,12 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const ProductOrder = db.define('products_order', {
+const OrderProduct = db.define('order_product', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-
   productPrice: {
     type: Sequelize.DECIMAL,
     allowNull: false,
@@ -21,4 +20,4 @@ const ProductOrder = db.define('products_order', {
   }
 })
 
-module.exports = ProductOrder
+module.exports = OrderProduct
