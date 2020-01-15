@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
-
+//mount post method on the user routes
 router.post('/', async (req, res, next) => {
   try {
     const newOrder = await Order.create(req.body)
@@ -23,6 +23,8 @@ router.post('/', async (req, res, next) => {
     next(err)
   }
 })
+
+//mount method on the user routes
 
 router.get('/:orderId', async (req, res, next) => {
   try {
@@ -38,19 +40,19 @@ router.get('/:orderId', async (req, res, next) => {
   }
 })
 
-router.put('/:orderId', async (req, res, next) => {
-  try {
-    // req.body should only contain order status info.
-    const updatedOrder = await Order.update(req.body, {
-      returning: true,
-      where: {
-        id: req.params.orderId
-      }
-    })
-    res.json(updatedOrder)
-  } catch (err) {
-    next(err)
-  }
-})
+// router.put('/:orderId', async (req, res, next) => {
+//   try {
+//     // req.body should only contain order status info.
+//     const updatedOrder = await Order.update(req.body, {
+//       returning: true,
+//       where: {
+//         id: req.params.orderId
+//       }
+//     })
+//     res.json(updatedOrder)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 module.exports = router

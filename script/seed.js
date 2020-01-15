@@ -12,7 +12,7 @@ const ProductData = [
     name: 'MacBook Pro 13',
     price: 2150,
     inventoryQty: 4,
-    category: 'Mac',
+
     description:
       'MacBook Pro elevates the notebook to a whole new level of performance and portability. Wherever your ideas take you, you’ll get there faster than ever with high‑performance processors and memory, advanced graphics, blazing‑fast storage, and more — all in a compact 3-pound package.',
     image:
@@ -22,7 +22,6 @@ const ProductData = [
     name: 'iPad Air',
     price: 599,
     inventoryQty: 3,
-    category: 'iPad',
     description:
       'iPad Air brings more of our most powerful technologies to more people than ever. The A12 Bionic chip with Neural Engine. A 10.5‑inch Retina display with True Tone. Support for Apple Pencil and the Smart Keyboard. And at just one pound and 6.1 mm thin, carrying all that power is effortless.',
     image:
@@ -32,7 +31,7 @@ const ProductData = [
     name: 'iPhone 11 Pro',
     price: 1150,
     inventoryQty: 2,
-    category: 'iPhone',
+
     description:
       'Meet the first triple‑camera system to combine cutting‑edge technology with the legendary simplicity of iPhone. Capture up to four times more scene. Get beautiful images in drastically lower light. Shoot the highest‑quality video in a smartphone — then edit with the same tools you love for photos. You’ve never shot with anything like it.',
     image:
@@ -42,7 +41,7 @@ const ProductData = [
     name: 'Apple Watch Series 5',
     price: 399,
     inventoryQty: 1,
-    category: 'Watch',
+
     description:
       'This watch has a display that never sleeps. With the new Always-On Retina display, you always see the time and your watch face.',
     image:
@@ -52,7 +51,6 @@ const ProductData = [
     name: 'Apple TV 4K',
     price: 179,
     inventoryQty: 4,
-    category: 'TV',
     description:
       'Apple TV 4K lets you watch movies and shows in amazing 4K HDR and with Dolby Atmos sound.1 It has great content from apps like Amazon Prime Video, Netflix, and ESPN2 — and streaming now, original shows and movies from Apple TV+.3 You can use Siri to control it all with just your voice. And Apple TV 4K is even easier to enjoy with a reimagined Home screen and new experiences designed to make TV more immersive and personal.',
     image:
@@ -65,7 +63,7 @@ const UserData = [
     isAdmin: true,
     firstName: 'Chris P.',
     lastName: 'Bacon',
-    phoneNumber: 123 - 456 - 789,
+    phoneNumber: '123456789',
     address: '227 E 105th St. New York, NY 10022',
     email: 'Chris@gmail.com',
     password: 'mypassword'
@@ -74,7 +72,7 @@ const UserData = [
     isAdmin: false,
     firstName: 'Kash',
     lastName: 'Register',
-    phoneNumber: 917 - 456 - 223,
+    phoneNumber: '917 - 456 - 223',
     address: '172 Madison Ave, New York, NY 10016',
     email: 'kash@gmail.com',
     password: 'hispassword'
@@ -83,7 +81,7 @@ const UserData = [
     isAdmin: false,
     firstName: 'Krystal',
     lastName: 'Ball',
-    phoneNumber: 217 - 443 - 221,
+    phoneNumber: '217 - 443 - 221',
     address: '12 E 69th St, New York, NY 10021',
     email: 'krystal@hotmail.com',
     password: 'google123'
@@ -92,7 +90,7 @@ const UserData = [
     isAdmin: true,
     firstName: 'Yolanda',
     lastName: 'Squatpump',
-    phoneNumber: 204 - 987 - 777,
+    phoneNumber: '04 - 987 - 777',
     address: '132 Charles St, Phoenix, AZ 85202',
     email: 'yolanda@gmail.com',
     password: 'hellowworld'
@@ -101,7 +99,7 @@ const UserData = [
     isAdmin: false,
     firstName: 'Alexander',
     lastName: 'Supertramp',
-    phoneNumber: 917 - 442 - 220,
+    phoneNumber: '917 - 442 - 220',
     address: '1000 Broadway St, Salt Lake City, UT 70027',
     email: 'Alexander@gmail.com',
     password: 'alex123'
@@ -109,32 +107,27 @@ const UserData = [
 ]
 const OrderData = [
   {
-    status: 'processing',
-    shippingMethod: 'Ground',
+    purchased: true,
     paymentMethod: 'Bitcoin',
     userId: 1
   },
   {
-    status: 'cancelled',
-    shippingMethod: 'Ground',
+    purchased: false,
     paymentMethod: 'PayPal',
     userId: 2
   },
   {
-    status: 'shipped',
-    shippingMethod: 'Ground',
+    purchased: true,
     paymentMethod: 'Amex',
     userId: 2
   },
   {
-    status: 'completed',
-    shippingMethod: 'Ground',
+    purchased: false,
     paymentMethod: 'Visa',
     userId: 3
   },
   {
-    status: 'processing',
-    shippingMethod: 'Ground',
+    purchased: true,
     paymentMethod: 'Visa',
     userId: 3
   }

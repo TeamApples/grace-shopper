@@ -18,9 +18,10 @@ const getSingleProduct = singleProduct => {
   }
 }
 
+//change format to async await
 export const loadOneProduct = function(productId) {
   return function(dispatch) {
-    fetch('/api/products/' + productId)
+    fetch(`/api/products/${productId}`)
       .then(res => res.json())
       .then(product => {
         const action = getSingleProduct(product)

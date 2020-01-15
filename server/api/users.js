@@ -2,6 +2,8 @@ const router = require('express').Router()
 const {User, Product, Order, OrderProduct} = require('../db/models')
 module.exports = router
 
+//add security
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -69,11 +71,10 @@ router.delete('/:userId', async (req, res, next) => {
 
 router.get('/:userId/orderHistory', async (req, res, next) => {
   try {
-    console.log('userId: ', typeof req.params.userId)
     const orderHistory = await Order.findAll({
       where: {
         userId: req.params.userId,
-        status: 'completed'
+        purchased: true
       },
       include: [{model: Product}]
     })
@@ -86,13 +87,13 @@ router.get('/:userId/orderHistory', async (req, res, next) => {
 
 router.get('/:userId/cart', async (req, res, next) => {
   try {
-    // await Order.findAll({
-    //   where: {
-    //     userId: req.params.userId,
-    //     where:{status: 'completed'}
-    //   },
-    //   include: [{model: OrderProduct, include: [{model: Product}]}]
-    // })
+    await Order.findAll({
+      where: {
+        userId: req.params.userId,
+        purchased: true
+      },
+      include: [{model: Product}]
+    })
   } catch (err) {
     next(err)
   }

@@ -10,7 +10,7 @@ const Product = db.define('product', {
     }
   },
   price: {
-    type: Sequelize.DECIMAL,
+    type: Sequelize.INTEGER, //create method to convert int to decimal
     allowNull: false,
     validate: {
       notEmpty: true
@@ -18,13 +18,6 @@ const Product = db.define('product', {
   },
   inventoryQty: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  },
-  category: {
-    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true
@@ -38,12 +31,13 @@ const Product = db.define('product', {
     }
   },
   image: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
     validate: {
-      notEmpty: true,
       isURL: true
-    }
+    },
+    defaultValue:
+      'https://9to5mac.com/wp-content/uploads/sites/6/2019/11/apple_kawasaki_coming_soon.jpg?quality=82&strip=all&w=1600'
   }
 })
 

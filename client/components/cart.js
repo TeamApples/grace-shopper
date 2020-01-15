@@ -27,7 +27,6 @@ class Cart extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div>
             <h1>Your Cart Total Is: $$$</h1>
-            <button type="submit">Submit</button>
           </div>
           <div className="cart-container">
             <h2>Shopping Cart:</h2>
@@ -35,8 +34,14 @@ class Cart extends React.Component {
               return (
                 <div key={idx}>
                   <img src={product.image} className="cart-pics" />
-                  <div>{product.name}</div>
+                  <Link
+                    className="product-title"
+                    to={'/products/' + product.id}
+                  >
+                    {product.name}
+                  </Link>
                   <div>${product.price}</div>
+                  <button type="button">Remove</button>
                 </div>
               )
             })}
@@ -50,6 +55,7 @@ class Cart extends React.Component {
             <div>Total Price $$</div>
             <div />
           </div>
+          <button type="submit">Proceed to Checkout</button>
         </form>
       </div>
     )

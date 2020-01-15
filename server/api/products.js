@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const {Product} = require('../db/models')
 
+//create utils file for frequently used functions
+//add security
+
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll()
