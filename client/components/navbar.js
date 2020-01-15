@@ -6,19 +6,16 @@ import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div className="navbar">
-    <h1 className="main-logo">🍎 Apple</h1>
     <nav className="login-form">
       {isLoggedIn ? (
-        <div>
+        <div className="nav-two">
+          <h3 className="main-links"> Apple</h3>
           <NavLink
             activeClassName="active"
             className="main-links"
-            to="/allProducts"
+            to="/products"
           >
             Shop
-          </NavLink>
-          <NavLink activeClassName="active" className="main-links" to="/">
-            Home Page
           </NavLink>
           <NavLink activeClassName="active" className="main-links" to="/cart">
             My Cart
@@ -32,8 +29,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </a>
         </div>
       ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
+        <div className="nav-two">
+          <h3 className="main-links"> Apple</h3>
           <NavLink activeClassName="active" className="main-links" to="/login">
             Login
           </NavLink>
@@ -43,7 +40,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <NavLink
             activeClassName="active"
             className="main-links"
-            to="/allProducts"
+            to="/products"
           >
             Shop All
           </NavLink>
@@ -56,7 +53,6 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         </div>
       )}
     </nav>
-    <hr />
   </div>
 )
 
