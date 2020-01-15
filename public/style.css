@@ -53,10 +53,14 @@ form div {
   background-color: white;
   box-shadow: 0 5px 10px black;
   border-radius: 5px;
+  justify-content: space-evenly;
 }
 .shop-title {
   text-align: -webkit-center;
 }
 .nav-two {
   display: flex;
+}
+.main-links {
+  color: white;
 }
