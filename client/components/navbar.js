@@ -31,11 +31,12 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       ) : (
         <div className="nav-two">
           <h3 className="main-links"> Apple</h3>
-          <NavLink activeClassName="active" className="main-links" to="/login">
-            Login
-          </NavLink>
-          <NavLink activeClassName="active" className="main-links" to="/signup">
-            Sign Up
+          <NavLink
+            activeClassName="active"
+            className="main-links"
+            to="loginOrSignUp"
+          >
+            LOGIN or SIGNUP
           </NavLink>
           <NavLink
             activeClassName="active"
