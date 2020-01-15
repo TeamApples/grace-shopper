@@ -18,12 +18,16 @@ class AllProducts extends Component {
             products.map(product => {
               return (
                 <ul key={product.id} className="product">
-                  <li>
-                    <Link to={'/products/' + product.id}>{product.name}</Link>
+                  <li className="product-flex">
+                    <Link
+                      className="product-title"
+                      to={'/products/' + product.id}
+                    >
+                      {product.name}
+                    </Link>
                     <img src={product.image} />
                     <h2>${product.price}</h2>
                     <p>{product.description}</p>
-                    <button type="button">Buy Now</button>
                   </li>
                 </ul>
               )
