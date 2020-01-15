@@ -20,7 +20,6 @@ router.post('/', async (req, res, next) => {
 })
 
 router.get('/:productId', async (req, res, next) => {
-  console.log('in a singleProduct')
   try {
     const product = await Product.findOne({
       where: {

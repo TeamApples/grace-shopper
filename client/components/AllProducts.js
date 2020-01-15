@@ -11,13 +11,13 @@ class AllProducts extends Component {
   render() {
     const products = this.props.products
     return (
-      <div className="all-products">
-        <h2>Shop All Products</h2>
+      <div>
+        <h2 className="shop-title">Shop All Products</h2>
         <div className="product-view">
           {Array.isArray(products) &&
             products.map(product => {
               return (
-                <ul key={product.id}>
+                <ul key={product.id} className="product">
                   <li>
                     <Link to={'/products/' + product.id}>{product.name}</Link>
                     <img src={product.image} />

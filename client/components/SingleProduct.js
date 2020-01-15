@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {gotSingleProduct} from '../store/product'
+import {loadOneProduct} from '../store/product'
 import {connect} from 'react-redux'
 
 class SingleProduct extends Component {
   componentDidMount() {
-    console.log('inside single product component')
     this.props.onLoadSingleProduct()
   }
 
@@ -27,10 +26,11 @@ const mapStateToProps = function(state) {
   }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function(dispatch, urlProps) {
   return {
-    onLoadSingleProduct: function(singleProductId) {
-      const action = gotSingleProduct(singleProductId)
+    onLoadSingleProduct: function() {
+      const productId = urlProps.match.params.productId
+      const action = loadOneProduct(productId)
       dispatch(action)
     }
   }

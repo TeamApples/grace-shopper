@@ -25,8 +25,9 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route exact path="/products" component={AllProductsContainer} />
         <Route
-          path="products/:productId"
-          render={routeProps => <SingleProductContainer {...routeProps} />}
+          exact
+          path="/products/:productId"
+          component={SingleProductContainer}
         />
         {isLoggedIn && (
           <Switch>

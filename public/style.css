@@ -1,6 +1,7 @@
 body {
-  font-family: sans-serif;
+  font-family: Avenir;
   background-image: url('https://wallpapercave.com/wp/vFQ0LIf.jpg');
+  margin: 0px;
 }
 
 a {
@@ -29,11 +30,33 @@ form div {
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
-  background-color: gray;
+  background-color: transparent;
 }
 .navbar {
   background-color: rgb(46, 41, 41);
+  position: fixed;
+  width: 100%;
+  top: 0;
 }
 .links.active {
   background-color: red;
+}
+.product {
+  width: 35%;
+  margin: 20px;
+}
+.product-view {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 95%;
+  width: 1200px;
+  background-color: white;
+  box-shadow: 0 5px 10px black;
+  border-radius: 5px;
+}
+.shop-title {
+  text-align: -webkit-center;
+}
+.nav-two {
+  display: flex;
 }
