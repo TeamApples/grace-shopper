@@ -34,7 +34,7 @@ form div {
 }
 .navbar {
   background-color: rgb(46, 41, 41);
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   top: 0;
 }
