@@ -116,3 +116,10 @@ small {
   border-radius: 18px;
   background: #0071e3;
 }
+.cart-container {
+  display: flex;
+  flex-direction: column;
+}
+.cart-pics {
+  height: 50px;
+}

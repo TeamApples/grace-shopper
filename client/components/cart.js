@@ -20,6 +20,8 @@ class Cart extends React.Component {
 
   render() {
     const cart = this.props.cart
+    console.log(cart)
+
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -27,14 +29,14 @@ class Cart extends React.Component {
             <h1>Your Cart Total Is: $$$</h1>
             <button type="submit">Submit</button>
           </div>
-          <div>
+          <div className="cart-container">
             <h2>Shopping Cart:</h2>
             {cart.map((product, idx) => {
               return (
                 <div key={idx}>
-                  <img src={product.image} />
+                  <img src={product.image} className="cart-pics" />
                   <div>{product.name}</div>
-                  <div>1</div>
+                  <div>${product.price}</div>
                 </div>
               )
             })}
