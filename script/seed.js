@@ -3,7 +3,7 @@
 const db = require('../server/db')
 const User = require('../server/db/models/user')
 const Product = require('../server/db/models/product')
-const ProductOrder = require('../server/db/models/product_order')
+const OrderProduct = require('../server/db/models/order_product')
 const Order = require('../server/db/models/order')
 
 //Mock seed-data //
@@ -140,7 +140,7 @@ const OrderData = [
   }
 ]
 
-const ProductOrderData = [
+const OrderProductData = [
   {orderId: 1, productId: 2, productQty: 2, productPrice: 200},
   {orderId: 2, productId: 2, productQty: 1, productPrice: 900},
   {orderId: 2, productId: 3, productQty: 1, productPrice: 300},
@@ -169,8 +169,8 @@ const seed = async () => {
     })
   )
   await Promise.all(
-    ProductOrderData.map(productOrder => {
-      return ProductOrder.create(productOrder)
+    OrderProductData.map(product => {
+      return OrderProduct.create(product)
     })
   )
 }
