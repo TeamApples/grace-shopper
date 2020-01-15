@@ -6,12 +6,25 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
-
+const ADD_USER = 'ADD_USER'
 /**
  * INITIAL STATE
  */
 const defaultUser = {}
 
+const addUser = function(user) {
+  return {
+    type: ADD_USER,
+    addedUser: user
+  }
+}
+
+export const addUserThunk = user => {
+  return async dispatch => {
+    const {data} = await axios.post('/api/users', user)
+    dispatch(addUser(data))
+  }
+}
 /**
  * ACTION CREATORS
  */
@@ -65,6 +78,8 @@ const userReducer = (state = defaultUser, action) => {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case ADD_USER:
+      return action.addedUser
     default:
       return state
   }

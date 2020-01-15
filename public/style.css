@@ -1,7 +1,10 @@
 body {
   font-family: Avenir;
-  background-image: url('https://wallpapercave.com/wp/vFQ0LIf.jpg');
   margin: 0px;
+  background-color: #d7d1b9;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('https://wallpapercave.com/wp/vFQ0LIf.jpg');
 }
 
 a {
@@ -54,6 +57,7 @@ form div {
   box-shadow: 0 5px 10px black;
   border-radius: 5px;
   justify-content: space-evenly;
+  margin: 0 auto;
 }
 .shop-title {
   text-align: -webkit-center;
@@ -63,4 +67,52 @@ form div {
 }
 .main-links {
   color: white;
+}
+.product-title {
+  color: white;
+  margin: 15px;
+  line-height: 1.17648;
+  min-width: 28px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 18px;
+  background: #0071e3;
+}
+.product-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.id-wrapper {
+  height: 170px;
+  /* background-color: #0071e3; */
+  display: flex;
+  justify-content: center;
+  background-image: url('https://locate.apple.com/resources/images/widgets/AppleRetailStore_2x.jpg');
+}
+.id-container {
+  font-size: 40px;
+  margin: 53px;
+  color: white;
+}
+.singup-page-wrapper {
+  display: flex;
+  justify-content: center;
+}
+label {
+  margin: 15px;
+}
+small {
+  color: white;
+  margin: 10px;
+  line-height: 1.17648;
+  min-width: 28px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 18px;
+  background: #0071e3;
 }
