@@ -5,7 +5,7 @@ const GET_CART = 'GET_CART'
 
 const cart = []
 
-export const addProductToCart = function(product, quantity) {
+export const addProductToCart = function(product) {
   return {
     type: ADD_TO_CART,
     product: product
@@ -36,12 +36,18 @@ export const gotCart = userId => {
 export const cartReducer = (state = cart, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      let productIdMap = new Set()
-      cart.forEach(product => {
-        productIdMap.add(product.id)
+      let isUpdated = false
+      let updatedState = state.map(product => {
+        if (action.product.id === product.id) {
+          product.quantity += action.product.quantity
+          isUpdated = true
+        }
+        return product
       })
-      if (productIdMap.has(action.product.id))
-        if (action.product.id) return [...state, action.product]
+      if (!isUpdated) {
+        updatedState.push(action.product)
+      }
+      return updatedState
     case GET_CART:
       return action.cart
     default:
