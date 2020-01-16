@@ -16,19 +16,19 @@ router.get('/', protect, async function(req, res, next) {
   }
 })
 
-router.get('/:userId/:orderId', protectById, async (req, res, next) => {
-  try {
-    const order = await Order.findByPk(req.params.orderId)
-    if (!order) {
-      const err = new Error('404 Page Not Found')
-      err.status = 404
-      throw err
-    }
-    res.json(order)
-  } catch (error) {
-    next(error)
-  }
-})
+// router.get('/:userId/:orderId', protectById, async (req, res, next) => {
+//   try {
+//     const order = await Order.findByPk(req.params.orderId)
+//     if (!order) {
+//       const err = new Error('404 Page Not Found')
+//       err.status = 404
+//       throw err
+//     }
+//     res.json(order)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 router.post('/:userId/orders', protectById, async (req, res, next) => {
   try {
@@ -112,10 +112,9 @@ router.get('/:userId/orderHistory', protectById, async (req, res, next) => {
 
 router.get('/:userId/cart', protectById, async (req, res, next) => {
   try {
-    console.log('req.user: ', req.params)
     const pendingOrder = await Order.findOne({
       where: {
-        userId: req.user,
+        userId: req.params.userId,
         purchased: false
       },
       include: [{model: Product}]
