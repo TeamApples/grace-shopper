@@ -13,6 +13,7 @@ class Cart extends React.Component {
   constructor(props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
+    // console.log(props)
   }
 
   componentDidMount() {
@@ -25,7 +26,7 @@ class Cart extends React.Component {
 
   render() {
     const cart = this.props.cart
-    console.log('props passed down to Cart Component: ', this.props)
+    console.log('****', cart)
 
     return (
       <div>
@@ -35,28 +36,36 @@ class Cart extends React.Component {
           </div>
           <div className="cart-container">
             <h2>Shopping Cart:</h2>
-            {cart.map((product, idx) => {
-              return (
-                <div key={idx}>
-                  <img src={product.image} className="cart-pics" />
-                  <Link
-                    className="product-title"
-                    to={'/products/' + product.id}
-                  >
-                    {product.name}
-                  </Link>
-                  <div>${product.price}</div>
-                  <button type="button">Remove</button>
-                </div>
-              )
-            })}
-            {/* // <select>
-            //   <option>1</option>
-            //   <option>2</option>
-            //   <option>3</option>
-            //   <option>4</option>
-            //   <option>5</option>
-            // </select> */}
+            {cart.length > 0 &&
+              cart.map((product, idx) => {
+                return (
+                  <div key={idx}>
+                    <img src={product.image} className="cart-pics" />
+                    <Link
+                      className="product-title"
+                      to={'/products/' + product.id}
+                    >
+                      {product.name}
+                    </Link>
+                    <div>${product.price}</div>
+                    <label>Quantity: {product.order_product.productQty}</label>
+                    {/* {function selectElement(id, valueToSelect) {
+                      let element = document.getElementById(id)
+                      element.value = valueToSelect
+                    }}
+                    {selectElement(selectQuantity, quantity)}} */}
+                    <select id="selectQuantity">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                    <button type="button">Remove</button>
+                  </div>
+                )
+              })}
+
             <div>Total Price $$</div>
             <div />
           </div>
