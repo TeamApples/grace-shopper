@@ -10,7 +10,7 @@ const Product = db.define('product', {
     }
   },
   price: {
-    type: Sequelize.INTEGER, //create method to convert int to decimal
+    type: Sequelize.STRING, //create method to convert int to decimal
     allowNull: false,
     validate: {
       notEmpty: true
@@ -39,6 +39,9 @@ const Product = db.define('product', {
     defaultValue:
       'https://9to5mac.com/wp-content/uploads/sites/6/2019/11/apple_kawasaki_coming_soon.jpg?quality=82&strip=all&w=1600'
   }
+})
+Product.beforeCreate((product, options) => {
+  product.price = parseInt(product.price) / 100
 })
 
 module.exports = Product

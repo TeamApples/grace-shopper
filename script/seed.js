@@ -137,9 +137,9 @@ const OrderProductData = [
   {orderId: 1, productId: 2, productQty: 2, productPrice: 200},
   {orderId: 2, productId: 2, productQty: 1, productPrice: 900},
   {orderId: 2, productId: 3, productQty: 1, productPrice: 300},
-  {orderId: 3, productId: 4, productQty: 3, productPrice: 10},
-  {orderId: 3, productId: 5, productQty: 2, productPrice: 20},
-  {orderId: 4, productId: 1, productQty: 1, productPrice: 40}
+  {orderId: 3, productId: 4, productQty: 3, productPrice: 100},
+  {orderId: 3, productId: 5, productQty: 2, productPrice: 200},
+  {orderId: 4, productId: 1, productQty: 1, productPrice: 400}
 ]
 
 const seed = async () => {
