@@ -44,6 +44,13 @@ form div {
 .links.active {
   background-color: red;
 }
+
+#all_products {
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* height: 800px; */
+}
 .product {
   width: 35%;
   margin: 20px;
@@ -61,6 +68,9 @@ form div {
 }
 .shop-title {
   text-align: -webkit-center;
+  color: white;
+  margin: 0;
+  padding: 10px;
 }
 .nav-two {
   display: flex;
@@ -85,22 +95,42 @@ form div {
   flex-direction: column;
   align-items: center;
 }
+
+#signup-form {
+  font-family: 'SF Pro Text', 'Myriad Set Pro', 'SF Pro Icons', 'Helvetica Neue',
+    'Helvetica', 'Arial', sans-serif;
+  text-align: center;
+  background-color: grey;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 800px;
+}
+
 .id-wrapper {
   height: 170px;
   /* background-color: #0071e3; */
   display: flex;
   justify-content: center;
-  background-image: url('https://locate.apple.com/resources/images/widgets/AppleRetailStore_2x.jpg');
+  background-color: black;
 }
 .id-container {
   font-size: 40px;
   margin: 53px;
   color: white;
 }
-.singup-page-wrapper {
+
+.signup-page-wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: center;
+  align-items: center; */
 }
+
+.signup-page-wrapper form div {
+  justify-content: center;
+  align-items: center;
+}
+
 label {
   margin: 15px;
 }
@@ -122,4 +152,50 @@ small {
 }
 .cart-pics {
   height: 50px;
+}
+
+#single_product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-image: url('https://res.allmacwallpaper.com/pic/Thumbnails/2574_728.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 800px;
+  color: white;
+}
+
+#single_product #product_image {
+  align-items: center;
+}
+
+#single_product #product_image img {
+  border-radius: 25px;
+}
+
+#single_product #product_info {
+  align-items: center;
+  font-family: 'SF Pro Text', 'Myriad Set Pro', 'SF Pro Icons', 'Helvetica Neue',
+    'Helvetica', 'Arial', sans-serif;
+  text-align: center;
+}
+#single_product #product_info p {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+button {
+  color: white;
+  margin: 15px;
+  line-height: 1.17648;
+  min-width: 28px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 18px;
+  background: #0071e3;
 }
