@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {GOT_USERS} from '../store/user'
 import {render} from 'enzyme'
+import MyAccount from './MyAccount'
 
 /**
  * COMPONENT
@@ -12,10 +13,9 @@ class UserHome extends Component {
   componentDidMount() {}
 
   render() {
-    const {email} = props
     return (
       <div>
-        <h3>Welcome, {email}</h3>
+        <h1>Welcome to Apple</h1>
       </div>
     )
   }
