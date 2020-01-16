@@ -11,7 +11,7 @@ class AllProducts extends Component {
   render() {
     const products = this.props.products
     return (
-      <div>
+      <div id="all_products">
         <h2 className="shop-title">Shop All Products</h2>
         <div className="product-view">
           {Array.isArray(products) &&

@@ -60,15 +60,14 @@ function SignUp(props) {
   const {handleChange, handleSubmit, state} = props
 
   return (
-    <div>
-      <h2>Apple ID</h2>
+    <div id="signup-form">
       <div className="id-wrapper">
         <div className="id-container">Create Your Apple ID</div>
       </div>
       <p>One Apple ID is all you need to access all Apple services.</p>
-      <div className="singup-page-wrapper">
+      <div className="signup-page-wrapper">
         <form onSubmit={handleSubmit}>
-          <div>
+          <div id="signup-form-content">
             <label htmlFor="firstName">
               <small>First Name</small>
             </label>
@@ -114,8 +113,6 @@ function SignUp(props) {
               onChange={handleChange}
               value={state.email}
             />
-          </div>
-          <div>
             <label htmlFor="password">
               <small>Choose your Password</small>
             </label>
@@ -126,9 +123,7 @@ function SignUp(props) {
               value={state.password}
             />
           </div>
-          <div>
-            <button type="submit">SUBMIT</button>
-          </div>
+          <button type="submit">SUBMIT</button>
         </form>
         <a href="/auth/google">Signup with Google</a>
       </div>
