@@ -8,9 +8,8 @@ import AllProductsContainer from './components/allProducts'
 import SingleProductContainer from './components/SingleProduct'
 import LogInOrSignUp from './components/LogOrSign'
 import SignUp from './components/SignUpForm'
-
-import cartContainer from './components/cart'
 import MyAccount from './components/MyAccount'
+import CartContainer from './components/cart'
 /**
  * COMPONENT
  */
@@ -35,11 +34,16 @@ class Routes extends Component {
           path="/products/:productId"
           component={SingleProductContainer}
         />
-        <Route exact path="/cart" component={cartContainer} />
+
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/myaccount" component={MyAccount} />
+            <Route
+              exact
+              path="/users/:userId/cart"
+              render={routeProps => <CartContainer {...routeProps} />}
+            />
             <Route path="/home" component={UserHome} />
           </Switch>
         )}
