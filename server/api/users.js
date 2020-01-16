@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Product, Order, OrderProduct} = require('../db/models')
+const {User, Product, Order} = require('../db/models')
 const {protect, protectById} = require('./securityUtils')
 
 router.get('/', protect, async function(req, res, next) {
