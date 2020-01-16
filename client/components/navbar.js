@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Link, NavLink} from 'react-router-dom'
 import {logout} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleClick, isLoggedIn, userId}) => (
   <div className="navbar">
     <nav className="login-form">
       {isLoggedIn ? (
@@ -17,7 +17,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           >
             Shop
           </NavLink>
-          <NavLink activeClassName="active" className="main-links" to="/cart">
+          <NavLink
+            activeClassName="active"
+            className="main-links"
+            to={`/users/${userId}/cart`}
+          >
             My Cart
           </NavLink>
           {/* The navbar will show these links after you log in */}
@@ -62,6 +66,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
+    userId: state.user.id,
     isLoggedIn: !!state.user.id
   }
 }
