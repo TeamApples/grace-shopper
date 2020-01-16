@@ -1,10 +1,8 @@
 const router = require('express').Router()
 const {User, Product, Order, OrderProduct} = require('../db/models')
-module.exports = router
+const {protect, protectById} = require('./securityUtils')
 
-//add security
-
-router.get('/', async (req, res, next) => {
+router.get('/', protect, async function(req, res, next) {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -18,9 +16,36 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:userId/:orderId', protectById, async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.orderId)
+    if (!order) {
+      const err = new Error('404 Page Not Found')
+      err.status = 404
+      throw err
+    }
+    res.json(order)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/:userId/orders', protectById, async (req, res, next) => {
+  try {
+    const newOrder = await Order.create(req.body)
+    if (!newOrder) {
+      const err = new Error('This request cannot be processed')
+      err.status = 404
+      throw err
+    }
+    res.status(201).json(newOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/', async (req, res, next) => {
   try {
-    console.log('this is the body', req.body)
     const user = await User.create(req.body)
     res.json(user)
   } catch (err) {
@@ -28,7 +53,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', protectById, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
     res.json(user)
@@ -37,7 +62,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-router.put('/:userId', async (req, res, next) => {
+router.put('/:userId', protectById, async (req, res, next) => {
   try {
     const user = await User.update(req.body, {
       returning: true,
@@ -56,7 +81,7 @@ router.put('/:userId', async (req, res, next) => {
   }
 })
 
-router.delete('/:userId', async (req, res, next) => {
+router.delete('/:userId', protectById, async (req, res, next) => {
   try {
     await User.destroy({
       where: {
@@ -69,7 +94,7 @@ router.delete('/:userId', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/orderHistory', async (req, res, next) => {
+router.get('/:userId/orderHistory', protectById, async (req, res, next) => {
   try {
     const orderHistory = await Order.findAll({
       where: {
@@ -85,7 +110,7 @@ router.get('/:userId/orderHistory', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/cart', async (req, res, next) => {
+router.get('/:userId/cart', protectById, async (req, res, next) => {
   try {
     console.log('req.user: ', req.params)
     const pendingOrder = await Order.findOne({
@@ -100,3 +125,5 @@ router.get('/:userId/cart', async (req, res, next) => {
     next(err)
   }
 })
+
+module.exports = router

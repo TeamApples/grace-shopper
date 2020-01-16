@@ -1,8 +1,6 @@
 const router = require('express').Router()
 const {Product} = require('../db/models')
-
-//create utils file for frequently used functions
-//add security
+const {protect} = require('./securityUtils')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -13,7 +11,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', protect, async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body)
     res.json(newProduct)
@@ -36,7 +34,7 @@ router.get('/:productId', async (req, res, next) => {
   }
 })
 
-router.delete('/:productId', (req, res, next) => {
+router.delete('/:productId', protect, (req, res, next) => {
   Product.destroy({
     where: {
       id: Number(req.params.productId)
@@ -46,7 +44,7 @@ router.delete('/:productId', (req, res, next) => {
     .catch(next)
 })
 
-router.put('/:productId', async (req, res, next) => {
+router.put('/:productId', protect, async (req, res, next) => {
   try {
     const updatedProduct = await Product.update({
       where: {
