@@ -37,10 +37,11 @@ export const cartReducer = (state = cart, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       let productIdMap = new Set()
-      let productIdList = cart.forEach(product => {
+      cart.forEach(product => {
         productIdMap.add(product.id)
       })
-      if (action.product.id) return [...state, action.product]
+      if (productIdMap.has(action.product.id))
+        if (action.product.id) return [...state, action.product]
     case GET_CART:
       return action.cart
     default:
