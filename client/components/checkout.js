@@ -14,7 +14,6 @@ class Checkout extends React.Component {
   render() {
     //need to access cart from state
     const cart = this.props.cart
-    console.log(cart)
 
     return (
       <div>

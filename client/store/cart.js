@@ -5,10 +5,10 @@ const GET_CART = 'GET_CART'
 
 const cart = []
 
-export const addProductToCart = function(product) {
+export const addProductToCart = function(product, quantity) {
   return {
     type: ADD_TO_CART,
-    product
+    product: product
   }
 }
 
@@ -26,7 +26,6 @@ export const gotCart = userId => {
       // IF USER IS LOGGED IN!!!!!!!
       // console.log(req.user)
       const {data} = await Axios.get(`/api/users/${userId}/cart`)
-      console.log(data)
       dispatch(getCart(data.products))
     } catch (err) {
       console.error(err)
@@ -37,7 +36,11 @@ export const gotCart = userId => {
 export const cartReducer = (state = cart, action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      return [...state, action.product]
+      let productIdMap = new Set()
+      let productIdList = cart.forEach(product => {
+        productIdMap.add(product.id)
+      })
+      if (action.product.id) return [...state, action.product]
     case GET_CART:
       return action.cart
     default:

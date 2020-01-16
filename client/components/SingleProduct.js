@@ -15,6 +15,14 @@ class SingleProduct extends Component {
   }
 
   handleClick() {
+    const singleProduct = this.props.singleProduct
+    let numProduct = document.getElementById('selectQuantity').value
+    if (singleProduct.quantity in singleProduct) {
+      singleProduct.quantity += numProduct
+    } else {
+      this.props.singleProduct.quantity = +numProduct
+    }
+    //const quantity = selected.options[selected.selectedIndex].value
     this.props.addToCart(this.props.singleProduct)
   }
 
@@ -31,15 +39,15 @@ class SingleProduct extends Component {
           <p>${singleProduct.price}</p>
           <h3>Details: </h3>
           <p>{singleProduct.description}</p>
-          {/* <label>Quantity:</label>
-        <select>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select> */}
-          <button type="submit" onClick={this.handleClick}>
+          <label>Quantity:</label>
+          <select id="selectQuantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <button type="button" onClick={this.handleClick}>
             Add to Cart
           </button>
         </div>
@@ -60,8 +68,8 @@ const mapDispatchToProps = function(dispatch, urlProps) {
       const action = loadOneProduct(productId)
       dispatch(action)
     },
-    addToCart: function(product) {
-      const action = addProductToCart(product)
+    addToCart: function(product, quantity) {
+      const action = addProductToCart(product, quantity)
       dispatch(action)
     }
   }
