@@ -87,13 +87,15 @@ router.get('/:userId/orderHistory', async (req, res, next) => {
 
 router.get('/:userId/cart', async (req, res, next) => {
   try {
-    await Order.findAll({
+    console.log('req.user: ', req.params)
+    const pendingOrder = await Order.findOne({
       where: {
-        userId: req.params.userId,
-        purchased: true
+        userId: req.user,
+        purchased: false
       },
       include: [{model: Product}]
     })
+    res.json(pendingOrder)
   } catch (err) {
     next(err)
   }
