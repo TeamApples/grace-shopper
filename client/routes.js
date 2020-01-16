@@ -10,6 +10,7 @@ import LogInOrSignUp from './components/LogOrSign'
 import SignUp from './components/SignUpForm'
 
 import cartContainer from './components/cart'
+import MyAccount from './components/MyAccount'
 /**
  * COMPONENT
  */
@@ -38,6 +39,7 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+            <Route path="/myaccount" component={MyAccount} />
             <Route path="/home" component={UserHome} />
           </Switch>
         )}

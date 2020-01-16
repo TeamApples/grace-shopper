@@ -5,6 +5,7 @@ const request = require('supertest')
 const db = require('../db')
 const app = require('../index')
 const User = db.model('user')
+const {UserData} = require('../../script/seed')
 
 describe('User routes', () => {
   beforeEach(() => {
@@ -16,7 +17,12 @@ describe('User routes', () => {
 
     beforeEach(() => {
       return User.create({
-        email: codysEmail
+        email: UserData[0].email,
+        password: UserData[0].password,
+        firstName: UserData[0].firstName,
+        lastName: UserData[0].lastName,
+        phoneNumber: UserData[0].phoneNumber,
+        address: UserData[0].email.address
       })
     })
 
