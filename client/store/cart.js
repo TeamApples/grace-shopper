@@ -26,6 +26,7 @@ export const gotCart = userId => {
       // IF USER IS LOGGED IN!!!!!!!
       // console.log(req.user)
       const {data} = await Axios.get(`/api/users/${userId}/cart`)
+      console.log(data)
       dispatch(getCart(data.products))
     } catch (err) {
       console.error(err)
