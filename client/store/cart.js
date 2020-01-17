@@ -3,16 +3,16 @@ import Axios from 'axios'
 const ADD_TO_CART = 'ADD_TO_CART'
 const GET_CART = 'GET_CART'
 
-const cart = []
+const initialState = []
 
-export const addProductToCart = function(product) {
+const addProductToCart = function(product) {
   return {
     type: ADD_TO_CART,
     product: product
   }
 }
 
-export const getCart = function(cart) {
+const getCart = function(cart) {
   return {
     type: GET_CART,
     cart
@@ -33,9 +33,23 @@ export const gotCart = userId => {
   }
 }
 
-export const cartReducer = (state = cart, action) => {
+export const addedProductToCart = function(productToCart, userId) {
+  return async dispatch => {
+    try {
+      const {data} = await Axios.post(
+        `/api/users/${userId}/cart`,
+        productToCart
+      )
+      dispatch(addProductToCart(data))
+    } catch (err) {
+      console.error('is it working?')
+    }
+  }
+}
+
+export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_TO_CART:
+    case ADD_TO_CART: {
       let isUpdated = false
       let updatedState = state.map(product => {
         if (action.product.id === product.id) {
@@ -48,6 +62,7 @@ export const cartReducer = (state = cart, action) => {
         updatedState.push(action.product)
       }
       return updatedState
+    }
     case GET_CART:
       return action.cart
     default:

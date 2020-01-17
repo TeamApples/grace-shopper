@@ -125,4 +125,34 @@ router.get('/:userId/cart', protectById, async (req, res, next) => {
   }
 })
 
+router.post('/:userId/cart', protectById, async (req, res, next) => {
+  try {
+    console.log('post req: ', req.body)
+    const addedProduct = await Order.findOne({
+      where: {
+        userId: req.params.userId,
+        purchased: false
+      }
+    })
+    if (!addedProduct) {
+      const createdOrder = await Order.create({
+        purchased: false,
+        paymentMethod: null,
+        userId: req.params.userId
+      })
+      res.json(createdOrder)
+    } else {
+      const updatedOrder = await Order.update({
+        returning: true,
+        where: {
+          purchased: false,
+          userId: req.params.userId
+        }
+      })
+    }
+  } catch (error) {
+    next(err)
+  }
+})
+
 module.exports = router
