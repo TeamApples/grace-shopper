@@ -15,15 +15,8 @@ class SingleProduct extends Component {
   }
 
   handleClick() {
-    const singleProduct = this.props.singleProduct
     let numProduct = document.getElementById('selectQuantity').value
-    if (singleProduct.quantity in singleProduct) {
-      singleProduct.quantity += numProduct
-    } else {
-      this.props.singleProduct.quantity = +numProduct
-    }
-    //const quantity = selected.options[selected.selectedIndex].value
-    console.log('propsss: ')
+    this.props.singleProduct.quantity = +numProduct
     this.props.addToCart(this.props.singleProduct, this.props.userId)
   }
 

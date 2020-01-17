@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Product, Order} = require('../db/models')
+const {User, Product, Order, OrderProduct} = require('../db/models')
 const {protect, protectById} = require('./securityUtils')
 
 router.get('/', protect, async function(req, res, next) {
@@ -127,30 +127,59 @@ router.get('/:userId/cart', protectById, async (req, res, next) => {
 
 router.post('/:userId/cart', protectById, async (req, res, next) => {
   try {
-    console.log('post req: ', req.body)
-    const addedProduct = await Order.findOne({
+    const createdOrder = await Order.create({
+      purchased: false,
+      paymentMethod: null,
+      userId: req.params.userId
+    })
+    const createdOrderProduct = await OrderProduct.create({
+      productPrice: req.body.price,
+      productQty: req.body.quantity,
+      productId: req.body.id,
+      orderId: createdOrder.orderId
+    })
+    console.log('created order: ', createdOrderProduct)
+    const productForOrder = Product.findOne({
       where: {
-        userId: req.params.userId,
-        purchased: false
+        id: req.body.id
       }
     })
-    if (!addedProduct) {
-      const createdOrder = await Order.create({
+    productForOrder.quantity = createdOrderProduct.productQty
+    productForOrder.orderId = Order.id
+    res.status(201).json(productForOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:userId/cart', protectById, async (req, res, next) => {
+  try {
+    const existingOrder = await Order.findOne({
+      where: {
         purchased: false,
-        paymentMethod: null,
         userId: req.params.userId
-      })
-      res.json(createdOrder)
-    } else {
-      const updatedOrder = await Order.update({
-        returning: true,
-        where: {
-          purchased: false,
-          userId: req.params.userId
-        }
-      })
-    }
-  } catch (error) {
+      }
+    })
+    const findOrderProduct = await OrderProduct.findOne({
+      where: {
+        productId: req.body.id,
+        orderId: existingOrder.dataValues.id
+      }
+    })
+    console.log('findOrderProduct: ', findOrderProduct)
+    const updatedProductOrder = await findOrderProduct.update({
+      productQty: req.body.quantity
+    })
+    console.log('updated order: ', updatedProductOrder)
+    const productForOrder = await Product.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+    productForOrder.quantity = updatedProductOrder.productQty
+
+    res.json(updatedProductOrder)
+  } catch (err) {
     next(err)
   }
 })

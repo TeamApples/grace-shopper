@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {me, changeUserThunk} from '../store/user'
+import {me, addUserThunk, changeUserThunk} from '../store/user'
+import Axios from 'axios'
 
 class MyAccount extends Component {
   constructor(props) {
@@ -17,16 +18,19 @@ class MyAccount extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
+
     const userId = this.props.user.id
     const email = document.getElementById('emailInput').text
     const address = document.getElementById('addressInput').text
     const phone = document.getElementById('phoneInput').text
+
     const user = {
       email: email,
       phone: phone,
       address: address
     }
     try {
+
       this.props.saveChanges(userId, user)
     } catch (error) {
       console.error(error)
