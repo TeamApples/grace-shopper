@@ -8,11 +8,7 @@ const Order = db.define('order', {
   },
 
   paymentMethod: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    type: Sequelize.STRING
   }
 })
 
