@@ -7,15 +7,29 @@ import history from '../history'
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
 const ADD_USER = 'ADD_USER'
+const SAVE_USER_INFO = 'SAVE_USER_INFO'
 /**
  * INITIAL STATE
  */
 const defaultUser = {}
 
+const saveUser = function(user) {
+  return {
+    type: SAVE_USER_INFO,
+    user: user
+  }
+}
+
 const addUser = function(user) {
   return {
     type: ADD_USER,
     addedUser: user
+  }
+}
+export const changeUserThunk = (userId, newInfo) => {
+  return async dispatch => {
+    const {data} = await axios.put(`/api/users/${userId}`, newInfo)
+    dispatch(saveUser(data))
   }
 }
 
@@ -80,6 +94,8 @@ const userReducer = (state = defaultUser, action) => {
       return defaultUser
     case ADD_USER:
       return action.addedUser
+    case SAVE_USER_INFO:
+      return action.user
     default:
       return state
   }
