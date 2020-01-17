@@ -39,7 +39,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route
-              path="/myaccount"
+              path="/users/:userId/myaccount"
               render={routeProps => <MyAccountContainer {...routeProps} />}
             />
             <Route

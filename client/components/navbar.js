@@ -31,7 +31,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           <NavLink
             activeClassName="active"
             className="main-links"
-            to="/myaccount"
+            to={`/users/${userId}/myaccount`}
           >
             My Account
           </NavLink>

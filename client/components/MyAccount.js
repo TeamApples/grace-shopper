@@ -1,10 +1,6 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {me, addUserThunk} from '../store/user'
-import Axios from 'axios'
-import {runInNewContext} from 'vm'
-import {changeUserThunk} from '../store/user'
+import {me, changeUserThunk} from '../store/user'
 
 class MyAccount extends Component {
   constructor(props) {
@@ -21,20 +17,17 @@ class MyAccount extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-
     const userId = this.props.user.id
-    const email = document.getElementById('emailInput').value
-    const address = document.getElementById('addressInput').value
-    const phone = document.getElementById('phoneInput').value
+    const email = document.getElementById('emailInput').text
+    const address = document.getElementById('addressInput').text
+    const phone = document.getElementById('phoneInput').text
     const user = {
       email: email,
       phone: phone,
       address: address
     }
     try {
-      console.log(email, address, phone)
       this.props.saveChanges(userId, user)
-      this.success()
     } catch (error) {
       console.error(error)
     }
