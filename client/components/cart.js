@@ -26,7 +26,7 @@ class Cart extends React.Component {
 
   render() {
     const cart = this.props.cart
-
+    console.log('cart: ', cart)
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
