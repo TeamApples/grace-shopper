@@ -33,6 +33,12 @@ router.post('/signup', async (req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
+  // axios.get('/:userId/cart') - this is existing in the database(outdated)
+  // if (datafromdb && sessionStore is empty) - destroy the order product / order
+  // look into before req.logout() or after req.logout()
+  //if (datafromdb && sessionStore is not empty) - update the order product (using orderId)
+  // if (!datafromdb && sessionStore)
+  //Order.create()
   req.logout()
   req.session.destroy()
   res.redirect('/')

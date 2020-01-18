@@ -126,63 +126,69 @@ router.get('/:userId/cart', protectById, async (req, res, next) => {
   }
 })
 
-router.post('/:userId/cart', protectById, async (req, res, next) => {
-  try {
-    const createdOrder = await Order.create({
-      purchased: false,
-      paymentMethod: null,
-      userId: req.params.userId
-    })
-    const createdOrderProduct = await OrderProduct.create({
-      productPrice: req.body.price,
-      productQty: req.body.quantity,
-      productId: req.body.id,
-      orderId: createdOrder.orderId
-    })
-    console.log('created order: ', createdOrderProduct)
-    const productForOrder = Product.findOne({
-      where: {
-        id: req.body.id
-      }
-    })
-    productForOrder.quantity = createdOrderProduct.productQty
-    productForOrder.orderId = Order.id
-    res.status(201).json(productForOrder)
-  } catch (err) {
-    next(err)
-  }
-})
+// router.post('/:userId/orders', protectById, async (req, res, next) => {
+//   //this is for checkout
+//   try {
+//     const createdOrder = await Order.create({
+//       purchased: true,
+//       paymentMethod: null,
+//       userId: req.params.userId
+//     })
+//     const createdOrderProduct = await OrderProduct.create({
+//       productPrice: req.body.price,
+//       productQty: req.body.quantity,
+//       productId: req.body.id,
+//       orderId: createdOrder.orderId
+//     })
+//     console.log('created order: ', createdOrderProduct)
+//     const productForOrder = Product.findOne({
+//       where: {
+//         id: req.body.id
+//       }
+//     })
+//     OrderProduct.destroy({where: orderId: orderId})
+//     sessionStorage.cart.forEach(product => {
+//       const currentProductOrder = OrderProduct.findByPk(product.id)
+//       OrderProduct.update({product.qty, product.id})
+//     })
+//     productForOrder.quantity = createdOrderProduct.productQty
+//     productForOrder.orderId = Order.id
+//     res.status(201).json(productForOrder)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
-router.put('/:userId/cart', protectById, async (req, res, next) => {
-  try {
-    const existingOrder = await Order.findOne({
-      where: {
-        purchased: false,
-        userId: req.params.userId
-      }
-    })
-    const findOrderProduct = await OrderProduct.findOne({
-      where: {
-        productId: req.body.id,
-        orderId: existingOrder.dataValues.id
-      }
-    })
-    console.log('findOrderProduct: ', findOrderProduct)
-    const updatedProductOrder = await findOrderProduct.update({
-      productQty: req.body.quantity
-    })
-    console.log('updated order: ', updatedProductOrder)
-    const productForOrder = await Product.findOne({
-      where: {
-        id: req.body.id
-      }
-    })
-    productForOrder.quantity = updatedProductOrder.productQty
+// router.put('/:userId/cart', protectById, async (req, res, next) => {
+//   try {
+//     const existingOrder = await Order.findOne({
+//       where: {
+//         purchased: false,
+//         userId: req.params.userId
+//       }
+//     })
+//     const findOrderProduct = await OrderProduct.findOne({
+//       where: {
+//         productId: req.body.id,
+//         orderId: existingOrder.dataValues.id
+//       }
+//     })
+//     console.log('findOrderProduct: ', findOrderProduct)
+//     const updatedProductOrder = await findOrderProduct.update({
+//       productQty: req.body.quantity
+//     })
+//     console.log('updated order: ', updatedProductOrder)
+//     const productForOrder = await Product.findOne({
+//       where: {
+//         id: req.body.id
+//       }
+//     })
+//     productForOrder.quantity = updatedProductOrder.productQty
 
-    res.json(updatedProductOrder)
-  } catch (err) {
-    next(err)
-  }
-})
+//     res.json(updatedProductOrder)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 module.exports = router
