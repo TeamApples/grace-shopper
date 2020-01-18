@@ -27,8 +27,10 @@ const addUser = function(user) {
   }
 }
 export const changeUserThunk = (userId, newInfo) => {
+  console.log(newInfo, 'new info')
+
   return async dispatch => {
-    const {data} = await axios.put(`/api/users/${userId}`, newInfo)
+    const {data} = await axios.put(`/api/users/${userId}/myaccount`, newInfo)
     dispatch(saveUser(data))
   }
 }

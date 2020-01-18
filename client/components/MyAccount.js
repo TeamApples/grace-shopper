@@ -17,20 +17,17 @@ class MyAccount extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault()
-
     const userId = this.props.user.id
-    const email = document.getElementById('emailInput').text
-    const address = document.getElementById('addressInput').text
-    const phone = document.getElementById('phoneInput').text
-
+    const email = document.getElementById('emailInput').value
+    const address = document.getElementById('addressInput').value
+    const phone = document.getElementById('phoneInput').value
     const user = {
       email: email,
       phone: phone,
       address: address
     }
+    event.preventDefault()
     try {
-
       this.props.saveChanges(userId, user)
     } catch (error) {
       console.error(error)

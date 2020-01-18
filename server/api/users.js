@@ -62,20 +62,21 @@ router.get('/:userId', protectById, async (req, res, next) => {
   }
 })
 
-router.put('/:userId', protectById, async (req, res, next) => {
+router.put('/:userId/myaccount', protectById, async (req, res, next) => {
   try {
-    const user = await User.update(req.body, {
+    const [user, newuser] = await User.update(req.body, {
       returning: true,
+      plain: true,
       where: {
-        id: req.params.userId
+        id: Number(req.params.userId)
       }
     })
-    if (!user) {
+    if (!newuser.dataValues) {
       const err = new Error('user not found')
       err.status = 404
       throw err
     }
-    res.json(user)
+    res.json(newuser.dataValues)
   } catch (err) {
     next(err)
   }
