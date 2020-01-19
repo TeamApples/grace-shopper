@@ -16,6 +16,28 @@ router.get('/', protect, async function(req, res, next) {
   }
 })
 
+//DO WE NEED TO PROTECT THIS?
+router.post('/guest/cart', async function(req, res, next) {
+  try {
+    const newGuestOrder = await Order.create({
+      purchased: true,
+      paymentMethod: null,
+      userId: null
+    })
+    req.body.forEach(async product => {
+      await OrderProduct.create({
+        productPrice: product.price,
+        productQty: product.quantity,
+        productId: product.id,
+        orderId: newGuestOrder.id
+      })
+    })
+    res.json({cart: []})
+  } catch (err) {
+    next(err)
+  }
+})
+
 // router.get('/:userId/:orderId', protectById, async (req, res, next) => {
 //   try {
 //     const order = await Order.findByPk(req.params.orderId)
@@ -113,14 +135,16 @@ router.get('/:userId/orderHistory', protectById, async (req, res, next) => {
 
 router.get('/:userId/cart', protectById, async (req, res, next) => {
   try {
-    const pendingOrder = await Order.findOne({
-      where: {
-        userId: req.params.userId,
-        purchased: false
-      },
-      include: [{model: Product}]
-    })
-    res.json(pendingOrder)
+    if (req.params.userId !== undefined) {
+      const pendingOrder = await Order.findOne({
+        where: {
+          userId: req.params.userId,
+          purchased: false
+        },
+        include: [{model: Product}]
+      })
+      res.json(pendingOrder)
+    }
   } catch (err) {
     next(err)
   }

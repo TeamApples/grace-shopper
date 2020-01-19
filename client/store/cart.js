@@ -2,6 +2,7 @@ import Axios from 'axios'
 
 const ADD_TO_CART = 'ADD_TO_CART'
 const GET_CART = 'GET_CART'
+const CHECKOUT = 'CHECKOUT'
 
 const initialState = []
 
@@ -19,6 +20,13 @@ const getCart = function(cart) {
   }
 }
 
+export const checkout = function(cart) {
+  return {
+    type: CHECKOUT,
+    cart
+  }
+}
+
 //thunk creator
 export const gotCart = userId => {
   return async dispatch => {
@@ -26,9 +34,21 @@ export const gotCart = userId => {
       // IF USER IS LOGGED IN!!!!!!!
       // console.log(req.user)
       const {data} = await Axios.get(`/api/users/${userId}/cart`)
+      console.log('information on cart:', data)
       dispatch(getCart(data.products))
     } catch (err) {
       console.error(err)
+    }
+  }
+}
+
+export const checkedOut = cart => {
+  return async dispatch => {
+    try {
+      const {data} = await Axios.post('/api/users/guest/cart', cart)
+      dispatch(checkout(data.cart))
+    } catch (err) {
+      console.log(err)
     }
   }
 }
@@ -75,6 +95,8 @@ export const cartReducer = (state = initialState, action) => {
       return updatedState
     }
     case GET_CART:
+      return action.cart
+    case CHECKOUT:
       return action.cart
     default:
       return state

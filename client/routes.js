@@ -34,6 +34,11 @@ class Routes extends Component {
           path="/products/:productId"
           component={SingleProductContainer}
         />
+        <Route
+          exact
+          path="/cart"
+          render={routeProps => <CartContainer {...routeProps} />}
+        />
 
         {isLoggedIn && (
           <Switch>
