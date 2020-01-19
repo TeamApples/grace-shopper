@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {loadOneProduct} from '../store/product'
 import {connect} from 'react-redux'
-import {addedProductToCart} from '../store/cart'
+import {addProductToCart} from '../store/cart'
 
 class SingleProduct extends Component {
   constructor(props) {
@@ -17,7 +17,8 @@ class SingleProduct extends Component {
   handleClick() {
     let numProduct = document.getElementById('selectQuantity').value
     this.props.singleProduct.quantity = +numProduct
-    this.props.addToCart(this.props.singleProduct, this.props.userId)
+    this.props.addToCart(this.props.singleProduct)
+    console.log('added to cart: ', this.props.cart)
   }
 
   render() {
@@ -52,7 +53,8 @@ class SingleProduct extends Component {
 const mapStateToProps = function(state) {
   return {
     singleProduct: state.singleProduct,
-    userId: state.user.id
+    userId: state.user.id,
+    cart: state.cart
   }
 }
 
@@ -63,8 +65,8 @@ const mapDispatchToProps = function(dispatch, urlProps) {
       const action = loadOneProduct(productId)
       dispatch(action)
     },
-    addToCart: function(product, userId) {
-      const action = addedProductToCart(product, userId)
+    addToCart: function(product) {
+      const action = addProductToCart(product)
       dispatch(action)
     }
   }
