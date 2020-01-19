@@ -32,7 +32,7 @@ router.post('/signup', async (req, res, next) => {
   }
 })
 
-router.post('/logout', (req, res) => {
+router.post('/logout', async (req, res) => {
   // axios.get('/:userId/cart') - this is existing in the database(outdated)
   // if (datafromdb && sessionStore is empty) - destroy the order product / order
   // look into before req.logout() or after req.logout()
@@ -40,6 +40,7 @@ router.post('/logout', (req, res) => {
   // if (!datafromdb && sessionStore)
   //Order.create()
   req.logout()
+  // const updateOrder = await
   req.session.destroy()
   res.redirect('/')
 })
