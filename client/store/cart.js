@@ -3,9 +3,12 @@ import Axios from 'axios'
 const ADD_TO_CART = 'ADD_TO_CART'
 const GET_CART = 'GET_CART'
 const CHECKOUT = 'CHECKOUT'
+const REMOVE_STATE_PRODUCT = 'REMOVE_STATE_PRODUCT'
+// const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 const initialState = []
 
+//action creators
 export const addProductToCart = function(product) {
   return {
     type: ADD_TO_CART,
@@ -27,7 +30,21 @@ export const checkout = function(cart) {
   }
 }
 
-//thunk creator
+export const removeStateProduct = function(product) {
+  return {
+    type: REMOVE_STATE_PRODUCT,
+    product
+  }
+}
+
+// export const deleteProduct = function(product) {
+//   return {
+//     type: DELETE_PRODUCT,
+//     product
+//   }
+// }
+
+//thunk creators
 export const gotCart = userId => {
   return async dispatch => {
     try {
@@ -52,6 +69,18 @@ export const checkedOut = cart => {
     }
   }
 }
+
+// export const removedProduct = product => {
+//   return async dispatch => {
+//     try {
+//       const productId = product.id
+//       const {data} = await Axios.delete(`/api/users/guest/cart/${productId}`)
+//       dispatch(deleteProduct(data))
+//     } catch (err) {
+//       console.log(err)
+//     }
+//   }
+// }
 
 // export const addedProductToCart = function(productToCart, userId) {
 //   return async dispatch => {
@@ -98,6 +127,8 @@ export const cartReducer = (state = initialState, action) => {
       return action.cart
     case CHECKOUT:
       return action.cart
+    case REMOVE_STATE_PRODUCT:
+      return state.filter(product => product.id !== action.product.id)
     default:
       return state
   }

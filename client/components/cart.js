@@ -3,23 +3,28 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link, NavLink} from 'react-router-dom'
 import {logout} from '../store'
-import {addProductToCart, gotCart, checkedOut} from '../store/cart'
-
-// need props.total
-// need handleSubmit
-//need props.image
+import {
+  addProductToCart,
+  gotCart,
+  checkedOut,
+  removeStateProduct
+} from '../store/cart'
 
 class Cart extends React.Component {
   constructor(props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
-    // console.log(props)
+    this.handleRemoveState = this.handleRemoveState.bind(this)
   }
 
   componentDidMount() {
     if (this.props.match.params.userId) {
       this.props.loadCart(this.props.match.params.userId)
     }
+  }
+
+  handleRemoveState(product) {
+    this.props.removeStateProduct(product)
   }
 
   handleSubmit(event) {
@@ -65,7 +70,12 @@ class Cart extends React.Component {
                       <option value="4">4</option>
                       <option value="5">5</option>
                     </select>
-                    <button type="button">Remove</button>
+                    <button
+                      type="button"
+                      onClick={() => this.handleRemoveState(product)}
+                    >
+                      Remove
+                    </button>
                   </div>
                 )
               })}
@@ -102,6 +112,10 @@ const mapDispatchToProps = function(dispatch) {
     },
     checkout: function(cart) {
       const action = checkedOut(cart)
+      dispatch(action)
+    },
+    removeStateProduct: function(product) {
+      const action = removeStateProduct(product)
       dispatch(action)
     }
   }

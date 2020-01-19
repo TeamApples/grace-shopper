@@ -2,7 +2,7 @@ const router = require('express').Router()
 const {User, Product, Order, OrderProduct} = require('../db/models')
 const {protect, protectById} = require('./securityUtils')
 
-router.get('/', protect, async function(req, res, next) {
+router.get('/', protect, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -17,7 +17,7 @@ router.get('/', protect, async function(req, res, next) {
 })
 
 //DO WE NEED TO PROTECT THIS?
-router.post('/guest/cart', async function(req, res, next) {
+router.post('/guest/cart', async (req, res, next) => {
   try {
     const newGuestOrder = await Order.create({
       purchased: true,
