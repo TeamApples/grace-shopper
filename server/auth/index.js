@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
+const {Order, OrderProduct} = require('../db/models')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
@@ -32,13 +33,40 @@ router.post('/signup', async (req, res, next) => {
   }
 })
 
-router.post('/logout', (req, res) => {
-  // axios.get('/:userId/cart') - this is existing in the database(outdated)
-  // if (datafromdb && sessionStore is empty) - destroy the order product / order
-  // look into before req.logout() or after req.logout()
-  //if (datafromdb && sessionStore is not empty) - update the order product (using orderId)
-  // if (!datafromdb && sessionStore)
-  //Order.create()
+router.post('/logout', async (req, res) => {
+  console.log('before requser', req.user)
+
+  const currentCart = await req.session.cart
+  if (req.session.cart[0].orderId) {
+    await OrderProduct.destroy({
+      where: {
+        orderId: currentCart[0].orderId
+      }
+    })
+    currentCart.forEach(async product => {
+      await OrderProduct.create({
+        orderId: product.orderId,
+        productId: product.id,
+        productPrice: product.price,
+        productQty: product.quantity
+      })
+    })
+  } else {
+    console.log('req user: ', req.user)
+    const newCart = await Order.create({
+      paymentMethod: 'null',
+      userId: req.user.id
+    })
+    console.log('newCart: ', newCart)
+    currentCart.forEach(async product => {
+      await OrderProduct.create({
+        orderId: newCart.id,
+        productId: product.id,
+        productPrice: product.price,
+        productQty: product.quantity
+      })
+    })
+  }
   req.logout()
   req.session.destroy()
   res.redirect('/')
