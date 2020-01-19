@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link, NavLink} from 'react-router-dom'
 import {logout} from '../store'
-import {addProductToCart, gotCart} from '../store/cart'
+import {addProductToCart, gotCart, checkedOut} from '../store/cart'
 
 // need props.total
 // need handleSubmit
@@ -17,11 +17,14 @@ class Cart extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadCart(this.props.match.params.userId)
+    if (this.props.match.params.userId) {
+      this.props.loadCart(this.props.match.params.userId)
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault()
+    this.props.checkout(this.props.cart)
   }
 
   render() {
@@ -95,6 +98,10 @@ const mapDispatchToProps = function(dispatch) {
   return {
     loadCart: function(userId) {
       const action = gotCart(userId)
+      dispatch(action)
+    },
+    checkout: function(cart) {
+      const action = checkedOut(cart)
       dispatch(action)
     }
   }
