@@ -52,7 +52,7 @@ export const gotCart = userId => {
       // console.log(req.user)
       const {data} = await Axios.get(`/api/users/${userId}/cart`)
       console.log('information on cart:', data)
-      dispatch(getCart(data.products))
+      dispatch(getCart(data))
     } catch (err) {
       console.error(err)
     }
@@ -69,6 +69,7 @@ export const checkedOut = cart => {
     }
   }
 }
+
 
 // export const removedProduct = product => {
 //   return async dispatch => {
@@ -101,27 +102,38 @@ export const checkedOut = cart => {
 //         dispatch(addProductToCart(updateProduct.data))
 //       }
 
-//     } catch (err) {
-//       console.error('is it working?')
-//     }
-//   }
-// }
+export const addProductToCartThunk = function(productToCart, userId) {
+  return async dispatch => {
+    try {
+      const {data} = await Axios.post(
+        `/api/users/${userId}/cart`,
+        productToCart
+      )
+
+
+      dispatch(addProductToCart(data))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART: {
-      let isUpdated = false
-      let updatedState = state.map(product => {
-        if (action.product.id === product.id) {
-          product.quantity += action.product.quantity
-          isUpdated = true
-        }
-        return product
-      })
-      if (!isUpdated) {
-        updatedState.push({...action.product})
-      }
-      return updatedState
+      // let isUpdated = false
+      // let updatedState = state.map(product => {
+      //   if (action.product.id === product.id) {
+      //     product.quantity += action.product.quantity
+      //     isUpdated = true
+      //   }
+      //   return product
+      // })
+      // if (!isUpdated) {
+      //   updatedState.push({...action.product})
+      // }
+      // return updatedState
+      return action.product
     }
     case GET_CART:
       return action.cart
