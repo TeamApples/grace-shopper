@@ -8,6 +8,7 @@ import {
   gotCart,
   checkedOut,
   removeStateProduct,
+  removeStateProductThunk,
   editCart
 } from '../store/cart'
 
@@ -40,7 +41,7 @@ class Cart extends React.Component {
   }
 
   handleRemoveState(product) {
-    this.props.removeStateProduct(product)
+    this.props.removeStateProduct(product, this.props.match.params.userId)
   }
 
   handleSubmit(event) {
@@ -153,9 +154,14 @@ const mapDispatchToProps = function(dispatch) {
       const action = checkedOut(cart)
       dispatch(action)
     },
-    removeStateProduct: function(product) {
-      const action = removeStateProduct(product)
-      dispatch(action)
+    removeStateProduct: function(product, userId) {
+      if (userId) {
+        const action = removeStateProductThunk(product, userId)
+        dispatch(action)
+      } else {
+        const action = removeStateProduct(product)
+        dispatch(action)
+      }
     },
     editQuantity: function(product, quantity) {
       const action = editCart(product, quantity)

@@ -146,6 +146,20 @@ router.post('/:userId/cart', async (req, res, next) => {
   }
 })
 
+router.delete('/:userId/cart/:productId', async (req, res, next) => {
+  try {
+    console.log('req body: ', req.params)
+    const existingCart = await req.session.cart
+    const updatedCart = existingCart.filter(
+      product => req.body.id !== product.id
+    )
+    req.session.cart = updatedCart
+    res.send(req.session.cart)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
