@@ -1693,7 +1693,7 @@ var checkedOut = function checkedOut(cart, userId) {
               case 4:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                console.log("what are we returning for user: ", data);
+                console.log('what are we returning for user: ', data);
                 dispatch(checkout(data));
                 _context2.next = 16;
                 break;
@@ -1705,7 +1705,7 @@ var checkedOut = function checkedOut(cart, userId) {
               case 12:
                 _ref5 = _context2.sent;
                 _data = _ref5.data;
-                console.log("what are we returning: ", _data);
+                console.log('what are we returning: ', _data);
                 dispatch(checkout(_data));
 
               case 16:
@@ -1902,7 +1902,7 @@ var cartReducer = function cartReducer() {
 
     case CHECKOUT:
       {
-        console.log("action.cart: ", action.cart);
+        console.log('action.cart: ', action.cart);
         localStorage.setItem('myCart', JSON.stringify([]));
         return action.cart;
       }
