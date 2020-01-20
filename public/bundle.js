@@ -913,7 +913,7 @@ function (_React$Component) {
 
         if (cartFromStorage) {
           cartFromStorage = JSON.parse(cartFromStorage);
-          console.log("cart: ", cartFromStorage);
+          console.log('cart: ', cartFromStorage);
           this.props.loadCartFromStorage(cartFromStorage);
         }
       }
@@ -944,7 +944,7 @@ function (_React$Component) {
     key: "handleSubmit",
     value: function handleSubmit(event) {
       event.preventDefault();
-      this.props.checkout(this.props.cart);
+      this.props.checkout(this.props.cart, this.props.match.params.userId);
     }
   }, {
     key: "render",
@@ -1029,8 +1029,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
       dispatch(action);
     },
-    checkout: function checkout(cart) {
-      var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_3__["checkedOut"])(cart);
+    checkout: function checkout(cart, userId) {
+      var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_3__["checkedOut"])(cart, userId);
       dispatch(action);
     },
     removeStateProduct: function removeStateProduct(product, userId) {
@@ -1667,41 +1667,62 @@ var gotCart = function gotCart(userId) {
     }()
   );
 };
-var checkedOut = function checkedOut(cart) {
+var checkedOut = function checkedOut(cart, userId) {
   return (
     /*#__PURE__*/
     function () {
       var _ref3 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(dispatch) {
-        var _ref4, data;
+        var _ref4, data, _ref5, _data;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
-                _context2.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/users/guest/cart', cart);
 
-              case 3:
+                if (!userId) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                _context2.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/users/".concat(userId, "/checkout"), cart);
+
+              case 4:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                dispatch(checkout(data.cart));
-                _context2.next = 11;
+                console.log("what are we returning for user: ", data);
+                dispatch(checkout(data));
+                _context2.next = 16;
                 break;
 
-              case 8:
-                _context2.prev = 8;
+              case 10:
+                _context2.next = 12;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/users/guest/checkout', cart);
+
+              case 12:
+                _ref5 = _context2.sent;
+                _data = _ref5.data;
+                console.log("what are we returning: ", _data);
+                dispatch(checkout(_data));
+
+              case 16:
+                _context2.next = 21;
+                break;
+
+              case 18:
+                _context2.prev = 18;
                 _context2.t0 = _context2["catch"](0);
                 console.error(_context2.t0);
 
-              case 11:
+              case 21:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 8]]);
+        }, _callee2, null, [[0, 18]]);
       }));
 
       return function (_x2) {
@@ -1714,10 +1735,10 @@ var addProductToCartThunk = function addProductToCartThunk(productToCart, userId
   return (
     /*#__PURE__*/
     function () {
-      var _ref5 = _asyncToGenerator(
+      var _ref6 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee3(dispatch) {
-        var _ref6, data;
+        var _ref7, data;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -1728,8 +1749,8 @@ var addProductToCartThunk = function addProductToCartThunk(productToCart, userId
                 return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/users/".concat(userId, "/cart"), productToCart);
 
               case 3:
-                _ref6 = _context3.sent;
-                data = _ref6.data;
+                _ref7 = _context3.sent;
+                data = _ref7.data;
                 dispatch(addProductToCart(data));
                 _context3.next = 11;
                 break;
@@ -1748,7 +1769,7 @@ var addProductToCartThunk = function addProductToCartThunk(productToCart, userId
       }));
 
       return function (_x3) {
-        return _ref5.apply(this, arguments);
+        return _ref6.apply(this, arguments);
       };
     }()
   );
@@ -1757,10 +1778,10 @@ var removeStateProductThunk = function removeStateProductThunk(product, userId) 
   return (
     /*#__PURE__*/
     function () {
-      var _ref7 = _asyncToGenerator(
+      var _ref8 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(dispatch) {
-        var _ref8, data;
+        var _ref9, data;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -1773,8 +1794,8 @@ var removeStateProductThunk = function removeStateProductThunk(product, userId) 
                 });
 
               case 3:
-                _ref8 = _context4.sent;
-                data = _ref8.data;
+                _ref9 = _context4.sent;
+                data = _ref9.data;
                 dispatch(removeStateProduct(data, userId));
                 _context4.next = 11;
                 break;
@@ -1793,7 +1814,7 @@ var removeStateProductThunk = function removeStateProductThunk(product, userId) 
       }));
 
       return function (_x4) {
-        return _ref7.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       };
     }()
   );
@@ -1802,10 +1823,10 @@ var editCartThunk = function editCartThunk(product, quantity, userId) {
   return (
     /*#__PURE__*/
     function () {
-      var _ref9 = _asyncToGenerator(
+      var _ref10 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee5(dispatch) {
-        var _ref10, data;
+        var _ref11, data;
 
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
@@ -1819,8 +1840,8 @@ var editCartThunk = function editCartThunk(product, quantity, userId) {
                 });
 
               case 3:
-                _ref10 = _context5.sent;
-                data = _ref10.data;
+                _ref11 = _context5.sent;
+                data = _ref11.data;
                 dispatch(editCart(data, quantity, userId));
                 _context5.next = 11;
                 break;
@@ -1839,7 +1860,7 @@ var editCartThunk = function editCartThunk(product, quantity, userId) {
       }));
 
       return function (_x5) {
-        return _ref9.apply(this, arguments);
+        return _ref10.apply(this, arguments);
       };
     }()
   );
@@ -1880,7 +1901,11 @@ var cartReducer = function cartReducer() {
       return action.cart;
 
     case CHECKOUT:
-      return action.cart;
+      {
+        console.log("action.cart: ", action.cart);
+        localStorage.setItem('myCart', JSON.stringify([]));
+        return action.cart;
+      }
 
     case REMOVE_STATE_PRODUCT:
       {

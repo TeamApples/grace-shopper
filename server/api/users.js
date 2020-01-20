@@ -17,7 +17,7 @@ router.get('/', protect, async (req, res, next) => {
 })
 
 //DO WE NEED TO PROTECT THIS?
-router.post('/guest/cart', async (req, res, next) => {
+router.post('/guest/checkout', async (req, res, next) => {
   try {
     const newGuestOrder = await Order.create({
       purchased: true,
@@ -32,7 +32,53 @@ router.post('/guest/cart', async (req, res, next) => {
         orderId: newGuestOrder.id
       })
     })
-    res.json({cart: []})
+    const checkedOutCart = []
+    res.json(checkedOutCart)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/:userId/checkout', async (req, res, next) => {
+  try {
+    const existingCart = await Order.findOne({
+      where: {
+        purchased: false,
+        userId: req.params.userId
+      }
+    })
+    if (existingCart) {
+      await OrderProduct.destroy({
+        where: {
+          orderId: existingCart.id
+        }
+      })
+      req.session.cart.forEach(async product => {
+        await OrderProduct.create({
+          orderId: product.orderId,
+          productId: product.id,
+          productPrice: product.price,
+          productQty: product.quantity
+        })
+      })
+      await existingCart.update({purchased: true})
+    } else {
+      const newCart = await Order.create({
+        paymentMethod: 'null',
+        userId: req.user.id,
+        purchased: true
+      })
+      req.session.cart.forEach(async product => {
+        await OrderProduct.create({
+          orderId: newCart.id,
+          productId: product.id,
+          productPrice: product.price,
+          productQty: product.quantity
+        })
+      })
+    }
+    req.session.cart = []
+    res.json(req.session.cart)
   } catch (err) {
     next(err)
   }

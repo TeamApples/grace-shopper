@@ -42,17 +42,19 @@ router.post('/logout', async (req, res) => {
         userId: req.user.id
       }
     })
-    OrderProduct.destroy({
-      where: {
-        orderId: existingOrder.id
-      }
-    })
-    await Order.destroy({
-      where: {
-        purchased: false,
-        userId: req.user.id
-      }
-    })
+    if (existingOrder) {
+      OrderProduct.destroy({
+        where: {
+          orderId: existingOrder.id
+        }
+      })
+      await Order.destroy({
+        where: {
+          purchased: false,
+          userId: req.user.id
+        }
+      })
+    }
   } else {
     // eslint-disable-next-line no-lonely-if
     if (req.session.cart[0].orderId) {
