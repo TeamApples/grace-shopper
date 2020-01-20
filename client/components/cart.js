@@ -36,28 +36,35 @@ class Cart extends React.Component {
     const cart = this.props.cart
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <h1>Your Cart Total Is: $$$</h1>
+        <form onSubmit={this.handleSubmit} className="form-view">
+          <div className="cart-main-title">
+            <h1>Thank you for shopping with us</h1>
           </div>
+          <p className="cart-second-title">
+            Get free shipping and free returns on all orders.
+          </p>
+
           <div className="cart-container">
-            <h2>Shopping Cart:</h2>
+            <h2>Review Your Cart:</h2>
             {cart.length > 0 &&
               cart.map((product, idx) => {
+                let price = product.price * 100
                 return (
-                  <div key={idx}>
-                    <img src={product.image} className="cart-pics" />
+                  <div key={idx} className="cart-items-container">
+                    <div className="cart-image-container">
+                      <img src={product.image} className="cart-pics" />
+                    </div>
                     <Link
-                      className="product-title"
+                      className="cart-product-title"
                       to={'/products/' + product.id}
                     >
                       {product.name}
                     </Link>
-                    <label>Unit Price ${product.price}</label>
-                    <label>Quantity: {product.quantity}</label>
-                    <label>
-                      Total Price: ${product.price * product.quantity}
+                    <label>Unit Price ${price}</label>
+                    <label className="rs-quantity-selector">
+                      Quantity: {product.quantity}
                     </label>
+                    <label>${price * product.quantity}</label>
                     {/* {function selectElement(id, valueToSelect) {
                       let element = document.getElementById(id)
                       element.value = valueToSelect
@@ -72,6 +79,7 @@ class Cart extends React.Component {
                     </select>
                     <button
                       type="button"
+                      className="cart-remove"
                       onClick={() => this.handleRemoveState(product)}
                     >
                       Remove
@@ -80,18 +88,22 @@ class Cart extends React.Component {
                 )
               })}
             {cart.length > 0 && (
-              <div>
-                Total Price $${' '}
+              <div className="cart-total">
+                Total ${''}
                 {cart.reduce(
                   (acc, currentVal) =>
-                    acc + currentVal.quantity * currentVal.price,
+                    acc + currentVal.quantity * currentVal.price * 100,
                   0
                 )}
               </div>
             )}
             <div />
           </div>
-          <button type="submit">Checkout</button>
+          <div id="btn-container">
+            <button type="submit" id="checkout-btn">
+              Checkout
+            </button>
+          </div>
         </form>
       </div>
     )

@@ -25,7 +25,9 @@ class AllProducts extends Component {
                     >
                       {product.name}
                     </Link>
-                    <img src={product.image} />
+                    <Link to={`/products/` + product.id}>
+                      <img src={product.image} />
+                    </Link>
                     <h2>${product.price}</h2>
                     <p>{product.description}</p>
                   </li>
