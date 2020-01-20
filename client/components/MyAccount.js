@@ -6,7 +6,6 @@ import Axios from 'axios'
 class MyAccount extends Component {
   constructor(props) {
     super(props)
-    // console.log('the props are', props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.success = this.success.bind(this)
