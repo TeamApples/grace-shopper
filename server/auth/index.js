@@ -35,33 +35,54 @@ router.post('/signup', async (req, res, next) => {
 
 router.post('/logout', async (req, res) => {
   const currentCart = await req.session.cart
-  if (req.session.cart[0].orderId) {
-    await OrderProduct.destroy({
+  if (!req.session.cart.length) {
+    const existingOrder = await Order.findOne({
       where: {
-        orderId: currentCart[0].orderId
+        purchased: false,
+        userId: req.user.id
       }
     })
-    currentCart.forEach(async product => {
-      await OrderProduct.create({
-        orderId: product.orderId,
-        productId: product.id,
-        productPrice: product.price,
-        productQty: product.quantity
-      })
+    OrderProduct.destroy({
+      where: {
+        orderId: existingOrder.id
+      }
+    })
+    await Order.destroy({
+      where: {
+        purchased: false,
+        userId: req.user.id
+      }
     })
   } else {
-    const newCart = await Order.create({
-      paymentMethod: 'null',
-      userId: req.user.id
-    })
-    currentCart.forEach(async product => {
-      await OrderProduct.create({
-        orderId: newCart.id,
-        productId: product.id,
-        productPrice: product.price,
-        productQty: product.quantity
+    // eslint-disable-next-line no-lonely-if
+    if (req.session.cart[0].orderId) {
+      await OrderProduct.destroy({
+        where: {
+          orderId: currentCart[0].orderId
+        }
       })
-    })
+      currentCart.forEach(async product => {
+        await OrderProduct.create({
+          orderId: product.orderId,
+          productId: product.id,
+          productPrice: product.price,
+          productQty: product.quantity
+        })
+      })
+    } else {
+      const newCart = await Order.create({
+        paymentMethod: 'null',
+        userId: req.user.id
+      })
+      currentCart.forEach(async product => {
+        await OrderProduct.create({
+          orderId: newCart.id,
+          productId: product.id,
+          productPrice: product.price,
+          productQty: product.quantity
+        })
+      })
+    }
   }
   req.logout()
   req.session.destroy()

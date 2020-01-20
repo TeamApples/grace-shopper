@@ -38,20 +38,6 @@ router.post('/guest/cart', async (req, res, next) => {
   }
 })
 
-// router.get('/:userId/:orderId', protectById, async (req, res, next) => {
-//   try {
-//     const order = await Order.findByPk(req.params.orderId)
-//     if (!order) {
-//       const err = new Error('404 Page Not Found')
-//       err.status = 404
-//       throw err
-//     }
-//     res.json(order)
-//   } catch (error) {
-//     next(error)
-//   }
-// })
-
 router.get('/:userId/cart', async function(req, res, next) {
   if (!req.session.cart) {
     const existingCart = await Order.findOne({
@@ -138,7 +124,19 @@ router.post('/:userId/cart', async (req, res, next) => {
       }
       req.session.cart = updatedState
     } else {
-      req.session.cart = [{...req.body}]
+      const existingCart = await req.session.cart
+      let isUpdated = false
+      let updatedState = existingCart.map(product => {
+        if (req.body.id === product.id) {
+          product.quantity += req.body.quantity
+          isUpdated = true
+        }
+        return product
+      })
+      if (!isUpdated) {
+        updatedState.push({...req.body})
+      }
+      req.session.cart = updatedState
     }
     res.send(req.session.cart)
   } catch (error) {
@@ -146,9 +144,27 @@ router.post('/:userId/cart', async (req, res, next) => {
   }
 })
 
-router.delete('/:userId/cart/:productId', async (req, res, next) => {
+router.put('/:userId/cart', async (req, res, next) => {
   try {
-    console.log('req body: ', req.params)
+    const existingCart = await req.session.cart
+    console.log('req body for update: ', req.body)
+    const updatedState = existingCart.map(product => {
+      const copyProduct = {...product}
+      if (req.body.product.id === copyProduct.id) {
+        copyProduct.quantity = req.body.quantity
+      }
+      return copyProduct
+    })
+    console.log('updatedState: ', updatedState)
+    req.session.cart = updatedState
+    res.send(req.session.cart)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:userId/cart', async (req, res, next) => {
+  try {
     const existingCart = await req.session.cart
     const updatedCart = existingCart.filter(
       product => req.body.id !== product.id
@@ -242,70 +258,5 @@ router.get('/:userId/cart', protectById, async (req, res, next) => {
     next(err)
   }
 })
-
-// router.post('/:userId/orders', protectById, async (req, res, next) => {
-//   //this is for checkout
-//   try {
-//     const createdOrder = await Order.create({
-//       purchased: true,
-//       paymentMethod: null,
-//       userId: req.params.userId
-//     })
-//     const createdOrderProduct = await OrderProduct.create({
-//       productPrice: req.body.price,
-//       productQty: req.body.quantity,
-//       productId: req.body.id,
-//       orderId: createdOrder.orderId
-//     })
-//     console.log('created order: ', createdOrderProduct)
-//     const productForOrder = Product.findOne({
-//       where: {
-//         id: req.body.id
-//       }
-//     })
-//     OrderProduct.destroy({where: orderId: orderId})
-//     sessionStorage.cart.forEach(product => {
-//       const currentProductOrder = OrderProduct.findByPk(product.id)
-//       OrderProduct.update({product.qty, product.id})
-//     })
-//     productForOrder.quantity = createdOrderProduct.productQty
-//     productForOrder.orderId = Order.id
-//     res.status(201).json(productForOrder)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
-// router.put('/:userId/cart', protectById, async (req, res, next) => {
-//   try {
-//     const existingOrder = await Order.findOne({
-//       where: {
-//         purchased: false,
-//         userId: req.params.userId
-//       }
-//     })
-//     const findOrderProduct = await OrderProduct.findOne({
-//       where: {
-//         productId: req.body.id,
-//         orderId: existingOrder.dataValues.id
-//       }
-//     })
-//     console.log('findOrderProduct: ', findOrderProduct)
-//     const updatedProductOrder = await findOrderProduct.update({
-//       productQty: req.body.quantity
-//     })
-//     console.log('updated order: ', updatedProductOrder)
-//     const productForOrder = await Product.findOne({
-//       where: {
-//         id: req.body.id
-//       }
-//     })
-//     productForOrder.quantity = updatedProductOrder.productQty
-
-//     res.json(updatedProductOrder)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
 
 module.exports = router

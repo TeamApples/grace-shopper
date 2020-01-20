@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import Axios from 'axios'
 
 const ADD_TO_CART = 'ADD_TO_CART'
@@ -5,8 +6,7 @@ const GET_CART = 'GET_CART'
 const CHECKOUT = 'CHECKOUT'
 const REMOVE_STATE_PRODUCT = 'REMOVE_STATE_PRODUCT'
 const EDIT_CART = 'EDIT_CART'
-
-// const DELETE_PRODUCT = 'DELETE_PRODUCT'
+const LOAD_CART_FROM_STORAGE = 'LOAD_CART_FROM_STORAGE'
 
 const initialState = []
 
@@ -41,41 +41,26 @@ export const removeStateProduct = function(product, userId) {
   }
 }
 
-export const removeStateProductThunk = function(product, userId) {
-  return async dispatch => {
-    try {
-      console.log('api remove: ')
-      const {data} = await Axios.delete(
-        `/api/users/${userId}/cart/${product.id}`
-      )
-      dispatch(removeStateProduct(data, userId))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
-
-export const editCart = function(product, quantity) {
+export const editCart = function(product, quantity, userId) {
   return {
     type: EDIT_CART,
     product,
-    quantity
+    quantity,
+    userId
   }
 }
 
-// export const deleteProduct = function(product) {
-//   return {
-//     type: DELETE_PRODUCT,
-//     product
-//   }
-// }
+export const loadCartFromStorage = function(cart) {
+  return {
+    type: LOAD_CART_FROM_STORAGE,
+    cart
+  }
+}
 
 //thunk creators
 export const gotCart = userId => {
   return async dispatch => {
     try {
-      // IF USER IS LOGGED IN!!!!!!!
-
       const {data} = await Axios.get(`/api/users/${userId}/cart`)
       dispatch(getCart(data))
     } catch (err) {
@@ -95,37 +80,6 @@ export const checkedOut = cart => {
   }
 }
 
-// export const removedProduct = product => {
-//   return async dispatch => {
-//     try {
-//       const productId = product.id
-//       const {data} = await Axios.delete(`/api/users/guest/cart/${productId}`)
-//       dispatch(deleteProduct(data))
-//     } catch (err) {
-//       console.log(err)
-//     }
-//   }
-// }
-
-// export const addedProductToCart = function(productToCart, userId) {
-//   return async dispatch => {
-//     try {
-//       const cachedCart = await Axios.get(`/api/users/${userId}/cart`)
-//       console.log('get cart: ', cachedCart.data)
-//       if (!cachedCart.data) {
-//         const addProduct = await Axios.post(
-//           `/api/users/${userId}/cart`,
-//           productToCart
-//         )
-//         dispatch(addProductToCart(addProduct.data))
-//       } else {
-//         const updateProduct = Axios.put(
-//           `/api/users/${userId}/cart`,
-//           productToCart
-//         )
-//         dispatch(addProductToCart(updateProduct.data))
-//       }
-
 export const addProductToCartThunk = function(productToCart, userId) {
   return async dispatch => {
     try {
@@ -137,6 +91,33 @@ export const addProductToCartThunk = function(productToCart, userId) {
       dispatch(addProductToCart(data))
     } catch (err) {
       console.error(err)
+    }
+  }
+}
+
+export const removeStateProductThunk = function(product, userId) {
+  return async dispatch => {
+    try {
+      const {data} = await Axios.delete(`/api/users/${userId}/cart`, {
+        data: product
+      })
+      dispatch(removeStateProduct(data, userId))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+export const editCartThunk = function(product, quantity, userId) {
+  return async dispatch => {
+    try {
+      const {data} = await Axios.put(`/api/users/${userId}/cart`, {
+        product,
+        quantity
+      })
+      dispatch(editCart(data, quantity, userId))
+    } catch (error) {
+      console.error(error)
     }
   }
 }
@@ -158,30 +139,40 @@ export const cartReducer = (state = initialState, action) => {
         if (!isUpdated) {
           updatedState.push({...action.cart})
         }
+        localStorage.setItem('myCart', JSON.stringify(updatedState))
         return updatedState
       }
     }
     case GET_CART:
       return action.cart
+    case LOAD_CART_FROM_STORAGE:
+      return action.cart
     case CHECKOUT:
       return action.cart
     case REMOVE_STATE_PRODUCT: {
-      console.log('action user', action.userId)
       if (action.userId) {
         return action.product
       } else {
-        return state.filter(product => product.id !== action.product.id)
+        let updatedState = state.filter(
+          product => product.id !== action.product.id
+        )
+        localStorage.setItem('myCart', JSON.stringify(updatedState))
+        return updatedState
       }
     }
     case EDIT_CART: {
-      const updatedState = state.map(product => {
-        if (action.product.id === product.id) {
-          product.quantity = action.quantity
-        }
-        return product
-      })
-      console.log('updated state', updatedState)
-      return updatedState
+      if (action.userId) {
+        return action.product
+      } else {
+        const updatedState = state.map(product => {
+          if (action.product.id === product.id) {
+            product.quantity = action.quantity
+          }
+          return product
+        })
+        localStorage.setItem('myCart', JSON.stringify(updatedState))
+        return updatedState
+      }
     }
     default:
       return state
