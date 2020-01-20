@@ -4,15 +4,18 @@ const ADD_TO_CART = 'ADD_TO_CART'
 const GET_CART = 'GET_CART'
 const CHECKOUT = 'CHECKOUT'
 const REMOVE_STATE_PRODUCT = 'REMOVE_STATE_PRODUCT'
+const EDIT_CART = 'EDIT_CART'
+
 // const DELETE_PRODUCT = 'DELETE_PRODUCT'
 
 const initialState = []
 
 //action creators
-export const addProductToCart = function(product) {
+export const addProductToCart = function(cart, user) {
   return {
     type: ADD_TO_CART,
-    product: product
+    cart,
+    user
   }
 }
 
@@ -34,6 +37,14 @@ export const removeStateProduct = function(product) {
   return {
     type: REMOVE_STATE_PRODUCT,
     product
+  }
+}
+
+export const editCart = function(product, quantity) {
+  return {
+    type: EDIT_CART,
+    product,
+    quantity
   }
 }
 
@@ -69,7 +80,6 @@ export const checkedOut = cart => {
     }
   }
 }
-
 
 // export const removedProduct = product => {
 //   return async dispatch => {
@@ -110,7 +120,6 @@ export const addProductToCartThunk = function(productToCart, userId) {
         productToCart
       )
 
-
       dispatch(addProductToCart(data))
     } catch (err) {
       console.error(err)
@@ -121,19 +130,22 @@ export const addProductToCartThunk = function(productToCart, userId) {
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART: {
-      // let isUpdated = false
-      // let updatedState = state.map(product => {
-      //   if (action.product.id === product.id) {
-      //     product.quantity += action.product.quantity
-      //     isUpdated = true
-      //   }
-      //   return product
-      // })
-      // if (!isUpdated) {
-      //   updatedState.push({...action.product})
-      // }
-      // return updatedState
-      return action.product
+      if (action.user) {
+        return action.cart
+      } else {
+        let isUpdated = false
+        let updatedState = state.map(product => {
+          if (action.cart.id === product.id) {
+            product.quantity += action.cart.quantity
+            isUpdated = true
+          }
+          return product
+        })
+        if (!isUpdated) {
+          updatedState.push({...action.cart})
+        }
+        return updatedState
+      }
     }
     case GET_CART:
       return action.cart
@@ -141,6 +153,16 @@ export const cartReducer = (state = initialState, action) => {
       return action.cart
     case REMOVE_STATE_PRODUCT:
       return state.filter(product => product.id !== action.product.id)
+    case EDIT_CART: {
+      const updatedState = state.map(product => {
+        if (action.product.id === product.id) {
+          product.quantity = action.quantity
+        }
+        return product
+      })
+      console.log('updated state', updatedState)
+      return updatedState
+    }
     default:
       return state
   }

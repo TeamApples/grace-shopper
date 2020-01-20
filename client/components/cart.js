@@ -7,7 +7,8 @@ import {
   addProductToCart,
   gotCart,
   checkedOut,
-  removeStateProduct
+  removeStateProduct,
+  editCart
 } from '../store/cart'
 
 class Cart extends React.Component {
@@ -15,12 +16,27 @@ class Cart extends React.Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleRemoveState = this.handleRemoveState.bind(this)
+    this.selectQuantity = this.selectQuantity.bind(this)
   }
 
   componentDidMount() {
     if (this.props.match.params.userId) {
       this.props.loadCart(this.props.match.params.userId)
     }
+  }
+
+  selectQuantity(int) {
+    let intArray = []
+    for (let i = 1; i <= int; i++) {
+      intArray.push(i)
+    }
+    return intArray
+  }
+
+  async handleChange(product) {
+    const quantity = +document.getElementById(`${product.name}${product.id}`)
+      .value
+    await this.props.editQuantity(product, quantity)
   }
 
   handleRemoveState(product) {
@@ -63,12 +79,23 @@ class Cart extends React.Component {
                       element.value = valueToSelect
                     }}
                     {selectElement(selectQuantity, quantity)}} */}
-                    <select id="selectQuantity">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
+                    <select
+                      id={`${product.name}${product.id}`}
+                      onChange={() => this.handleChange(product)}
+                    >
+                      {this.selectQuantity(product.quantity).map(int => {
+                        return +int === product.quantity ? (
+                          <option
+                            value={`${int}`}
+                            key={`single${product.name}${int}`}
+                            selected
+                          >
+                            {int}
+                          </option>
+                        ) : (
+                          <option value={`${int}`}>{int}</option>
+                        )
+                      })}
                     </select>
                     <button
                       type="button"
@@ -116,6 +143,10 @@ const mapDispatchToProps = function(dispatch) {
     },
     removeStateProduct: function(product) {
       const action = removeStateProduct(product)
+      dispatch(action)
+    },
+    editQuantity: function(product, quantity) {
+      const action = editCart(product, quantity)
       dispatch(action)
     }
   }
