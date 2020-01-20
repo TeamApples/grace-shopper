@@ -15,14 +15,16 @@ install:
 before_script:
   - psql -c 'create database "apple-store-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
-  - npm test             # test the code
+  - npm test # test the code
   - npm run build-client # make the bundle
-
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: apple-shopper
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: OxALmAIpfTUKNVBD8bnzkLbQsstm7m0A0C0GVbl/m0SMov0W5/uZc4f39hWB9b/73Byh9BGU4p4rbxUqoeG07JKfab6cjywVFq+Rz1WGau6LYCJrE0R26nmXu4DMr57lYDxNOLUV2F6X7+NrQEGYhG1k55H3SKdSyTukpgWjSPwzSWlL8yjIN5HFgXJ8F9OuqcVJl2c9zR1NRSs7muopycj8M04PB4M0M1BA0MFak0KIBoIuRZqJnTxgybhIt4Sh5CxPxElk0f14076eDwZGxbW1K1lJaf0DJjpW25VYs8BXqzmcZTz+rTgVfo1xJgpnGT37XSzxyC2F5UZDDvob0WnXclTksknXBOYitmV87WPMO4Xz7HRWk2kjIDqwByoENvs2Zw0nsYy420ZiiTGBNF3YOKfsOCdrUAI/8bt2F+7PuQyXgYXLlgOETPZY9pxxGXMZiq8jxr0EL0qzALAUz6x5UPVucjk9aSBx4SfJ9Nm0VZG9JJ38l4IyNhbybk3G8ylKXkPYu6ORbuv4woDaJOPHZHJT1FR+tj6BfV2PtIg4UQu6vMovhzmjSVQZZJD8DgnXzc0WzJ1Evvo6XJFqMZsCymYPKWCBBOIEUGsqYCLWe/MMigDEH3fhfKJA2kjeMdPYDD2yuavq32NvdsoFT6kAbD52fLxPbHT/FQLQA0Y=
