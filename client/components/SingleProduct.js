@@ -66,7 +66,7 @@ const mapDispatchToProps = function(dispatch, urlProps) {
     },
     addToCart: function(product, userId) {
       if (userId) {
-        const action = addProductToCartThunk(product)
+        const action = addProductToCartThunk(product, userId)
         dispatch(action)
       } else {
         const action = addProductToCart(product)

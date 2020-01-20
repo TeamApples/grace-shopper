@@ -33,10 +33,25 @@ export const checkout = function(cart) {
   }
 }
 
-export const removeStateProduct = function(product) {
+export const removeStateProduct = function(product, userId) {
   return {
     type: REMOVE_STATE_PRODUCT,
-    product
+    product,
+    userId
+  }
+}
+
+export const removeStateProductThunk = function(product, userId) {
+  return async dispatch => {
+    try {
+      console.log('api remove: ')
+      const {data} = await Axios.delete(
+        `/api/users/${userId}/cart/${product.id}`
+      )
+      dispatch(removeStateProduct(data, userId))
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
@@ -150,8 +165,14 @@ export const cartReducer = (state = initialState, action) => {
       return action.cart
     case CHECKOUT:
       return action.cart
-    case REMOVE_STATE_PRODUCT:
-      return state.filter(product => product.id !== action.product.id)
+    case REMOVE_STATE_PRODUCT: {
+      console.log('action user', action.userId)
+      if (action.userId) {
+        return action.product
+      } else {
+        return state.filter(product => product.id !== action.product.id)
+      }
+    }
     case EDIT_CART: {
       const updatedState = state.map(product => {
         if (action.product.id === product.id) {

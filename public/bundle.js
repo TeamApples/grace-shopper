@@ -628,7 +628,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, urlProps) {
     },
     addToCart: function addToCart(product, userId) {
       if (userId) {
-        var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_4__["addProductToCartThunk"])(product);
+        var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_4__["addProductToCartThunk"])(product, userId);
         dispatch(action);
       } else {
         var _action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_4__["addProductToCart"])(product);
@@ -962,7 +962,7 @@ function (_React$Component) {
   }, {
     key: "handleRemoveState",
     value: function handleRemoveState(product) {
-      this.props.removeStateProduct(product);
+      this.props.removeStateProduct(product, this.props.match.params.userId);
     }
   }, {
     key: "handleSubmit",
@@ -1052,10 +1052,15 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
       var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_5__["checkedOut"])(cart);
       dispatch(action);
     },
-    removeStateProduct: function removeStateProduct(product) {
-      var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_5__["removeStateProduct"])(product);
+    removeStateProduct: function removeStateProduct(product, userId) {
+      if (userId) {
+        var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_5__["removeStateProductThunk"])(product, userId);
+        dispatch(action);
+      } else {
+        var _action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_5__["removeStateProduct"])(product);
 
-      dispatch(action);
+        dispatch(_action);
+      }
     },
     editQuantity: function editQuantity(product, quantity) {
       var action = Object(_store_cart__WEBPACK_IMPORTED_MODULE_5__["editCart"])(product, quantity);
@@ -1574,7 +1579,7 @@ socket.on('connect', function () {
 /*!******************************!*\
   !*** ./client/store/cart.js ***!
   \******************************/
-/*! exports provided: addProductToCart, checkout, removeStateProduct, editCart, gotCart, checkedOut, addProductToCartThunk, cartReducer */
+/*! exports provided: addProductToCart, checkout, removeStateProduct, removeStateProductThunk, editCart, gotCart, checkedOut, addProductToCartThunk, cartReducer */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1582,6 +1587,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addProductToCart", function() { return addProductToCart; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkout", function() { return checkout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeStateProduct", function() { return removeStateProduct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeStateProductThunk", function() { return removeStateProductThunk; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editCart", function() { return editCart; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "gotCart", function() { return gotCart; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkedOut", function() { return checkedOut; });
@@ -1629,11 +1635,56 @@ var checkout = function checkout(cart) {
     cart: cart
   };
 };
-var removeStateProduct = function removeStateProduct(product) {
+var removeStateProduct = function removeStateProduct(product, userId) {
   return {
     type: REMOVE_STATE_PRODUCT,
-    product: product
+    product: product,
+    userId: userId
   };
+};
+var removeStateProductThunk = function removeStateProductThunk(product, userId) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(dispatch) {
+        var _ref2, data;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                console.log("api remove: ");
+                _context.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]("/api/users/".concat(userId, "/cart/").concat(product.id));
+
+              case 4:
+                _ref2 = _context.sent;
+                data = _ref2.data;
+                dispatch(removeStateProduct(data, userId));
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](0);
+                console.error(_context.t0);
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 9]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
 };
 var editCart = function editCart(product, quantity) {
   return {
@@ -1653,49 +1704,6 @@ var gotCart = function gotCart(userId) {
   return (
     /*#__PURE__*/
     function () {
-      var _ref = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(dispatch) {
-        var _ref2, data;
-
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/users/".concat(userId, "/cart"));
-
-              case 3:
-                _ref2 = _context.sent;
-                data = _ref2.data;
-                dispatch(getCart(data));
-                _context.next = 11;
-                break;
-
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context["catch"](0);
-                console.error(_context.t0);
-
-              case 11:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[0, 8]]);
-      }));
-
-      return function (_x) {
-        return _ref.apply(this, arguments);
-      };
-    }()
-  );
-};
-var checkedOut = function checkedOut(cart) {
-  return (
-    /*#__PURE__*/
-    function () {
       var _ref3 = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(dispatch) {
@@ -1707,12 +1715,12 @@ var checkedOut = function checkedOut(cart) {
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/users/guest/cart', cart);
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/users/".concat(userId, "/cart"));
 
               case 3:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                dispatch(checkout(data.cart));
+                dispatch(getCart(data));
                 _context2.next = 11;
                 break;
 
@@ -1731,6 +1739,49 @@ var checkedOut = function checkedOut(cart) {
 
       return function (_x2) {
         return _ref3.apply(this, arguments);
+      };
+    }()
+  );
+};
+var checkedOut = function checkedOut(cart) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref5 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(dispatch) {
+        var _ref6, data;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/users/guest/cart', cart);
+
+              case 3:
+                _ref6 = _context3.sent;
+                data = _ref6.data;
+                dispatch(checkout(data.cart));
+                _context3.next = 11;
+                break;
+
+              case 8:
+                _context3.prev = 8;
+                _context3.t0 = _context3["catch"](0);
+                console.error(_context3.t0);
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 8]]);
+      }));
+
+      return function (_x3) {
+        return _ref5.apply(this, arguments);
       };
     }()
   );
@@ -1768,41 +1819,41 @@ var addProductToCartThunk = function addProductToCartThunk(productToCart, userId
   return (
     /*#__PURE__*/
     function () {
-      var _ref5 = _asyncToGenerator(
+      var _ref7 = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(dispatch) {
-        var _ref6, data;
+      regeneratorRuntime.mark(function _callee4(dispatch) {
+        var _ref8, data;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                _context3.prev = 0;
-                _context3.next = 3;
+                _context4.prev = 0;
+                _context4.next = 3;
                 return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/users/".concat(userId, "/cart"), productToCart);
 
               case 3:
-                _ref6 = _context3.sent;
-                data = _ref6.data;
+                _ref8 = _context4.sent;
+                data = _ref8.data;
                 dispatch(addProductToCart(data));
-                _context3.next = 11;
+                _context4.next = 11;
                 break;
 
               case 8:
-                _context3.prev = 8;
-                _context3.t0 = _context3["catch"](0);
-                console.error(_context3.t0);
+                _context4.prev = 8;
+                _context4.t0 = _context4["catch"](0);
+                console.error(_context4.t0);
 
               case 11:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, null, [[0, 8]]);
+        }, _callee4, null, [[0, 8]]);
       }));
 
-      return function (_x3) {
-        return _ref5.apply(this, arguments);
+      return function (_x4) {
+        return _ref7.apply(this, arguments);
       };
     }()
   );
@@ -1842,9 +1893,17 @@ var cartReducer = function cartReducer() {
       return action.cart;
 
     case REMOVE_STATE_PRODUCT:
-      return state.filter(function (product) {
-        return product.id !== action.product.id;
-      });
+      {
+        console.log("action user", action.userId);
+
+        if (action.userId) {
+          return action.product;
+        } else {
+          return state.filter(function (product) {
+            return product.id !== action.product.id;
+          });
+        }
+      }
 
     case EDIT_CART:
       {
