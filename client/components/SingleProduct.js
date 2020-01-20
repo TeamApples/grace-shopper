@@ -17,7 +17,7 @@ class SingleProduct extends Component {
   handleClick() {
     let numProduct = document.getElementById('selectQuantity').value
     this.props.singleProduct.quantity = +numProduct
-    this.props.addToCart(this.props.singleProduct)
+    this.props.addToCart(this.props.singleProduct, this.props.userId)
   }
 
   render() {
@@ -64,9 +64,14 @@ const mapDispatchToProps = function(dispatch, urlProps) {
       const action = loadOneProduct(productId)
       dispatch(action)
     },
-    addToCart: function(product) {
-      const action = addProductToCartThunk(product)
-      dispatch(action)
+    addToCart: function(product, userId) {
+      if (userId) {
+        const action = addProductToCartThunk(product)
+        dispatch(action)
+      } else {
+        const action = addProductToCart(product)
+        dispatch(action)
+      }
     }
   }
 }
