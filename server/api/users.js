@@ -140,8 +140,6 @@ router.post('/:userId/cart', async (req, res, next) => {
     } else {
       req.session.cart = [{...req.body}]
     }
-
-    console.log('req session: ', req.session.cart)
     res.send(req.session.cart)
   } catch (error) {
     next(error)
@@ -208,7 +206,6 @@ router.get('/:userId/orderHistory', protectById, async (req, res, next) => {
       },
       include: [{model: Product}]
     })
-    console.log('order history: ', orderHistory)
     res.json(orderHistory)
   } catch (err) {
     next(err)
@@ -217,7 +214,6 @@ router.get('/:userId/orderHistory', protectById, async (req, res, next) => {
 
 router.get('/:userId/cart', protectById, async (req, res, next) => {
   try {
-    console.log(req.session, 'this is the sesseion')
     if (req.params.userId !== undefined) {
       const pendingOrder = await Order.findOne({
         where: {

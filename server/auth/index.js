@@ -34,8 +34,6 @@ router.post('/signup', async (req, res, next) => {
 })
 
 router.post('/logout', async (req, res) => {
-  console.log('before requser', req.user)
-
   const currentCart = await req.session.cart
   if (req.session.cart[0].orderId) {
     await OrderProduct.destroy({
@@ -52,12 +50,10 @@ router.post('/logout', async (req, res) => {
       })
     })
   } else {
-    console.log('req user: ', req.user)
     const newCart = await Order.create({
       paymentMethod: 'null',
       userId: req.user.id
     })
-    console.log('newCart: ', newCart)
     currentCart.forEach(async product => {
       await OrderProduct.create({
         orderId: newCart.id,

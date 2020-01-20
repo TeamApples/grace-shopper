@@ -192,8 +192,7 @@ function (_Component) {
 
     _classCallCheck(this, MyAccount);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MyAccount).call(this, props)); // console.log('the props are', props)
-
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MyAccount).call(this, props));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.success = _this.success.bind(_assertThisInitialized(_this));
@@ -717,9 +716,11 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
           className: "product-title",
           to: '/products/' + product.id
-        }, product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        }, product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: "/products/" + product.id
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
           src: product.image
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "$", product.price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, product.description)));
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "$", product.price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, product.description)));
       })));
     }
   }]);
@@ -976,19 +977,30 @@ function (_React$Component) {
 
       var cart = this.props.cart;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Your Cart Total Is: $$$")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        onSubmit: this.handleSubmit,
+        className: "form-view"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "cart-main-title"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Thank you for shopping with us")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: "cart-second-title"
+      }, "Get free shipping and free returns on all orders."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "cart-container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Shopping Cart:"), cart.length > 0 && cart.map(function (product, idx) {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Review Your Cart:"), cart.length > 0 && cart.map(function (product, idx) {
+        var price = product.price * 100;
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: idx
+          key: idx,
+          className: "cart-items-container"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "cart-image-container"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
           src: product.image,
           className: "cart-pics"
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
-          className: "product-title",
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Link"], {
+          className: "cart-product-title",
           to: '/products/' + product.id
-        }, product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Unit Price $", product.price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Quantity: ", product.quantity), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Total Price: $", product.price * product.quantity), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+        }, product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Unit Price $", price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          className: "rs-quantity-selector"
+        }, "Quantity: ", product.quantity), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "$", price * product.quantity), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
           id: "".concat(product.name).concat(product.id),
           onChange: function onChange() {
             return _this2.handleChange(product);
@@ -1003,15 +1015,21 @@ function (_React$Component) {
           }, _int2);
         })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
+          className: "cart-remove",
           onClick: function onClick() {
             return _this2.handleRemoveState(product);
           }
         }, "Remove"));
-      }), cart.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Total Price $$", ' ', cart.reduce(function (acc, currentVal) {
-        return acc + currentVal.quantity * currentVal.price;
-      }, 0)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "submit"
-      }, "Checkout")));
+      }), cart.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "cart-total"
+      }, "Total $", '', cart.reduce(function (acc, currentVal) {
+        return acc + currentVal.quantity * currentVal.price * 100;
+      }, 0)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "btn-container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "submit",
+        id: "checkout-btn"
+      }, "Checkout"))));
     }
   }]);
 
@@ -1157,7 +1175,8 @@ var Navbar = function Navbar(_ref) {
     to: "/users/".concat(userId, "/myaccount")
   }, "My Account"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     href: "#",
-    onClick: handleClick
+    onClick: handleClick,
+    className: "main-links"
   }, "Logout")) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "nav-two"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
@@ -1390,6 +1409,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_cart__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/cart */ "./client/components/cart.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -1468,7 +1489,9 @@ function (_Component) {
         exact: true,
         path: "/cart",
         render: function render(routeProps) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cart__WEBPACK_IMPORTED_MODULE_11__["default"], routeProps);
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_cart__WEBPACK_IMPORTED_MODULE_11__["default"], _extends({}, routeProps, {
+            className: "fuck-you"
+          }));
         }
       }), isLoggedIn && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/users/:userId/myaccount",
@@ -1646,22 +1669,21 @@ var gotCart = function gotCart(userId) {
               case 3:
                 _ref2 = _context.sent;
                 data = _ref2.data;
-                console.log('information on cart:', data);
                 dispatch(getCart(data));
-                _context.next = 12;
+                _context.next = 11;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
                 console.error(_context.t0);
 
-              case 12:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 9]]);
+        }, _callee, null, [[0, 8]]);
       }));
 
       return function (_x) {
@@ -1697,7 +1719,7 @@ var checkedOut = function checkedOut(cart) {
               case 8:
                 _context2.prev = 8;
                 _context2.t0 = _context2["catch"](0);
-                console.log(_context2.t0);
+                console.error(_context2.t0);
 
               case 11:
               case "end":
@@ -2068,7 +2090,6 @@ var addUser = function addUser(user) {
 };
 
 var changeUserThunk = function changeUserThunk(userId, newInfo) {
-  console.log(newInfo, 'new info');
   return (
     /*#__PURE__*/
     function () {

@@ -60,9 +60,8 @@ export const gotCart = userId => {
   return async dispatch => {
     try {
       // IF USER IS LOGGED IN!!!!!!!
-      // console.log(req.user)
+
       const {data} = await Axios.get(`/api/users/${userId}/cart`)
-      console.log('information on cart:', data)
       dispatch(getCart(data))
     } catch (err) {
       console.error(err)
@@ -76,7 +75,7 @@ export const checkedOut = cart => {
       const {data} = await Axios.post('/api/users/guest/cart', cart)
       dispatch(checkout(data.cart))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }

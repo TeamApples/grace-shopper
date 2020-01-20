@@ -33,13 +33,16 @@ form div {
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
-  background-color: transparent;
+  background: rgba(0, 0, 0, 0.92);
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 .navbar {
   background-color: rgb(46, 41, 41);
-  /* position: fixed; */
   width: 100%;
   top: 0;
+  margin-bottom: 63px; /* this is a hack and should be on the content div itself */
 }
 .links.active {
   background-color: red;
@@ -68,7 +71,7 @@ form div {
 }
 .shop-title {
   text-align: -webkit-center;
-  color: white;
+  color: black;
   margin: 0;
   padding: 10px;
 }
@@ -153,7 +156,7 @@ small {
   flex-direction: column;
 }
 .cart-pics {
-  height: 50px;
+  height: 150px;
 }
 
 #single_product {
@@ -227,4 +230,77 @@ input {
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 18px;
+}
+.cart-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 95%;
+  width: 1200px;
+  background-color: white;
+  box-shadow: 0 5px 10px black;
+  /* border-radius: 5px; */
+  justify-content: space-evenly;
+  margin: 3px auto;
+  align-items: center;
+}
+.form-view {
+  background-color: #d7d1b9;
+}
+#selectQuantity,
+select {
+  font-size: 24px;
+  line-height: 1.16667;
+  font-weight: 600;
+  letter-spacing: 0.009em;
+  font-family: SF Pro Display, SF Pro Icons, AOS Icons, Helvetica Neue,
+    Helvetica, Arial, sans-serif;
+  color: #111;
+  height: 1.41176rem;
+  margin-bottom: 0;
+  padding: 0;
+  border: 0;
+  display: inline-block;
+  height: 30px;
+}
+.cart-remove {
+  font-size: 17px;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  font-family: SF Pro Text, SF Pro Icons, AOS Icons, Helvetica Neue, Helvetica,
+    Arial, sans-serif;
+}
+.cart-main-title,
+.cart-second-title {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+}
+#checkout-btn {
+  display: flex;
+  justify-content: center;
+  font-size: 17px;
+  line-height: 1.47059;
+  width: 330px;
+  height: 50px;
+  font-size: 30px;
+}
+.cart-total {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 24px;
+  line-height: 1.16667;
+  font-weight: 600;
+  letter-spacing: 0.009em;
+  font-family: SF Pro Display, SF Pro Icons, AOS Icons, Helvetica Neue,
+    Helvetica, Arial, sans-serif;
+  color: #111;
+}
+.cart-second-title {
+  font-size: 18px;
+}
+.btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
