@@ -1,15 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link, NavLink} from 'react-router-dom'
-import {logout} from '../store'
+import {Link} from 'react-router-dom'
 import {
-  addProductToCart,
   gotCart,
   checkedOut,
   removeStateProduct,
   removeStateProductThunk,
-  editCart
+  editCart,
+  editCartThunk,
+  loadCartFromStorage
 } from '../store/cart'
 
 class Cart extends React.Component {
@@ -23,6 +22,13 @@ class Cart extends React.Component {
   componentDidMount() {
     if (this.props.match.params.userId) {
       this.props.loadCart(this.props.match.params.userId)
+    } else {
+      let cartFromStorage = localStorage.getItem('myCart')
+      if (cartFromStorage) {
+        cartFromStorage = JSON.parse(cartFromStorage)
+        console.log('cart: ', cartFromStorage)
+        this.props.loadCartFromStorage(cartFromStorage)
+      }
     }
   }
 
@@ -34,10 +40,10 @@ class Cart extends React.Component {
     return intArray
   }
 
-  async handleChange(product) {
+  handleChange(product) {
     const quantity = +document.getElementById(`${product.name}${product.id}`)
       .value
-    await this.props.editQuantity(product, quantity)
+    this.props.editQuantity(product, quantity, this.props.match.params.userId)
   }
 
   handleRemoveState(product) {
@@ -82,11 +88,6 @@ class Cart extends React.Component {
                       Quantity: {product.quantity}
                     </label>
                     <label>${price * product.quantity}</label>
-                    {/* {function selectElement(id, valueToSelect) {
-                      let element = document.getElementById(id)
-                      element.value = valueToSelect
-                    }}
-                    {selectElement(selectQuantity, quantity)}} */}
                     <select
                       id={`${product.name}${product.id}`}
                       onChange={() => this.handleChange(product)}
@@ -150,6 +151,10 @@ const mapDispatchToProps = function(dispatch) {
       const action = gotCart(userId)
       dispatch(action)
     },
+    loadCartFromStorage: function(cart) {
+      const action = loadCartFromStorage(cart)
+      dispatch(action)
+    },
     checkout: function(cart) {
       const action = checkedOut(cart)
       dispatch(action)
@@ -163,9 +168,14 @@ const mapDispatchToProps = function(dispatch) {
         dispatch(action)
       }
     },
-    editQuantity: function(product, quantity) {
-      const action = editCart(product, quantity)
-      dispatch(action)
+    editQuantity: function(product, quantity, userId) {
+      if (userId) {
+        const action = editCartThunk(product, quantity, userId)
+        dispatch(action)
+      } else {
+        const action = editCart(product, quantity)
+        dispatch(action)
+      }
     }
   }
 }
@@ -173,29 +183,3 @@ const mapDispatchToProps = function(dispatch) {
 const CartContainer = connect(mapStateToProps, mapDispatchToProps)(Cart)
 
 export default CartContainer
-/**
- * CONTAINER
- //  */
-// const mapState = state => {
-//   return {
-//     isLoggedIn: !!state.user.id
-//   }
-// }
-
-// const mapDispatch = dispatch => {
-//   return {
-//     handleClick() {
-//       dispatch(logout())
-//     }
-//   }
-// }
-
-// export default connect(mapState, mapDispatch)(Cart)
-
-// /**
-//  * PROP TYPES
-//  */
-// Navbar.propTypes = {
-//   handleClick: PropTypes.func.isRequired,
-//   isLoggedIn: PropTypes.bool.isRequired
-// }
