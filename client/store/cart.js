@@ -69,11 +69,18 @@ export const gotCart = userId => {
   }
 }
 
-export const checkedOut = cart => {
+export const checkedOut = (cart, userId) => {
   return async dispatch => {
     try {
-      const {data} = await Axios.post('/api/users/guest/cart', cart)
-      dispatch(checkout(data.cart))
+      if (userId) {
+        const {data} = await Axios.post(`/api/users/${userId}/checkout`, cart)
+        console.log('what are we returning for user: ', data)
+        dispatch(checkout(data))
+      } else {
+        const {data} = await Axios.post('/api/users/guest/checkout', cart)
+        console.log('what are we returning: ', data)
+        dispatch(checkout(data))
+      }
     } catch (err) {
       console.error(err)
     }
@@ -147,8 +154,12 @@ export const cartReducer = (state = initialState, action) => {
       return action.cart
     case LOAD_CART_FROM_STORAGE:
       return action.cart
-    case CHECKOUT:
+    case CHECKOUT: {
+      console.log('action.cart: ', action.cart)
+      localStorage.setItem('myCart', JSON.stringify([]))
       return action.cart
+    }
+
     case REMOVE_STATE_PRODUCT: {
       if (action.userId) {
         return action.product

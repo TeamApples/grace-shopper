@@ -52,7 +52,7 @@ class Cart extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    this.props.checkout(this.props.cart)
+    this.props.checkout(this.props.cart, this.props.match.params.userId)
   }
 
   render() {
@@ -155,8 +155,8 @@ const mapDispatchToProps = function(dispatch) {
       const action = loadCartFromStorage(cart)
       dispatch(action)
     },
-    checkout: function(cart) {
-      const action = checkedOut(cart)
+    checkout: function(cart, userId) {
+      const action = checkedOut(cart, userId)
       dispatch(action)
     },
     removeStateProduct: function(product, userId) {
