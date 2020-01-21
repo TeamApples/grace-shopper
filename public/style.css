@@ -204,6 +204,7 @@ small {
 
 button {
   color: white;
+  /*
   margin: 15px;
   line-height: 1.17648;
   min-width: 28px;
@@ -211,6 +212,8 @@ button {
   padding-right: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
+  */
+  font-size: 15px;
   border-radius: 18px;
   background: #0071e3;
   cursor: pointer;
