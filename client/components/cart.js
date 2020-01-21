@@ -74,7 +74,6 @@ class Cart extends React.Component {
             <h2>Review Your Cart:</h2>
             {cart.length > 0 &&
               cart.map((product, idx) => {
-                let price = product.price * 100
                 return (
                   <div key={idx} className="cart-items-container">
                     <div className="cart-image-container">
@@ -88,16 +87,20 @@ class Cart extends React.Component {
                     </Link>
                     <label>
                       Unit Price $
-                      {price.toLocaleString('en-IN', {
-                        maximumSignificantDigits: 3
-                      })}
+                      {(product.price / 100)
+                        .toFixed(2)
+                        .toLocaleString('en-IN', {
+                          maximumSignificantDigits: 3
+                        })}
                     </label>
 
                     <label>
                       $
-                      {(price * product.quantity).toLocaleString('en-IN', {
-                        maximumSignificantDigits: 3
-                      })}
+                      {(product.price / 100 * product.quantity)
+                        .toFixed(2)
+                        .toLocaleString('en-IN', {
+                          maximumSignificantDigits: 3
+                        })}
                     </label>
                     <select
                       id={`${product.name}${product.id}`}
@@ -133,9 +136,10 @@ class Cart extends React.Component {
                 {cart
                   .reduce(
                     (acc, currentVal) =>
-                      acc + currentVal.quantity * currentVal.price * 100,
+                      acc + currentVal.quantity * currentVal.price / 100,
                     0
                   )
+                  .toFixed(2)
                   .toLocaleString('en-IN', {
                     maximumSignificantDigits: 3
                   })}

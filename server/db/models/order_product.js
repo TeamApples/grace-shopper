@@ -18,8 +18,4 @@ const OrderProduct = db.define('order_product', {
   }
 })
 
-OrderProduct.beforeCreate((product, options) => {
-  product.productPrice = product.productPrice / 100
-})
-
 module.exports = OrderProduct

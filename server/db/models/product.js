@@ -10,7 +10,7 @@ const Product = db.define('product', {
     }
   },
   price: {
-    type: Sequelize.STRING, //create method to convert int to decimal
+    type: Sequelize.INTEGER, //create method to convert int to decimal
     allowNull: false,
     validate: {
       notEmpty: true

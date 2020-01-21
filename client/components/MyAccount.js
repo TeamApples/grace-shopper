@@ -110,7 +110,12 @@ class MyAccount extends Component {
                           <div> {product.name}</div>
                           <div>Qty: {product.order_product.productQty}</div>
                           <div>
-                            Price: $ {product.order_product.productPrice}
+                            Price: ${' '}
+                            {(product.order_product.productPrice / 100)
+                              .toFixed(2)
+                              .toLocaleString('en-IN', {
+                                maximumSignificantDigits: 3
+                              })}
                           </div>
                         </div>
                       )

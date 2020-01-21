@@ -30,7 +30,6 @@ router.post('/guest/checkout', async (req, res, next) => {
   try {
     const newGuestOrder = await Order.create({
       purchased: true,
-      paymentMethod: null,
       userId: null
     })
     req.body.forEach(async product => {
@@ -73,7 +72,6 @@ router.post('/:userId/checkout', async (req, res, next) => {
       await existingCart.update({purchased: true})
     } else {
       const newCart = await Order.create({
-        paymentMethod: 'null',
         userId: req.user.id,
         purchased: true
       })
@@ -124,9 +122,7 @@ router.get('/:userId/cart', async function(req, res, next) {
         }
         return formattedProduct
       })
-
       req.session.cart = formattedCart
-
       res.send(req.session.cart)
     } else {
       req.session.cart = []

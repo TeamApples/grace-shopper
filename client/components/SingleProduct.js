@@ -33,7 +33,7 @@ class SingleProduct extends Component {
           <h3>Price: </h3>
           <p>
             $
-            {(singleProduct.price * 100).toLocaleString('en-IN', {
+            {(singleProduct.price / 100).toFixed(2).toLocaleString('en-IN', {
               maximumSignificantDigits: 3
             })}
           </p>
