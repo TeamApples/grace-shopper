@@ -107,12 +107,14 @@ class MyAccount extends Component {
                         TOTAL $
                         {order.products
                           .reduce(
-                            (acc, currentVal) => acc + currentVal.price * 100,
+                            (acc, currentVal) =>
+                              acc +
+                              currentVal.order_product.productQty *
+                                currentVal.order_product.productPrice /
+                                100,
                             0
                           )
-                          .toLocaleString('en-IN', {
-                            maximumSignificantDigits: 3
-                          })}
+                          .toFixed(2)}
                       </h3>
                       <h3 className="order-number-details">
                         SHIP TO {this.props.user.firstName}
@@ -139,11 +141,14 @@ class MyAccount extends Component {
                           <div>Qty: {product.order_product.productQty}</div>
                           <div>
                             Price: ${' '}
-                            {(product.order_product.productPrice / 100)
-                              .toFixed(2)
-                              .toLocaleString('en-IN', {
-                                maximumSignificantDigits: 3
-                              })}
+                            {(
+                              product.order_product.productPrice *
+                              product.order_product.productQty /
+                              100
+                            ).toFixed(2)
+                            // .toLocaleString('en-IN', {
+                            //   maximumSignificantDigits: 3
+                            }
                           </div>
                         </div>
                       )

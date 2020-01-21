@@ -25,19 +25,19 @@ describe('Order model', () => {
         expect(orderInstance.purchased).to.be.equal(false)
       })
     })
-    describe('order cannot be created if payment method is not specified', () => {
-      let orderInstance
+    // describe('order cannot be created if payment method is not specified', () => {
+    //   let orderInstance
 
-      it('order cannot be created without payment method', async () => {
-        try {
-          orderInstance = await Order.create()
-          throw new Error('order cannot be created without payment method')
-        } catch (error) {
-          expect(error.message).to.be.equal(
-            'notNull Violation: order.paymentMethod cannot be null'
-          )
-        }
-      })
-    })
+    //   it('order cannot be created without payment method', async () => {
+    //     try {
+    //       orderInstance = await Order.create()
+    //       throw new Error('order cannot be created without payment method')
+    //     } catch (error) {
+    //       expect(error.message).to.be.equal(
+    //         'notNull Violation: order.paymentMethod cannot be null'
+    //       )
+    //     }
+    //   })
+    // })
   })
 })
