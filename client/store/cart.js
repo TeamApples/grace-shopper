@@ -74,11 +74,9 @@ export const checkedOut = (cart, userId) => {
     try {
       if (userId) {
         const {data} = await Axios.post(`/api/users/${userId}/checkout`, cart)
-        console.log('what are we returning for user: ', data)
         dispatch(checkout(data))
       } else {
         const {data} = await Axios.post('/api/users/guest/checkout', cart)
-        console.log('what are we returning: ', data)
         dispatch(checkout(data))
       }
     } catch (err) {
@@ -155,7 +153,6 @@ export const cartReducer = (state = initialState, action) => {
     case LOAD_CART_FROM_STORAGE:
       return action.cart
     case CHECKOUT: {
-      console.log('action.cart: ', action.cart)
       localStorage.setItem('myCart', JSON.stringify([]))
       return action.cart
     }

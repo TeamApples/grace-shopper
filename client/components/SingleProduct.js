@@ -31,7 +31,12 @@ class SingleProduct extends Component {
         </div>
         <div id="product_info">
           <h3>Price: </h3>
-          <p>${singleProduct.price}</p>
+          <p>
+            $
+            {(singleProduct.price * 100).toLocaleString('en-IN', {
+              maximumSignificantDigits: 3
+            })}
+          </p>
           <p>{singleProduct.description}</p>
           <select id="selectQuantity">
             <option value="1">1</option>
