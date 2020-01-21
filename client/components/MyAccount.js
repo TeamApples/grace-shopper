@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {me, addUserThunk, changeUserThunk} from '../store/user'
-import Axios from 'axios'
+import {me, changeUserThunk} from '../store/user'
+import {getOrderHistoryThunk} from '../store/orderHistory'
 
 class MyAccount extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class MyAccount extends Component {
 
   componentDidMount() {
     this.props.loadMe()
+    this.props.loadOrderHistory(this.props.match.params.userId)
   }
 
   handleSubmit(event) {
@@ -46,6 +47,7 @@ class MyAccount extends Component {
     return <div>Your info was updated successfully</div>
   }
   render() {
+    const orderHistory = this.props.orderHistory
     return (
       this.props.user && (
         <div id="user_account">
@@ -93,6 +95,30 @@ class MyAccount extends Component {
           <div>
             <div className="user_details">
               <h2>Order History</h2>
+              {orderHistory.map(order => {
+                return (
+                  <div key={order.id}>
+                    <div>Order Number: {order.id}</div>
+                    <div>Payment Method: {order.paymentMethod}</div>
+                    {order.products.map(product => {
+                      return (
+                        <div key={product.name + order.id}>
+                          <div>Product Name: {product.name}</div>
+                          <div>
+                            Product Qty: {product.order_product.productQty}
+                          </div>
+                          <div>
+                            Product Price: ${' '}
+                            {product.order_product.productPrice}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )
+              })}
+
+              <div />
             </div>
           </div>
         </div>
@@ -103,7 +129,8 @@ class MyAccount extends Component {
 
 const mapToState = state => {
   return {
-    user: state.user
+    user: state.user,
+    orderHistory: state.orderHistory
   }
 }
 
@@ -114,6 +141,10 @@ const mapDispatchToProps = dispatch => {
     },
     saveChanges: function(userId, newInfo) {
       const action = changeUserThunk(userId, newInfo)
+      dispatch(action)
+    },
+    loadOrderHistory: function(userId) {
+      const action = getOrderHistoryThunk(userId)
       dispatch(action)
     }
   }
