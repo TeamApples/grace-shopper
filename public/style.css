@@ -4,7 +4,7 @@ body {
   background-color: #d7d1b9;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url('https://wallpapercave.com/wp/vFQ0LIf.jpg');
+  /* background-image: url('https://wallpapercave.com/wp/vFQ0LIf.jpg'); */
 }
 
 a {
@@ -31,7 +31,7 @@ form div {
 }
 .login-form {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: center;
   background: rgba(0, 0, 0, 0.92);
   position: fixed;
@@ -77,6 +77,9 @@ form div {
 }
 .nav-two {
   display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
 }
 .main-links {
   color: white;
@@ -160,15 +163,16 @@ small {
 }
 
 #single_product {
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   max-width: 95%;
   width: 1200px;
+    justify-content: space-evenly;
+  margin: 0 auto;
+  */
   background-color: white;
   box-shadow: 0 5px 10px black;
   border-radius: 5px;
-  justify-content: space-evenly;
-  margin: 0 auto;
 }
 
 #single_product #product_image {
@@ -190,6 +194,10 @@ small {
   font-size: 17px;
   line-height: 1.77059;
   font-weight: 400;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 #single_product #product_info p {
   overflow: hidden;
@@ -200,6 +208,7 @@ small {
 
 button {
   color: white;
+  /*
   margin: 15px;
   line-height: 1.17648;
   min-width: 28px;
@@ -207,6 +216,8 @@ button {
   padding-right: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
+  */
+  font-size: 16px;
   border-radius: 18px;
   background: #0071e3;
   cursor: pointer;
@@ -332,9 +343,66 @@ select {
   max-width: 95%;
   width: 1200px;
   background-color: white;
+  /* box-shadow: 0 5px 10px black; */
+  justify-content: space-between;
+  margin: 3px auto;
+  align-items: center;
+  border-radius: 20px;
+
+  /* display: flex;
+  flex-wrap: wrap;
+  max-width: 95%;
+  width: 1200px;
+  background-color: white;
   box-shadow: 0 5px 10px black;
   justify-content: space-evenly;
   margin: 20px;
   align-items: center;
-  background-color: azure;
+  background-color: azure; */
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+}
+h3.main-links {
+  margin: 1em;
+  display: inline-block;
+}
+
+.add-to-cart-btn {
+  color: black;
+}
+.order-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#order-pics {
+  height: 65px;
+}
+#outer-order {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  background-color: lightgray;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+#buy-it-again {
+  color: #111;
+  background: #f0c14b;
+  border-color: #a88734 #9c7e31 #846a29;
+  border-radius: 3px;
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0;
+  text-align: center;
+  text-decoration: none !important;
+  vertical-align: middle;
+  margin: 0 0 6px;
 }

@@ -7,12 +7,14 @@ import {logout} from '../store'
 const Navbar = ({handleClick, isLoggedIn, userId}) => (
   <div className="navbar">
     <nav className="login-form">
+      <div id="logo">
+        <h3 className="main-links"></h3>
+        <NavLink activeClassName="active" className="main-links" to="/home">
+          Apple
+        </NavLink>
+      </div>
       {isLoggedIn ? (
         <div className="nav-two">
-          <h3 className="main-links"></h3>
-          <NavLink activeClassName="active" className="main-links" to="/home">
-            Apple
-          </NavLink>
           <NavLink
             activeClassName="active"
             className="main-links"
@@ -41,11 +43,6 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
         </div>
       ) : (
         <div className="nav-two">
-          <h3 className="main-links"></h3>
-          <NavLink activeClassName="active" className="main-links" to="/home">
-            Apple
-          </NavLink>
-
           <NavLink
             activeClassName="active"
             className="main-links"
