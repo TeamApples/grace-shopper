@@ -26,7 +26,6 @@ class Cart extends React.Component {
       let cartFromStorage = localStorage.getItem('myCart')
       if (cartFromStorage) {
         cartFromStorage = JSON.parse(cartFromStorage)
-        console.log('cart: ', cartFromStorage)
         this.props.loadCartFromStorage(cartFromStorage)
       }
     }
@@ -66,7 +65,11 @@ class Cart extends React.Component {
           <p className="cart-second-title">
             Get free shipping and free returns on all orders.
           </p>
-
+          <div id="btn-container">
+            <button type="submit" id="checkout-btn">
+              Checkout
+            </button>
+          </div>
           <div className="cart-container">
             <h2>Review Your Cart:</h2>
             {cart.length > 0 &&
@@ -84,9 +87,7 @@ class Cart extends React.Component {
                       {product.name}
                     </Link>
                     <label>Unit Price ${price}</label>
-                    <label className="rs-quantity-selector">
-                      Quantity: {product.quantity}
-                    </label>
+
                     <label>${price * product.quantity}</label>
                     <select
                       id={`${product.name}${product.id}`}
@@ -127,11 +128,6 @@ class Cart extends React.Component {
               </div>
             )}
             <div />
-          </div>
-          <div id="btn-container">
-            <button type="submit" id="checkout-btn">
-              Checkout
-            </button>
           </div>
         </form>
       </div>

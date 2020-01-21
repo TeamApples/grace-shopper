@@ -63,9 +63,6 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           <NavLink activeClassName="active" className="main-links" to="/cart">
             My Cart
           </NavLink>
-          <NavLink activeClassName="active" className="main-links" to="/home">
-            Home
-          </NavLink>
         </div>
       )}
     </nav>

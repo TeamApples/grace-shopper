@@ -193,7 +193,6 @@ router.post('/:userId/cart', async (req, res, next) => {
 router.put('/:userId/cart', async (req, res, next) => {
   try {
     const existingCart = await req.session.cart
-    console.log('req body for update: ', req.body)
     const updatedState = existingCart.map(product => {
       const copyProduct = {...product}
       if (req.body.product.id === copyProduct.id) {
@@ -201,7 +200,6 @@ router.put('/:userId/cart', async (req, res, next) => {
       }
       return copyProduct
     })
-    console.log('updatedState: ', updatedState)
     req.session.cart = updatedState
     res.send(req.session.cart)
   } catch (error) {

@@ -25,15 +25,14 @@ class SingleProduct extends Component {
     return (
       <div id="single_product">
         <div id="product_image">
+          <h1>{singleProduct.name}</h1>
+
           <img src={singleProduct.image} />
         </div>
         <div id="product_info">
-          <h1>{singleProduct.name}</h1>
           <h3>Price: </h3>
           <p>${singleProduct.price}</p>
-          <h3>Details: </h3>
           <p>{singleProduct.description}</p>
-          <label>Quantity:</label>
           <select id="selectQuantity">
             <option value="1">1</option>
             <option value="2">2</option>
