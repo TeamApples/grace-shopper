@@ -94,22 +94,23 @@ class MyAccount extends Component {
           </div>
           <div>
             <div className="user_details">
-              <h2>Order History</h2>
+              <h2>{this.props.user.firstName}, Here's Your Order History</h2>
+
               {orderHistory.map(order => {
                 return (
-                  <div key={order.id}>
+                  <div key={order.id} className="account-items-container">
                     <div>Order Number: {order.id}</div>
                     <div>Payment Method: {order.paymentMethod}</div>
                     {order.products.map(product => {
                       return (
-                        <div key={product.name + order.id}>
-                          <div>Product Name: {product.name}</div>
+                        <div
+                          key={product.name + order.id}
+                          className="account-items-container"
+                        >
+                          <div> {product.name}</div>
+                          <div>Qty: {product.order_product.productQty}</div>
                           <div>
-                            Product Qty: {product.order_product.productQty}
-                          </div>
-                          <div>
-                            Product Price: ${' '}
-                            {product.order_product.productPrice}
+                            Price: $ {product.order_product.productPrice}
                           </div>
                         </div>
                       )

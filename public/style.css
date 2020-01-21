@@ -326,3 +326,15 @@ select {
   justify-content: space-evenly;
   margin: 3px auto;
 }
+.account-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 95%;
+  width: 1200px;
+  background-color: white;
+  box-shadow: 0 5px 10px black;
+  justify-content: space-evenly;
+  margin: 20px;
+  align-items: center;
+  background-color: azure;
+}
