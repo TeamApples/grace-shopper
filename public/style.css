@@ -161,19 +161,21 @@ small {
 
 #single_product {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  max-width: 95%;
+  width: 1200px;
+  background-color: white;
+  box-shadow: 0 5px 10px black;
+  border-radius: 5px;
   justify-content: space-evenly;
-  align-items: center;
-  /* background-image: url('https://res.allmacwallpaper.com/pic/Thumbnails/2574_728.jpg'); */
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 800px;
-  color: white;
-  background-color: #d7d1b9;
+  margin: 0 auto;
 }
 
 #single_product #product_image {
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
 #single_product #product_image img {
@@ -183,7 +185,11 @@ small {
 #single_product #product_info {
   align-items: center;
   text-align: center;
-  background-color: gray;
+  background-color: rgb(46, 41, 41);
+  color: white;
+  font-size: 17px;
+  line-height: 1.77059;
+  font-weight: 400;
 }
 #single_product #product_info p {
   overflow: hidden;
@@ -203,6 +209,7 @@ button {
   padding-bottom: 8px;
   border-radius: 18px;
   background: #0071e3;
+  cursor: pointer;
 }
 
 input {
@@ -219,7 +226,9 @@ input {
 }
 #emailInput,
 #phoneInput,
-#addressInput {
+#addressInput,
+#firstNameInput,
+#lastNameInput {
   width: 10%;
   background-color: white;
   margin: 15px;
@@ -238,13 +247,13 @@ input {
   width: 1200px;
   background-color: white;
   box-shadow: 0 5px 10px black;
-  /* border-radius: 5px; */
   justify-content: space-evenly;
   margin: 3px auto;
   align-items: center;
 }
 .form-view {
   background-color: #d7d1b9;
+  height: 800px;
 }
 #selectQuantity,
 select {
@@ -263,7 +272,7 @@ select {
   height: 30px;
 }
 .cart-remove {
-  font-size: 17px;
+  font-size: 13px;
   line-height: 1.47059;
   font-weight: 400;
   letter-spacing: -0.022em;
@@ -272,7 +281,7 @@ select {
 }
 .cart-main-title,
 .cart-second-title {
-  width: 95%;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
@@ -280,10 +289,11 @@ select {
   display: flex;
   justify-content: center;
   font-size: 17px;
-  line-height: 1.47059;
-  width: 330px;
+  line-height: 0.5;
+  width: 300px;
   height: 50px;
   font-size: 30px;
+  cursor: pointer;
 }
 .cart-total {
   display: flex;
@@ -295,12 +305,24 @@ select {
   font-family: SF Pro Display, SF Pro Icons, AOS Icons, Helvetica Neue,
     Helvetica, Arial, sans-serif;
   color: #111;
+  width: 90%;
 }
 .cart-second-title {
   font-size: 18px;
 }
-.btn-container {
+#btn-container {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.home-pic {
+  max-width: 1200px;
+  box-shadow: 0 5px 10px black;
+  justify-content: space-evenly;
+  margin: 3px auto;
 }

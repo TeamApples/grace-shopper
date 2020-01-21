@@ -37,9 +37,7 @@ class Routes extends Component {
         <Route
           exact
           path="/cart"
-          render={routeProps => (
-            <CartContainer {...routeProps} className="fuck-you" />
-          )}
+          render={routeProps => <CartContainer {...routeProps} />}
         />
 
         {isLoggedIn && (

@@ -13,9 +13,17 @@ class UserHome extends Component {
   componentDidMount() {}
 
   render() {
+    const firstName = this.props.user.firstName
+    const lastName = this.props.user.lastName
     return (
-      <div>
-        <h1>Welcome to Apple</h1>
+      <div className="home-page">
+        <h1>
+          Welcome, {firstName} {lastName}!
+        </h1>
+        <img
+          src="https://wallpaperplay.com/walls/full/7/b/d/323597.jpg"
+          className="home-pic"
+        />
       </div>
     )
   }

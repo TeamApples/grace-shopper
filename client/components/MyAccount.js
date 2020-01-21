@@ -20,10 +20,15 @@ class MyAccount extends Component {
     const email = document.getElementById('emailInput').value
     const address = document.getElementById('addressInput').value
     const phone = document.getElementById('phoneInput').value
+    const firstName = document.getElementById('firstNameInput').value
+    const lastName = document.getElementById('lastNameInput').value
+
     const user = {
       email: email,
       phone: phone,
-      address: address
+      address: address,
+      firstName: firstName,
+      lastName: lastName
     }
     event.preventDefault()
     try {
@@ -47,6 +52,18 @@ class MyAccount extends Component {
           <div className="user_details">
             <form onSubmit={this.handleSubmit}>
               <h2> Account Details </h2>
+              <label htmlFor="firstName">First Name: </label>
+              <input
+                id="firstNameInput"
+                onChange={this.handleChange}
+                placeholder={`${this.props.user.firstName}`}
+              />
+              <label htmlFor="lastName">Last Name: </label>
+              <input
+                id="lastNameInput"
+                onChange={this.handleChange}
+                placeholder={`${this.props.user.lastName}`}
+              />
               <label htmlFor="email">Email: </label>
               <input
                 id="emailInput"
