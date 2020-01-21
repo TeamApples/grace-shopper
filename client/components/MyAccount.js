@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {me, changeUserThunk} from '../store/user'
 import {getOrderHistoryThunk} from '../store/orderHistory'
+import {UserSaveSuccess} from '../Toasts'
+import {Link} from 'react-router-dom'
 
 class MyAccount extends Component {
   constructor(props) {
@@ -86,27 +88,53 @@ class MyAccount extends Component {
                 onChange={this.handleChange}
                 placeholder={`${this.props.user.phoneNumber}`}
               />
-
-              <button type="button" onClick={this.handleSubmit}>
-                Save Changes
-              </button>
+              <UserSaveSuccess />
             </form>
           </div>
           <div>
-            <div className="user_details">
+            <div className="order-history">
               <h2>{this.props.user.firstName}, Here's Your Order History</h2>
 
               {orderHistory.map(order => {
+                console.log(order)
                 return (
                   <div key={order.id} className="account-items-container">
-                    <div>Order Number: {order.id}</div>
-                    <div>Payment Method: {order.paymentMethod}</div>
+                    <div id="outer-order">
+                      <h3 className="order-number-details">
+                        ORDER PLACED {order.updatedAt.slice(0, 10)}
+                      </h3>
+                      <h3 className="order-number-details">
+                        TOTAL $
+                        {order.products
+                          .reduce(
+                            (acc, currentVal) => acc + currentVal.price * 100,
+                            0
+                          )
+                          .toLocaleString('en-IN', {
+                            maximumSignificantDigits: 3
+                          })}
+                      </h3>
+                      <h3 className="order-number-details">
+                        SHIP TO {this.props.user.firstName}
+                      </h3>
+                      <h3 className="order-number-details">
+                        ORDER #{order.id}
+                      </h3>
+                    </div>
+
                     {order.products.map(product => {
                       return (
                         <div
                           key={product.name + order.id}
                           className="account-items-container"
                         >
+                          <Link
+                            to={`/products/${product.id}`}
+                            id="buy-it-again"
+                          >
+                            Buy it again
+                          </Link>
+                          <img id="order-pics" src={product.image} />
                           <div> {product.name}</div>
                           <div>Qty: {product.order_product.productQty}</div>
                           <div>

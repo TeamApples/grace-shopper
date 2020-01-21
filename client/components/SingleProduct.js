@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {loadOneProduct} from '../store/product'
 import {connect} from 'react-redux'
 import {addProductToCart, addProductToCartThunk} from '../store/cart'
-
+import {AddedToCartSuccess} from '../Toasts'
 class SingleProduct extends Component {
   constructor(props) {
     super(props)
@@ -46,7 +46,7 @@ class SingleProduct extends Component {
             <option value="5">5</option>
           </select>
           <button type="button" onClick={this.handleClick}>
-            Add to Cart
+            <AddedToCartSuccess />
           </button>
         </div>
       </div>

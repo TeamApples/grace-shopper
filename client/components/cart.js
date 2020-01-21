@@ -10,7 +10,7 @@ import {
   editCartThunk,
   loadCartFromStorage
 } from '../store/cart'
-
+import {OrderSuccess} from '../Toasts'
 class Cart extends React.Component {
   constructor(props) {
     super(props)
@@ -66,9 +66,7 @@ class Cart extends React.Component {
             Get free shipping and free returns on all orders.
           </p>
           <div id="btn-container">
-            <button type="submit" id="checkout-btn">
-              Checkout
-            </button>
+            <OrderSuccess />
           </div>
           <div className="cart-container">
             <h2>Review Your Cart:</h2>
