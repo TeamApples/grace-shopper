@@ -28,7 +28,12 @@ class AllProducts extends Component {
                     <Link to={`/products/` + product.id}>
                       <img src={product.image} />
                     </Link>
-                    <h2>${product.price}</h2>
+                    <h2>
+                      $
+                      {(product.price * 100).toLocaleString('en-IN', {
+                        maximumSignificantDigits: 3
+                      })}
+                    </h2>
                     <p>{product.description}</p>
                   </li>
                 </ul>

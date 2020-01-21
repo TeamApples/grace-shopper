@@ -86,9 +86,19 @@ class Cart extends React.Component {
                     >
                       {product.name}
                     </Link>
-                    <label>Unit Price ${price}</label>
+                    <label>
+                      Unit Price $
+                      {price.toLocaleString('en-IN', {
+                        maximumSignificantDigits: 3
+                      })}
+                    </label>
 
-                    <label>${price * product.quantity}</label>
+                    <label>
+                      $
+                      {(price * product.quantity).toLocaleString('en-IN', {
+                        maximumSignificantDigits: 3
+                      })}
+                    </label>
                     <select
                       id={`${product.name}${product.id}`}
                       onChange={() => this.handleChange(product)}
@@ -120,11 +130,15 @@ class Cart extends React.Component {
             {cart.length > 0 && (
               <div className="cart-total">
                 Total ${''}
-                {cart.reduce(
-                  (acc, currentVal) =>
-                    acc + currentVal.quantity * currentVal.price * 100,
-                  0
-                )}
+                {cart
+                  .reduce(
+                    (acc, currentVal) =>
+                      acc + currentVal.quantity * currentVal.price * 100,
+                    0
+                  )
+                  .toLocaleString('en-IN', {
+                    maximumSignificantDigits: 3
+                  })}
               </div>
             )}
             <div />
