@@ -92,6 +92,11 @@ router.post('/logout', async (req, res) => {
 })
 
 router.get('/me', (req, res) => {
+  // if(!req.session.cart.length && JSON.parse(localStorage.getItem('myCart')).length) {
+  //   req.session.cart = JSON.parse(localStorage.getItem('myCart'))
+  //   localStorage.setItem('myCart', JSON.stringify([]))
+  // }
+  // else if (req.session.cart.length)
   res.json(req.user)
 })
 

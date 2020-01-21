@@ -30,9 +30,11 @@ class AllProducts extends Component {
                     </Link>
                     <h2>
                       $
-                      {(product.price * 100).toLocaleString('en-IN', {
-                        maximumSignificantDigits: 3
-                      })}
+                      {(product.price / 100)
+                        .toFixed(2)
+                        .toLocaleString('en-IN', {
+                          maximumSignificantDigits: 3
+                        })}
                     </h2>
                     <p>{product.description}</p>
                   </li>

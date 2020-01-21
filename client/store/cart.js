@@ -61,7 +61,68 @@ export const loadCartFromStorage = function(cart) {
 export const gotCart = userId => {
   return async dispatch => {
     try {
-      const {data} = await Axios.get(`/api/users/${userId}/cart`)
+      let {data} = await Axios.get(`/api/users/${userId}/cart`)
+      // if (data.length) {
+      //   if (JSON.parse(localStorage.getItem('myCart')).length) {
+
+      //     const inLocalStorage = JSON.parse(localStorage.getItem('myCart'))//array
+      //     const localStorageMap = {}
+      //     inLocalStorage.forEach((product) => {
+      //       localStorageMap[product.id] = {...product}
+      //     })
+      //     console.log("localStorageMap: ", localStorageMap)
+      //     const mergeCart = data.map(product => {
+      //       let formattedProduct = {...product}
+      //       if (formattedProduct.id in localStorageMap) {
+      //         formattedProduct.quantity += localStorageMap[product.id].quantity
+      //         delete localStorageMap[product.id]
+      //       }
+      //       return formattedProduct
+      //     })
+      //     for (let key in localStorageMap) {
+      //       if (localStorageMap.hasOwnProperty(key)) {
+      //         mergeCart.push(localStorageMap[key])
+      //       }
+      //     }
+      //     let lastToReturn
+      //     mergeCart.forEach(async (product, idx) => {
+      //       if (idx === mergeCart.length - 1) {
+      //         lastToReturn = await Axios.post(`/api/users/${userId}/cart`, product)
+      //       }
+      //       else {
+      //         await Axios.post(`/api/users/${userId}/cart`, product)
+      //       }
+      //     })
+      //     localStorage.setItem('myCart', JSON.stringify([]))
+      //     dispatch(getCart(lastToReturn.data))
+      //   }
+      //   else {
+      //     dispatch(getCart(data))
+      //   }
+      // }
+      // else {
+      //   // eslint-disable-next-line no-lonely-if
+      //   if (JSON.parse(localStorage.getItem('myCart')).length) {
+      //     const formattedLocalCart = JSON.parse(localStorage.getItem('myCart')).map((product) => {
+      //       const formattedProduct = {...product}
+      //       return formattedProduct
+      //     })
+      //     let lastToReturn;
+      //     formattedLocalCart.forEach(async (product, idx) => {
+      //       if (idx === formattedLocalCart.length - 1) {
+      //         lastToReturn = await Axios.post(`/api/users/${userId}/cart`, product)
+      //       }
+      //       else {
+      //         await Axios.post(`/api/users/${userId}/cart`, product)
+      //       }
+      //     })
+      //     localStorage.setItem('myCart', JSON.stringify([]))
+      //     dispatch(getCart(lastToReturn.data))
+      //   }
+      //   else {
+      //     dispatch(getCart(data))
+      //   }
+      // }
       dispatch(getCart(data))
     } catch (err) {
       console.error(err)
