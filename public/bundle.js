@@ -187,7 +187,9 @@ function (_Component) {
           to: "/products/" + product.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
           src: product.image
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "$", product.price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, product.description)));
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "$", (product.price * 100).toLocaleString('en-IN', {
+          maximumSignificantDigits: 3
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, product.description)));
       })));
     }
   }]);
@@ -393,7 +395,7 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Order Number: ", order.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Payment Method: ", order.paymentMethod), order.products.map(function (product) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
             key: product.name + order.id
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Name: ", product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Qty: ", product.order_product.productQty), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Price: $ ", product.order_product.productPrice));
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Name: ", product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Qty: ", product.order_product.productQty), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Price: $", ' ', product.order_product.productPrice));
         }));
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null))));
     }
@@ -723,7 +725,9 @@ function (_Component) {
         src: singleProduct.image
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "product_info"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Price: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "$", singleProduct.price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, singleProduct.description), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Price: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "$", (singleProduct.price * 100).toLocaleString('en-IN', {
+        maximumSignificantDigits: 3
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, singleProduct.description), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
         id: "selectQuantity"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: "1"
@@ -1008,7 +1012,11 @@ function (_React$Component) {
         })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
           className: "cart-product-title",
           to: '/products/' + product.id
-        }, product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Unit Price $", price), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "$", price * product.quantity), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+        }, product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Unit Price $", price.toLocaleString('en-IN', {
+          maximumSignificantDigits: 3
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "$", (price * product.quantity).toLocaleString('en-IN', {
+          maximumSignificantDigits: 3
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
           id: "".concat(product.name).concat(product.id),
           onChange: function onChange() {
             return _this2.handleChange(product);
@@ -1032,7 +1040,9 @@ function (_React$Component) {
         className: "cart-total"
       }, "Total $", '', cart.reduce(function (acc, currentVal) {
         return acc + currentVal.quantity * currentVal.price * 100;
-      }, 0)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null))));
+      }, 0).toLocaleString('en-IN', {
+        maximumSignificantDigits: 3
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null))));
     }
   }]);
 
@@ -1709,7 +1719,7 @@ var checkedOut = function checkedOut(cart, userId) {
                 _context2.prev = 0;
 
                 if (!userId) {
-                  _context2.next = 10;
+                  _context2.next = 9;
                   break;
                 }
 
@@ -1719,36 +1729,34 @@ var checkedOut = function checkedOut(cart, userId) {
               case 4:
                 _ref4 = _context2.sent;
                 data = _ref4.data;
-                console.log('what are we returning for user: ', data);
                 dispatch(checkout(data));
-                _context2.next = 16;
+                _context2.next = 14;
                 break;
 
-              case 10:
-                _context2.next = 12;
+              case 9:
+                _context2.next = 11;
                 return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/users/guest/checkout', cart);
 
-              case 12:
+              case 11:
                 _ref5 = _context2.sent;
                 _data = _ref5.data;
-                console.log('what are we returning: ', _data);
                 dispatch(checkout(_data));
 
-              case 16:
-                _context2.next = 21;
+              case 14:
+                _context2.next = 19;
                 break;
 
-              case 18:
-                _context2.prev = 18;
+              case 16:
+                _context2.prev = 16;
                 _context2.t0 = _context2["catch"](0);
                 console.error(_context2.t0);
 
-              case 21:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 18]]);
+        }, _callee2, null, [[0, 16]]);
       }));
 
       return function (_x2) {
@@ -1928,7 +1936,6 @@ var cartReducer = function cartReducer() {
 
     case CHECKOUT:
       {
-        console.log('action.cart: ', action.cart);
         localStorage.setItem('myCart', JSON.stringify([]));
         return action.cart;
       }
