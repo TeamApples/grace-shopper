@@ -6,9 +6,13 @@ const Order = db.define('order', {
     type: Sequelize.BOOLEAN, //consider using updatedAt/purchase confirmation date
     defaultValue: false
   },
-
   paymentMethod: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    },
+    defaultValue: 'NOT DEFINED'
   }
 })
 
