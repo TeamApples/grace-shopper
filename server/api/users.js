@@ -16,6 +16,15 @@ router.get('/', protect, async (req, res, next) => {
   }
 })
 
+router.post('/', async (req, res, next) => {
+  try {
+    const user = await User.create(req.body)
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+})
+
 //DO WE NEED TO PROTECT THIS?
 router.post('/guest/checkout', async (req, res, next) => {
   try {
@@ -129,19 +138,19 @@ router.get('/:userId/cart', async function(req, res, next) {
   }
 })
 
-router.post('/:userId/orders', protectById, async (req, res, next) => {
-  try {
-    const newOrder = await Order.create(req.body)
-    if (!newOrder) {
-      const err = new Error('This request cannot be processed')
-      err.status = 404
-      throw err
-    }
-    res.status(201).json(newOrder)
-  } catch (err) {
-    next(err)
-  }
-})
+// router.post('/:userId/orders', protectById, async (req, res, next) => {
+//   try {
+//     const newOrder = await Order.create(req.body)
+//     if (!newOrder) {
+//       const err = new Error('This request cannot be processed')
+//       err.status = 404
+//       throw err
+//     }
+//     res.status(201).json(newOrder)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 router.post('/:userId/cart', async (req, res, next) => {
   try {
@@ -220,15 +229,6 @@ router.delete('/:userId/cart', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  try {
-    const user = await User.create(req.body)
-    res.json(user)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.get('/:userId', protectById, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.userId)
@@ -240,7 +240,7 @@ router.get('/:userId', protectById, async (req, res, next) => {
 
 router.put('/:userId/myaccount', protectById, async (req, res, next) => {
   try {
-    const [user, newuser] = await User.update(req.body, {
+    const [rowNum, newuser] = await User.update(req.body, {
       returning: true,
       plain: true,
       where: {
