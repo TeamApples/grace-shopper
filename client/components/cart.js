@@ -10,7 +10,8 @@ import {
   editCartThunk,
   loadCartFromStorage
 } from '../store/cart'
-import {OrderSuccess} from '../Toasts'
+import {OrderSuccess, RemoveFromCart} from '../Toasts'
+
 class Cart extends React.Component {
   constructor(props) {
     super(props)
@@ -120,7 +121,7 @@ class Cart extends React.Component {
                       className="cart-remove"
                       onClick={() => this.handleRemoveState(product)}
                     >
-                      Remove
+                      <RemoveFromCart />
                     </button>
                   </div>
                 )

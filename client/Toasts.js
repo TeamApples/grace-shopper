@@ -19,22 +19,19 @@ export const AddedToCartSuccess = () => {
   )
 }
 
-export const AddedToCartFail = () => {
+export const RemoveFromCart = () => {
   const {addToast} = useToasts()
   return (
     <button
       type="button"
       onClick={() =>
-        addToast(
-          'error! There was a problem with adding the item to your cart',
-          {
-            appearance: 'error',
-            autoDismiss: true
-          }
-        )
+        addToast('An item was removed from your cart', {
+          appearance: 'warning',
+          autoDismiss: true
+        })
       }
     >
-      Add To Cart
+      Remove
     </button>
   )
 }
