@@ -259,8 +259,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _store_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/user */ "./client/store/user.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _store_orderHistory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../store/orderHistory */ "./client/store/orderHistory.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -307,6 +306,7 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.props.loadMe();
+      this.props.loadOrderHistory(this.props.match.params.userId);
     }
   }, {
     key: "handleSubmit",
@@ -345,6 +345,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var orderHistory = this.props.orderHistory;
       return this.props.user && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "user_account"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -386,7 +387,15 @@ function (_Component) {
         onClick: this.handleSubmit
       }, "Save Changes"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "user_details"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Order History"))));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Order History"), orderHistory.map(function (order) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: order.id
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Order Number: ", order.id), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Payment Method: ", order.paymentMethod), order.products.map(function (product) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            key: product.name + order.id
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Name: ", product.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Qty: ", product.order_product.productQty), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Product Price: $ ", product.order_product.productPrice));
+        }));
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null))));
     }
   }]);
 
@@ -395,7 +404,8 @@ function (_Component) {
 
 var mapToState = function mapToState(state) {
   return {
-    user: state.user
+    user: state.user,
+    orderHistory: state.orderHistory
   };
 };
 
@@ -406,6 +416,10 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     saveChanges: function saveChanges(userId, newInfo) {
       var action = Object(_store_user__WEBPACK_IMPORTED_MODULE_2__["changeUserThunk"])(userId, newInfo);
+      dispatch(action);
+    },
+    loadOrderHistory: function loadOrderHistory(userId) {
+      var action = Object(_store_orderHistory__WEBPACK_IMPORTED_MODULE_3__["getOrderHistoryThunk"])(userId);
       dispatch(action);
     }
   };
@@ -1278,7 +1292,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.props.user);
       var firstName = this.props.user.firstName;
       var lastName = this.props.user.lastName;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -1977,6 +1990,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./user */ "./client/store/user.js");
 /* harmony import */ var _product__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./product */ "./client/store/product.js");
 /* harmony import */ var _cart__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./cart */ "./client/store/cart.js");
+/* harmony import */ var _orderHistory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./orderHistory */ "./client/store/orderHistory.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "changeUserThunk", function() { return _user__WEBPACK_IMPORTED_MODULE_4__["changeUserThunk"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addUserThunk", function() { return _user__WEBPACK_IMPORTED_MODULE_4__["addUserThunk"]; });
@@ -1994,11 +2008,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var reducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   user: _user__WEBPACK_IMPORTED_MODULE_4__["default"],
   products: _product__WEBPACK_IMPORTED_MODULE_5__["productReducer"],
   singleProduct: _product__WEBPACK_IMPORTED_MODULE_5__["singleProductReducer"],
-  cart: _cart__WEBPACK_IMPORTED_MODULE_6__["cartReducer"]
+  cart: _cart__WEBPACK_IMPORTED_MODULE_6__["cartReducer"],
+  orderHistory: _orderHistory__WEBPACK_IMPORTED_MODULE_7__["default"]
 });
 var middleware = Object(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_3__["composeWithDevTools"])(Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_2__["default"], Object(redux_logger__WEBPACK_IMPORTED_MODULE_1__["createLogger"])({
   collapsed: true
@@ -2006,6 +2022,94 @@ var middleware = Object(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_3__["c
 var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(reducer, middleware);
 /* harmony default export */ __webpack_exports__["default"] = (store);
 
+
+/***/ }),
+
+/***/ "./client/store/orderHistory.js":
+/*!**************************************!*\
+  !*** ./client/store/orderHistory.js ***!
+  \**************************************/
+/*! exports provided: getOrderHistoryThunk, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOrderHistoryThunk", function() { return getOrderHistoryThunk; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var GET_ORDER_HISTORY = 'GET_ORDER_HISTORY';
+var initialState = [];
+
+var getOrderHistory = function getOrderHistory(orderHistory) {
+  return {
+    type: GET_ORDER_HISTORY,
+    orderHistory: orderHistory
+  };
+};
+
+var getOrderHistoryThunk = function getOrderHistoryThunk(userId) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(dispatch) {
+        var _ref2, data;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/users/".concat(userId, "/orderHistory"));
+
+              case 3:
+                _ref2 = _context.sent;
+                data = _ref2.data;
+                dispatch(getOrderHistory(data));
+                _context.next = 11;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](0);
+                console.error(_context.t0);
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 8]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+var orderHistoryReducer = function orderHistoryReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case GET_ORDER_HISTORY:
+      return action.orderHistory;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (orderHistoryReducer);
 
 /***/ }),
 
@@ -9186,7 +9290,7 @@ exports.isHtml = function(str) {
 /*! exports provided: _args, _development, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, dependencies, description, devDependencies, engines, files, homepage, keywords, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"_args\":[[\"cheerio@1.0.0-rc.3\",\"/Users/roeetessler/Desktop/Senior/grace-shopper\"]],\"_development\":true,\"_from\":\"cheerio@1.0.0-rc.3\",\"_id\":\"cheerio@1.0.0-rc.3\",\"_inBundle\":false,\"_integrity\":\"sha512-0td5ijfUPuubwLUu0OBoe98gZj8C/AA+RW3v67GPlGOrvxWjZmBXiBCRU+I8VEiNyJzjth40POfHiz2RB3gImA==\",\"_location\":\"/cheerio\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"cheerio@1.0.0-rc.3\",\"name\":\"cheerio\",\"escapedName\":\"cheerio\",\"rawSpec\":\"1.0.0-rc.3\",\"saveSpec\":null,\"fetchSpec\":\"1.0.0-rc.3\"},\"_requiredBy\":[\"/enzyme\"],\"_resolved\":\"https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.3.tgz\",\"_spec\":\"1.0.0-rc.3\",\"_where\":\"/Users/roeetessler/Desktop/Senior/grace-shopper\",\"author\":{\"name\":\"Matt Mueller\",\"email\":\"mattmuelle@gmail.com\",\"url\":\"mat.io\"},\"bugs\":{\"url\":\"https://github.com/cheeriojs/cheerio/issues\"},\"dependencies\":{\"css-select\":\"~1.2.0\",\"dom-serializer\":\"~0.1.1\",\"entities\":\"~1.1.1\",\"htmlparser2\":\"^3.9.1\",\"lodash\":\"^4.15.0\",\"parse5\":\"^3.0.1\"},\"description\":\"Tiny, fast, and elegant implementation of core jQuery designed specifically for the server\",\"devDependencies\":{\"benchmark\":\"^2.1.0\",\"coveralls\":\"^2.11.9\",\"expect.js\":\"~0.3.1\",\"istanbul\":\"^0.4.3\",\"jquery\":\"^3.0.0\",\"jsdom\":\"^9.2.1\",\"jshint\":\"^2.9.2\",\"mocha\":\"^3.1.2\",\"xyz\":\"~1.1.0\"},\"engines\":{\"node\":\">= 0.6\"},\"files\":[\"index.js\",\"lib\"],\"homepage\":\"https://github.com/cheeriojs/cheerio#readme\",\"keywords\":[\"htmlparser\",\"jquery\",\"selector\",\"scraper\",\"parser\",\"html\"],\"license\":\"MIT\",\"main\":\"./index.js\",\"name\":\"cheerio\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/cheeriojs/cheerio.git\"},\"scripts\":{\"test\":\"make test\"},\"version\":\"1.0.0-rc.3\"}");
+module.exports = JSON.parse("{\"_args\":[[\"cheerio@1.0.0-rc.3\",\"/Users/johnc/Desktop/Fullstack-Academy/grace-shopper\"]],\"_development\":true,\"_from\":\"cheerio@1.0.0-rc.3\",\"_id\":\"cheerio@1.0.0-rc.3\",\"_inBundle\":false,\"_integrity\":\"sha512-0td5ijfUPuubwLUu0OBoe98gZj8C/AA+RW3v67GPlGOrvxWjZmBXiBCRU+I8VEiNyJzjth40POfHiz2RB3gImA==\",\"_location\":\"/cheerio\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"cheerio@1.0.0-rc.3\",\"name\":\"cheerio\",\"escapedName\":\"cheerio\",\"rawSpec\":\"1.0.0-rc.3\",\"saveSpec\":null,\"fetchSpec\":\"1.0.0-rc.3\"},\"_requiredBy\":[\"/enzyme\"],\"_resolved\":\"https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.3.tgz\",\"_spec\":\"1.0.0-rc.3\",\"_where\":\"/Users/johnc/Desktop/Fullstack-Academy/grace-shopper\",\"author\":{\"name\":\"Matt Mueller\",\"email\":\"mattmuelle@gmail.com\",\"url\":\"mat.io\"},\"bugs\":{\"url\":\"https://github.com/cheeriojs/cheerio/issues\"},\"dependencies\":{\"css-select\":\"~1.2.0\",\"dom-serializer\":\"~0.1.1\",\"entities\":\"~1.1.1\",\"htmlparser2\":\"^3.9.1\",\"lodash\":\"^4.15.0\",\"parse5\":\"^3.0.1\"},\"description\":\"Tiny, fast, and elegant implementation of core jQuery designed specifically for the server\",\"devDependencies\":{\"benchmark\":\"^2.1.0\",\"coveralls\":\"^2.11.9\",\"expect.js\":\"~0.3.1\",\"istanbul\":\"^0.4.3\",\"jquery\":\"^3.0.0\",\"jsdom\":\"^9.2.1\",\"jshint\":\"^2.9.2\",\"mocha\":\"^3.1.2\",\"xyz\":\"~1.1.0\"},\"engines\":{\"node\":\">= 0.6\"},\"files\":[\"index.js\",\"lib\"],\"homepage\":\"https://github.com/cheeriojs/cheerio#readme\",\"keywords\":[\"htmlparser\",\"jquery\",\"selector\",\"scraper\",\"parser\",\"html\"],\"license\":\"MIT\",\"main\":\"./index.js\",\"name\":\"cheerio\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/cheeriojs/cheerio.git\"},\"scripts\":{\"test\":\"make test\"},\"version\":\"1.0.0-rc.3\"}");
 
 /***/ }),
 
