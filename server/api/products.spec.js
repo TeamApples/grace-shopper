@@ -67,58 +67,58 @@ describe('Product routes', () => {
     })
   })
 
-  describe('POST /:productId', () => {
-    it('creates a new product', async () => {
-      const res = await agent
-        .post('/api/products')
-        .send({
-          id: 10,
-          name: 'Beats Studio 3',
-          price: 349,
-          inventoryQty: 14,
-          description:
-            'NBA COLLECTION - Lakers Purple - Get closer to your music and show love for the team you rep with the Beats NBA Collection. These Beats Studio3 Wireless headphones, worn by some of your favorite players, feature your team’s authentic colors and iconic logos. The final result is a collection designed just for the fans, honoring the spirit and emotion that makes up each of the six available team options - Boston Celtics, Golden State Warriors, Houston Rockets, Los Angeles Lakers, Philadelphia 76ers, and Toronto Raptors. It’s official – the game will never sound the same. Premium sound with fine-tuned acoustics and Pure ANC Beats Studio3 Wireless headphones deliver a premium listening experience with Pure Adaptive Noise Canceling (Pure ANC) to actively block external noise and real-time audio calibration to preserve clarity, range, and emotion. They continuously pinpoint external sounds to block while automatically',
-          image:
-            'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRD9PN-bWo61tw7s7BugjRCAFcFNkq5MWaOtpXdURvqQNN4pQlV6xSX4WrkIsXLGO3RXSC5aiROWYXh3SPw__D2UKzz1_y5Fa9e22LeF0tuQWoBQQVzj5gw&usqp=CAc'
-        })
-        .expect(200)
+  // describe('POST /:productId', () => {
+  //   it('creates a new product', async () => {
+  //     const res = await agent
+  //       .post('/api/products')
+  //       .send({
+  //         id: 10,
+  //         name: 'Beats Studio 3',
+  //         price: 349,
+  //         inventoryQty: 14,
+  //         description:
+  //           'NBA COLLECTION - Lakers Purple - Get closer to your music and show love for the team you rep with the Beats NBA Collection. These Beats Studio3 Wireless headphones, worn by some of your favorite players, feature your team’s authentic colors and iconic logos. The final result is a collection designed just for the fans, honoring the spirit and emotion that makes up each of the six available team options - Boston Celtics, Golden State Warriors, Houston Rockets, Los Angeles Lakers, Philadelphia 76ers, and Toronto Raptors. It’s official – the game will never sound the same. Premium sound with fine-tuned acoustics and Pure ANC Beats Studio3 Wireless headphones deliver a premium listening experience with Pure Adaptive Noise Canceling (Pure ANC) to actively block external noise and real-time audio calibration to preserve clarity, range, and emotion. They continuously pinpoint external sounds to block while automatically',
+  //         image:
+  //           'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRD9PN-bWo61tw7s7BugjRCAFcFNkq5MWaOtpXdURvqQNN4pQlV6xSX4WrkIsXLGO3RXSC5aiROWYXh3SPw__D2UKzz1_y5Fa9e22LeF0tuQWoBQQVzj5gw&usqp=CAc'
+  //       })
+  //       .expect(200)
 
-      expect(res.body.message).to.equal('Created successfully')
-      expect(res.body).to.not.be.an('undefined')
-      expect(res.body.name).to.equal('Beats Studio 3')
-    })
+  //     expect(res.body.message).to.equal('Created successfully')
+  //     expect(res.body).to.not.be.an('undefined')
+  //     expect(res.body.name).to.equal('Beats Studio 3')
+  //   })
 
-    // This one should fail with a 500 because we don't set the article.content
-    it('does not create a new product without content', () => {
-      return agent
-        .post('/api/products')
-        .send({
-          name: 'This Product Should Not Be Allowed'
-        })
-        .expect(500)
-    })
+  //   // This one should fail with a 500 because we don't set the article.content
+  //   it('does not create a new product without content', () => {
+  //     return agent
+  //       .post('/api/products')
+  //       .send({
+  //         name: 'This Product Should Not Be Allowed'
+  //       })
+  //       .expect(500)
+  //   })
 
-    // Check if the articles were actually saved to the database
-    it('saves the product to the DB', async () => {
-      await agent
-        .post('/api/products')
-        .send({
-          name: 'Beats Studio 3',
-          price: 349,
-          inventoryQty: 14,
-          description:
-            'NBA COLLECTION - Lakers Purple - Get closer to your music and show love for the team you rep with the Beats NBA Collection. These Beats Studio3 Wireless headphones, worn by some of your favorite players, feature your team’s authentic colors and iconic logos. The final result is a collection designed just for the fans, honoring the spirit and emotion that makes up each of the six available team options - Boston Celtics, Golden State Warriors, Houston Rockets, Los Angeles Lakers, Philadelphia 76ers, and Toronto Raptors. It’s official – the game will never sound the same. Premium sound with fine-tuned acoustics and Pure ANC Beats Studio3 Wireless headphones deliver a premium listening experience with Pure Adaptive Noise Canceling (Pure ANC) to actively block external noise and real-time audio calibration to preserve clarity, range, and emotion. They continuously pinpoint external sounds to block while automatically',
-          image:
-            'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRD9PN-bWo61tw7s7BugjRCAFcFNkq5MWaOtpXdURvqQNN4pQlV6xSX4WrkIsXLGO3RXSC5aiROWYXh3SPw__D2UKzz1_y5Fa9e22LeF0tuQWoBQQVzj5gw&usqp=CAc'
-        })
-        .expect(200)
+  // Check if the articles were actually saved to the database
+  // it('saves the product to the DB', async () => {
+  //   await agent
+  //     .post('/api/products')
+  //     .send({
+  //       name: 'Beats Studio 3',
+  //       price: 349,
+  //       inventoryQty: 14,
+  //       description:
+  //         'NBA COLLECTION - Lakers Purple - Get closer to your music and show love for the team you rep with the Beats NBA Collection. These Beats Studio3 Wireless headphones, worn by some of your favorite players, feature your team’s authentic colors and iconic logos. The final result is a collection designed just for the fans, honoring the spirit and emotion that makes up each of the six available team options - Boston Celtics, Golden State Warriors, Houston Rockets, Los Angeles Lakers, Philadelphia 76ers, and Toronto Raptors. It’s official – the game will never sound the same. Premium sound with fine-tuned acoustics and Pure ANC Beats Studio3 Wireless headphones deliver a premium listening experience with Pure Adaptive Noise Canceling (Pure ANC) to actively block external noise and real-time audio calibration to preserve clarity, range, and emotion. They continuously pinpoint external sounds to block while automatically',
+  //       image:
+  //         'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRD9PN-bWo61tw7s7BugjRCAFcFNkq5MWaOtpXdURvqQNN4pQlV6xSX4WrkIsXLGO3RXSC5aiROWYXh3SPw__D2UKzz1_y5Fa9e22LeF0tuQWoBQQVzj5gw&usqp=CAc'
+  //     })
+  //     .expect(200)
 
-      const foundProduct = await Product.findOne({
-        where: {name: 'Beats Studio 3'}
-      })
+  //   const foundProduct = await Product.findOne({
+  //     where: {name: 'Beats Studio 3'}
+  //   })
 
-      expect(foundProduct).to.exist // eslint-disable-line no-unused-expressions
-      expect(foundProduct.price).to.equal(349)
-    })
-  })
+  //   expect(foundProduct).to.exist // eslint-disable-line no-unused-expressions
+  //   expect(foundProduct.price).to.equal(349)
+  // })
+  // })
 })
