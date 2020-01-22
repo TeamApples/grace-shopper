@@ -11,9 +11,14 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', protect, async (req, res, next) => {
   try {
     const newProduct = await Product.create(req.body)
+    if (!newProduct) {
+      const err = new Error('Bad Request - Product cannot be created')
+      err.status = 400
+      throw err
+    }
     res.json(newProduct)
   } catch (err) {
     next(err)
@@ -24,33 +29,46 @@ router.get('/:productId', async (req, res, next) => {
   try {
     const product = await Product.findOne({
       where: {
-        id: Number(req.params.productId)
+        id: req.params.productId
       }
     })
-    if (!product) res.status(404).end()
-    else res.json(product)
+    if (!product) {
+      const err = new Error('Product Not Found')
+      err.status = 404
+      throw err
+    }
+    res.json(product)
   } catch (error) {
     next(error)
   }
 })
 
-router.delete('/:productId', protect, (req, res, next) => {
-  Product.destroy({
-    where: {
-      id: Number(req.params.productId)
-    }
-  })
-    .then(() => res.json(req.params.productId))
-    .catch(next)
+router.delete('/:productId', protect, async (req, res, next) => {
+  try {
+    await Product.destroy({
+      where: {
+        id: req.params.productId
+      }
+    })
+    res.status(204).end()
+  } catch (err) {
+    next(err)
+  }
 })
 
 router.put('/:productId', protect, async (req, res, next) => {
   try {
-    const updatedProduct = await Product.update({
+    const [affectedRows, updatedProduct] = await Product.update({
+      returning: true,
       where: {
         id: Number(req.params.productId)
       }
     })
+    if (!updatedProduct) {
+      const err = new Error('Bad Request - Product not Updated')
+      err.status = 400
+      throw err
+    }
     res.send(updatedProduct)
   } catch (error) {
     next(error)

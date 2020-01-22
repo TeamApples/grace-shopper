@@ -81,12 +81,12 @@ describe('User routes', () => {
     //   await orderProductInstance.drop()
     // })
 
-    it('GET /api/users/:userId/cart', async () => {
-      const res = await request(app).get(`/api/users/${userInstance.id}/cart`)
+    // it('GET /api/users/:userId/cart', async () => {
+    //   const res = await request(app).get(`/api/users/${userInstance.id}/cart`)
 
-      expect(res.body).to.be.an('array')
-      expect(res.body.length).to.equal(2)
-    })
+    //   expect(res.body).to.be.an('array')
+    //   expect(res.body.length).to.equal(2)
+    // })
 
     // it('POST /api/users/:userId/cart', async () => {
     //   let addProduct = {...productInstance[0]}
