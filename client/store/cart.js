@@ -62,6 +62,48 @@ export const gotCart = userId => {
   return async dispatch => {
     try {
       let {data} = await Axios.get(`/api/users/${userId}/cart`)
+      // if (userId) {
+
+      let userCart = data
+      let guestCart = JSON.parse(localStorage.getItem('myCart'))
+
+      if (guestCart.length) {
+        //if there is a guest cart
+        if (userCart.length) {
+          //if there is a user cart
+
+          // let copyUserCart = [...userCart]
+          for (let i = 0; i < guestCart.length; i++) {
+            for (let j = 0; j < userCart.length; j++) {
+              if (guestCart[i].id === userCart[j].id) {
+                userCart[j].quantity += guestCart[i].quantity
+                guestCart = guestCart.filter(
+                  product => product.id !== guestCart[i].id
+                )
+              }
+            }
+          }
+          if (guestCart.length) {
+            userCart.push(guestCart)
+          }
+          dispatch(getCart(userCart))
+        } else {
+          userCart.push(guestCart[i])
+          let {data} = await Axios.post(
+            `/api/users/${userId}/cart`,
+            guestCart[i]
+          )
+          dispatch(getCart(data))
+        }
+
+        localStorage.setItem('myCart', JSON.stringify([]))
+      } else {
+        dispatch(getCart(guestCart))
+      }
+    } catch (err) {
+      // } else {
+      //   dispatch(getCart(data))
+      // }
       // if (data.length) {
       //   if (JSON.parse(localStorage.getItem('myCart')).length) {
 
@@ -123,8 +165,6 @@ export const gotCart = userId => {
       //     dispatch(getCart(data))
       //   }
       // }
-      dispatch(getCart(data))
-    } catch (err) {
       console.error(err)
     }
   }
