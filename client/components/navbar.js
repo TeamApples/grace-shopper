@@ -47,7 +47,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           <NavLink
             activeClassName="active"
             className="main-links"
-            to="loginOrSignUp"
+            to="/loginOrSignUp"
           >
             LOGIN or SIGNUP
           </NavLink>
