@@ -5,9 +5,6 @@ const {protect, protectById} = require('./securityUtils')
 router.get('/', protect, async (req, res, next) => {
   try {
     const users = await User.findAll({
-      // explicitly select only the id and email fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
       attributes: ['id', 'email']
     })
     res.json(users)
@@ -18,207 +15,202 @@ router.get('/', protect, async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
+    const newUser = req.body
+    const user = await User.create(newUser)
+    if (!user) {
+      const err = new Error('Bad Request - User cannot be created')
+      err.status = 400
+      throw err
+    }
     res.json(user)
   } catch (err) {
     next(err)
   }
 })
 
-//DO WE NEED TO PROTECT THIS?
+//Guest Checkout Request
 router.post('/guest/checkout', async (req, res, next) => {
   try {
     const newGuestOrder = await Order.create({
       purchased: true,
       userId: null
     })
-    req.body.forEach(async product => {
+    if (!newGuestOrder) {
+      const err = new Error('Bad Request - Order cannot be created')
+      err.status = 400
+      throw err
+    }
+    const guestOrderRequest = req.body
+    guestOrderRequest.forEach(async product => {
       await OrderProduct.create({
-        productPrice: product.price,
-        productQty: product.quantity,
+        productPrice: +product.price,
+        productQty: +product.quantity,
         productId: product.id,
         orderId: newGuestOrder.id
       })
     })
-    const checkedOutCart = []
-    res.json(checkedOutCart)
+    const emptyCart = []
+    res.status(201).json(emptyCart)
   } catch (err) {
     next(err)
   }
 })
 
-router.post('/:userId/checkout', async (req, res, next) => {
+router.post('/:userId/checkout', protectById, async (req, res, next) => {
   try {
-    const existingCart = await Order.findOne({
+    const userId = req.user.id
+    const findUserCart = await Order.findOne({
       where: {
         purchased: false,
-        userId: req.params.userId
+        userId
       }
     })
-    if (existingCart) {
+    if (findUserCart) {
       await OrderProduct.destroy({
         where: {
-          orderId: existingCart.id
+          orderId: findUserCart.id
         }
       })
       req.session.cart.forEach(async product => {
         await OrderProduct.create({
           orderId: product.orderId,
           productId: product.id,
-          productPrice: product.price,
-          productQty: product.quantity
+          productPrice: +product.price,
+          productQty: +product.quantity
         })
       })
-      await existingCart.update({purchased: true})
+      await findUserCart.update({purchased: true})
     } else {
-      const newCart = await Order.create({
-        userId: req.user.id,
+      const newUserOrder = await Order.create({
+        userId,
         purchased: true
       })
       req.session.cart.forEach(async product => {
         await OrderProduct.create({
-          orderId: newCart.id,
+          orderId: newUserOrder.id,
           productId: product.id,
-          productPrice: product.price,
-          productQty: product.quantity
+          productPrice: +product.price,
+          productQty: +product.quantity
         })
       })
     }
     req.session.cart = []
-    res.json(req.session.cart)
+    res.status(201).json(req.session.cart)
   } catch (err) {
     next(err)
   }
 })
 
-router.get('/:userId/cart', async function(req, res, next) {
-  if (!req.session.cart) {
-    const existingCart = await Order.findOne({
-      where: {
-        userId: req.params.userId,
-        purchased: false
-      },
-      include: [{model: Product}]
-    })
-    if (existingCart) {
-      const productsInCart = await OrderProduct.findAll({
+router.get('/:userId/cart', protectById, async (req, res, next) => {
+  try {
+    if (!req.session.cart) {
+      const findUserCart = await Order.findOne({
         where: {
-          orderId: existingCart.id
-        }
+          userId: req.params.userId,
+          purchased: false
+        },
+        include: [{model: Product}]
       })
-      const hashMap = {}
-      productsInCart.forEach(order => {
-        hashMap[order.productId] = order
-      })
-      const formattedCart = existingCart.products.map(product => {
-        const formattedProduct = {
-          id: product.id,
-          name: product.name,
-          image: product.image,
-          description: product.description,
-          price: +product.price,
-          quantity: hashMap[product.id].productQty,
-          orderId: existingCart.id
-        }
-        return formattedProduct
-      })
-      req.session.cart = formattedCart
-      res.send(req.session.cart)
-    } else {
-      req.session.cart = []
-      res.send(req.session.cart)
+      if (findUserCart) {
+        const inCart = await OrderProduct.findAll({
+          where: {
+            orderId: findUserCart.id
+          }
+        })
+        const inCartMap = {}
+        inCart.forEach(order => {
+          inCartMap[order.productId] = {...order}
+        })
+        const quantityUpdatedCart = findUserCart.products.map(product => {
+          const quantityUpdatedProduct = {
+            id: product.id,
+            name: product.name,
+            image: product.image,
+            description: product.description,
+            price: +product.price,
+            quantity: +inCartMap[product.id].dataValues.productQty,
+            orderId: findUserCart.id
+          }
+          return quantityUpdatedProduct
+        })
+        req.session.cart = quantityUpdatedCart
+      } else {
+        req.session.cart = []
+      }
     }
-  } else {
-    const cart = await req.session.cart
-    res.send(cart)
+    res.send(req.session.cart)
+  } catch (err) {
+    next(err)
   }
 })
 
-// router.post('/:userId/orders', protectById, async (req, res, next) => {
-//   try {
-//     const newOrder = await Order.create(req.body)
-//     if (!newOrder) {
-//       const err = new Error('This request cannot be processed')
-//       err.status = 404
-//       throw err
-//     }
-//     res.status(201).json(newOrder)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
-router.post('/:userId/cart', async (req, res, next) => {
+router.post('/:userId/cart', protectById, async (req, res, next) => {
   try {
-    const orderIdFound = await Order.findOne({
+    const newProductInCart = req.body
+    const userSessionCart = req.session.cart
+    let updatedSessionCart
+    let isQuantityUpdated = false
+    const findUserCart = await Order.findOne({
       where: {
         userId: req.user.id,
         purchased: false
       }
     })
-    if (orderIdFound) {
-      req.body.orderId = orderIdFound.id
-
-      const existingCart = await req.session.cart
-      let isUpdated = false
-      let updatedState = existingCart.map(product => {
-        if (req.body.id === product.id) {
-          product.quantity += req.body.quantity
-          isUpdated = true
+    if (findUserCart) {
+      newProductInCart.orderId = findUserCart.id
+      updatedSessionCart = userSessionCart.map(product => {
+        const copyProduct = {...product}
+        if (newProductInCart.id === copyProduct.id) {
+          copyProduct.quantity += newProductInCart.quantity
+          isQuantityUpdated = true
         } else {
-          product.orderId = req.body.orderId
+          copyProduct.orderId = newProductInCart.orderId
         }
-        return product
+        return copyProduct
       })
-      if (!isUpdated) {
-        updatedState.push({...req.body})
-      }
-      req.session.cart = updatedState
     } else {
-      const existingCart = await req.session.cart
-      let isUpdated = false
-      let updatedState = existingCart.map(product => {
-        if (req.body.id === product.id) {
-          product.quantity += req.body.quantity
-          isUpdated = true
+      updatedSessionCart = userSessionCart.map(product => {
+        const copyProduct = {...product}
+        if (newProductInCart.id === copyProduct.id) {
+          copyProduct.quantity += newProductInCart.quantity
+          isQuantityUpdated = true
         }
-        return product
+        return copyProduct
       })
-      if (!isUpdated) {
-        updatedState.push({...req.body})
-      }
-      req.session.cart = updatedState
     }
+    if (!isQuantityUpdated) {
+      updatedSessionCart.push({...newProductInCart})
+    }
+    req.session.cart = updatedSessionCart
     res.send(req.session.cart)
   } catch (error) {
     next(error)
   }
 })
 
-router.put('/:userId/cart', async (req, res, next) => {
+router.put('/:userId/cart', protectById, (req, res, next) => {
   try {
-    const existingCart = await req.session.cart
-    const updatedState = existingCart.map(product => {
+    const updatedProduct = req.body
+    const updatedSessionCart = req.session.cart.map(product => {
       const copyProduct = {...product}
-      if (req.body.product.id === copyProduct.id) {
-        copyProduct.quantity = req.body.quantity
+      if (updatedProduct.product.id === copyProduct.id) {
+        copyProduct.quantity = +updatedProduct.quantity
       }
       return copyProduct
     })
-    req.session.cart = updatedState
+    req.session.cart = updatedSessionCart
     res.send(req.session.cart)
   } catch (error) {
     next(error)
   }
 })
 
-router.delete('/:userId/cart', async (req, res, next) => {
+router.delete('/:userId/cart', protectById, (req, res, next) => {
   try {
-    const existingCart = await req.session.cart
-    const updatedCart = existingCart.filter(
+    const updatedSessionCart = req.session.cart.filter(
       product => req.body.id !== product.id
     )
-    req.session.cart = updatedCart
+    req.session.cart = updatedSessionCart
     res.send(req.session.cart)
   } catch (error) {
     next(error)
@@ -236,19 +228,19 @@ router.get('/:userId', protectById, async (req, res, next) => {
 
 router.put('/:userId/myaccount', protectById, async (req, res, next) => {
   try {
-    const [rowNum, newuser] = await User.update(req.body, {
+    const [affectedRows, newUser] = await User.update(req.body, {
       returning: true,
       plain: true,
       where: {
         id: Number(req.params.userId)
       }
     })
-    if (!newuser.dataValues) {
+    if (!newUser.dataValues) {
       const err = new Error('user not found')
       err.status = 404
       throw err
     }
-    res.json(newuser.dataValues)
+    res.status(201).json(newUser.dataValues)
   } catch (err) {
     next(err)
   }
@@ -261,7 +253,7 @@ router.delete('/:userId', protectById, async (req, res, next) => {
         id: req.params.userId
       }
     })
-    res.status(204)
+    res.status(204).end()
   } catch (err) {
     next(err)
   }
@@ -276,24 +268,12 @@ router.get('/:userId/orderHistory', protectById, async (req, res, next) => {
       },
       include: [{model: Product}]
     })
-    res.json(orderHistory)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/:userId/cart', protectById, async (req, res, next) => {
-  try {
-    if (req.params.userId !== undefined) {
-      const pendingOrder = await Order.findOne({
-        where: {
-          userId: req.params.userId,
-          purchased: false
-        },
-        include: [{model: Product}]
-      })
-      res.json(pendingOrder)
+    if (!orderHistory) {
+      const err = new Error('Order History Not Found')
+      err.status(404)
+      throw err
     }
+    res.json(orderHistory)
   } catch (err) {
     next(err)
   }
