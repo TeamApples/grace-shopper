@@ -240,7 +240,7 @@ input {
 #addressInput,
 #firstNameInput,
 #lastNameInput {
-  width: 10%;
+  width: 97%;
   background-color: white;
   margin: 15px;
   line-height: 1.17648;
@@ -250,6 +250,7 @@ input {
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 18px;
+  font-size: 17px;
 }
 .cart-items-container {
   display: flex;
@@ -405,4 +406,8 @@ h3.main-links {
   text-decoration: none !important;
   vertical-align: middle;
   margin: 0 0 6px;
+}
+.input-fields {
+  width: 25%;
+  padding: 14px;
 }
