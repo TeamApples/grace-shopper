@@ -21,9 +21,11 @@ class Cart extends React.Component {
   }
 
   componentDidMount() {
+    //Logged In Users
     if (this.props.match.params.userId) {
       this.props.loadCart(this.props.match.params.userId)
     } else {
+      //Guests
       let cartFromStorage = localStorage.getItem('myCart')
       if (cartFromStorage) {
         cartFromStorage = JSON.parse(cartFromStorage)
@@ -32,6 +34,7 @@ class Cart extends React.Component {
     }
   }
 
+  //Quantity updater function
   selectQuantity(int) {
     let intArray = []
     for (let i = 1; i <= int; i++) {
@@ -40,16 +43,19 @@ class Cart extends React.Component {
     return intArray
   }
 
+  //quntity change
   handleChange(product) {
     const quantity = +document.getElementById(`${product.name}${product.id}`)
       .value
     this.props.editQuantity(product, quantity, this.props.match.params.userId)
   }
 
+  //remove product from state
   handleRemoveState(product) {
     this.props.removeStateProduct(product, this.props.match.params.userId)
   }
 
+  //proceeed to checkout
   handleSubmit(event) {
     event.preventDefault()
     this.props.checkout(this.props.cart, this.props.match.params.userId)
@@ -160,10 +166,12 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
+    //Logged In User
     loadCart: function(userId) {
       const action = gotCart(userId)
       dispatch(action)
     },
+    //Guest
     loadCartFromStorage: function(cart) {
       const action = loadCartFromStorage(cart)
       dispatch(action)

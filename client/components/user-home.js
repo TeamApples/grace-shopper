@@ -1,14 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {GOT_USERS} from '../store/user'
-import {render} from 'enzyme'
-import MyAccount from './MyAccount'
 
-/**
- * COMPONENT
- */
 class UserHome extends Component {
   componentDidMount() {}
 
@@ -29,9 +22,6 @@ class UserHome extends Component {
   }
 }
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     user: state.user

@@ -54,41 +54,53 @@ class MyAccount extends Component {
       this.props.user && (
         <div id="user_account">
           <div className="user_details">
+            <h2> Account Details </h2>
             <form onSubmit={this.handleSubmit}>
-              <h2> Account Details </h2>
-              <label htmlFor="firstName">First Name: </label>
-              <input
-                id="firstNameInput"
-                onChange={this.handleChange}
-                placeholder={`${this.props.user.firstName}`}
-              />
-              <label htmlFor="lastName">Last Name: </label>
-              <input
-                id="lastNameInput"
-                onChange={this.handleChange}
-                placeholder={`${this.props.user.lastName}`}
-              />
-              <label htmlFor="email">Email: </label>
-              <input
-                id="emailInput"
-                onChange={this.handleChange}
-                placeholder={`${this.props.user.email}`}
-              />
-              <label htmlFor="address">Address: </label>
-              <input
-                id="addressInput"
-                onChange={this.handleChange}
-                placeholder={`${this.props.user.address}`}
-              />
-              <label htmlFor="phoneNumber">
-                Phone Number: (numbers only, no extra characters){' '}
-              </label>
-              <input
-                id="phoneInput"
-                onChange={this.handleChange}
-                placeholder={`${this.props.user.phoneNumber}`}
-              />
-              <UserSaveSuccess />
+              <div className="input-fields">
+                <label htmlFor="firstName">First Name: </label>
+                <input
+                  id="firstNameInput"
+                  onChange={this.handleChange}
+                  placeholder={`${this.props.user.firstName}`}
+                />
+              </div>
+              <div className="input-fields">
+                <label htmlFor="lastName">Last Name: </label>
+                <input
+                  id="lastNameInput"
+                  onChange={this.handleChange}
+                  placeholder={`${this.props.user.lastName}`}
+                />
+              </div>
+              <div className="input-fields">
+                <label htmlFor="email">Email: </label>
+                <input
+                  id="emailInput"
+                  onChange={this.handleChange}
+                  placeholder={`${this.props.user.email}`}
+                />
+              </div>
+              <div className="input-fields">
+                <label htmlFor="address">Address: </label>
+                <input
+                  id="addressInput"
+                  onChange={this.handleChange}
+                  placeholder={`${this.props.user.address}`}
+                />
+              </div>
+              <div className="input-fields">
+                <label htmlFor="phoneNumber">
+                  Phone Number: (numbers only, no extra characters){' '}
+                </label>
+                <input
+                  id="phoneInput"
+                  onChange={this.handleChange}
+                  placeholder={`${this.props.user.phoneNumber}`}
+                />
+              </div>
+              <div>
+                <UserSaveSuccess />
+              </div>
             </form>
           </div>
           <div>
@@ -96,7 +108,6 @@ class MyAccount extends Component {
               <h2>{this.props.user.firstName}, Here's Your Order History</h2>
 
               {orderHistory.map(order => {
-                console.log(order)
                 return (
                   <div key={order.id} className="account-items-container">
                     <div id="outer-order">
@@ -145,10 +156,7 @@ class MyAccount extends Component {
                               product.order_product.productPrice *
                               product.order_product.productQty /
                               100
-                            ).toFixed(2)
-                            // .toLocaleString('en-IN', {
-                            //   maximumSignificantDigits: 3
-                            }
+                            ).toFixed(2)}
                           </div>
                         </div>
                       )
@@ -156,7 +164,6 @@ class MyAccount extends Component {
                   </div>
                 )
               })}
-
               <div />
             </div>
           </div>
