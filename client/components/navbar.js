@@ -14,6 +14,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
         </NavLink>
       </div>
       {isLoggedIn ? (
+        //NavBar for loggedIn users //
         <div className="nav-two">
           <NavLink
             activeClassName="active"
@@ -29,7 +30,6 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           >
             My Cart
           </NavLink>
-          {/* The navbar will show these links after you log in */}
           <NavLink
             activeClassName="active"
             className="main-links"
@@ -42,6 +42,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           </a>
         </div>
       ) : (
+        //Nav Bar for guests
         <div className="nav-two">
           <NavLink
             activeClassName="active"
@@ -66,9 +67,6 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
   </div>
 )
 
-/**
- * CONTAINER
- */
 const mapState = state => {
   return {
     userId: state.user.id,
