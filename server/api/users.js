@@ -161,7 +161,7 @@ router.post('/:userId/cart', protectById, async (req, res, next) => {
       updatedSessionCart = userSessionCart.map(product => {
         const copyProduct = {...product}
         if (newProductInCart.id === copyProduct.id) {
-          copyProduct.quantity += +newProductInCart.quantity
+          copyProduct.quantity += newProductInCart.quantity
           isQuantityUpdated = true
         } else {
           copyProduct.orderId = newProductInCart.orderId
@@ -172,7 +172,7 @@ router.post('/:userId/cart', protectById, async (req, res, next) => {
       updatedSessionCart = userSessionCart.map(product => {
         const copyProduct = {...product}
         if (newProductInCart.id === copyProduct.id) {
-          copyProduct.quantity += +newProductInCart.quantity
+          copyProduct.quantity += newProductInCart.quantity
           isQuantityUpdated = true
         }
         return copyProduct

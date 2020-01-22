@@ -34,18 +34,18 @@ router.post('/signup', async (req, res, next) => {
 })
 
 router.post('/logout', async (req, res) => {
-  const currentCart = await req.session.cart
-  if (!req.session.cart.length) {
-    const existingOrder = await Order.findOne({
+  const currentCart = req.session.cart
+  if (!currentCart.length) {
+    const existingUserCart = await Order.findOne({
       where: {
         purchased: false,
         userId: req.user.id
       }
     })
-    if (existingOrder) {
-      OrderProduct.destroy({
+    if (existingUserCart) {
+      await OrderProduct.destroy({
         where: {
-          orderId: existingOrder.id
+          orderId: existingUserCart.id
         }
       })
       await Order.destroy({
@@ -57,7 +57,7 @@ router.post('/logout', async (req, res) => {
     }
   } else {
     // eslint-disable-next-line no-lonely-if
-    if (req.session.cart[0].orderId) {
+    if (currentCart[0].orderId) {
       await OrderProduct.destroy({
         where: {
           orderId: currentCart[0].orderId
@@ -73,7 +73,6 @@ router.post('/logout', async (req, res) => {
       })
     } else {
       const newCart = await Order.create({
-        paymentMethod: 'null',
         userId: req.user.id
       })
       currentCart.forEach(async product => {
