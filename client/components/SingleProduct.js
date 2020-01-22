@@ -56,8 +56,7 @@ class SingleProduct extends Component {
 const mapStateToProps = function(state) {
   return {
     singleProduct: state.singleProduct,
-    userId: state.user.id,
-    cart: state.cart
+    userId: state.user.id
   }
 }
 

@@ -146,43 +146,48 @@ router.get('/:userId/cart', protectById, async (req, res, next) => {
 
 router.post('/:userId/cart', protectById, async (req, res, next) => {
   try {
-    const newProductInCart = req.body
-    const userSessionCart = req.session.cart
-    let updatedSessionCart
-    let isQuantityUpdated = false
-    const findUserCart = await Order.findOne({
-      where: {
-        userId: req.user.id,
-        purchased: false
-      }
-    })
-    if (findUserCart) {
-      newProductInCart.orderId = findUserCart.id
-      updatedSessionCart = userSessionCart.map(product => {
-        const copyProduct = {...product}
-        if (newProductInCart.id === copyProduct.id) {
-          copyProduct.quantity += newProductInCart.quantity
-          isQuantityUpdated = true
-        } else {
-          copyProduct.orderId = newProductInCart.orderId
-        }
-        return copyProduct
-      })
+    if (Array.isArray(req.body)) {
+      req.session.cart = req.body
+      res.send(req.session.cart)
     } else {
-      updatedSessionCart = userSessionCart.map(product => {
-        const copyProduct = {...product}
-        if (newProductInCart.id === copyProduct.id) {
-          copyProduct.quantity += newProductInCart.quantity
-          isQuantityUpdated = true
+      const newProductInCart = req.body
+      const userSessionCart = req.session.cart
+      let updatedSessionCart
+      let isQuantityUpdated = false
+      const findUserCart = await Order.findOne({
+        where: {
+          userId: req.user.id,
+          purchased: false
         }
-        return copyProduct
       })
+      if (findUserCart) {
+        newProductInCart.orderId = findUserCart.id
+        updatedSessionCart = userSessionCart.map(product => {
+          const copyProduct = {...product}
+          if (newProductInCart.id === copyProduct.id) {
+            copyProduct.quantity += newProductInCart.quantity
+            isQuantityUpdated = true
+          } else {
+            copyProduct.orderId = newProductInCart.orderId
+          }
+          return copyProduct
+        })
+      } else {
+        updatedSessionCart = userSessionCart.map(product => {
+          const copyProduct = {...product}
+          if (newProductInCart.id === copyProduct.id) {
+            copyProduct.quantity += newProductInCart.quantity
+            isQuantityUpdated = true
+          }
+          return copyProduct
+        })
+      }
+      if (!isQuantityUpdated) {
+        updatedSessionCart.push({...newProductInCart})
+      }
+      req.session.cart = updatedSessionCart
+      res.send(req.session.cart)
     }
-    if (!isQuantityUpdated) {
-      updatedSessionCart.push({...newProductInCart})
-    }
-    req.session.cart = updatedSessionCart
-    res.send(req.session.cart)
   } catch (error) {
     next(error)
   }

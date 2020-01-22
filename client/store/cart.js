@@ -11,11 +11,11 @@ const LOAD_CART_FROM_STORAGE = 'LOAD_CART_FROM_STORAGE'
 const initialState = []
 
 //action creators
-export const addProductToCart = function(cart, user) {
+export const addProductToCart = function(product, userId) {
   return {
     type: ADD_TO_CART,
-    cart,
-    user
+    product,
+    userId
   }
 }
 
@@ -61,7 +61,57 @@ export const loadCartFromStorage = function(cart) {
 export const gotCart = userId => {
   return async dispatch => {
     try {
-      let {data} = await Axios.get(`/api/users/${userId}/cart`)
+      let initialCart = await Axios.get(`/api/users/${userId}/cart`)
+      // if (userId) {
+
+      let userCart = initialCart.data
+      let guestCart = JSON.parse(localStorage.getItem('myCart'))
+      console.log('guestCart: ', guestCart)
+
+      if (guestCart.length) {
+        //if there is a guest cart
+        if (userCart.length) {
+          //if there is a user cart
+          let filteredGuestCart
+          // let copyUserCart = [...userCart]
+          console.log('usercart ', userCart)
+          for (let i = 0; i < guestCart.length; i++) {
+            guestCart[i].orderId = userCart[0].orderId
+            for (let j = 0; j < userCart.length; j++) {
+              console.log('guest in the loop: ', guestCart[i])
+              if (guestCart[i].id === userCart[j].id) {
+                userCart[j].quantity += guestCart[i].quantity
+                filteredGuestCart = guestCart.filter(
+                  product => product.id !== guestCart[i].id
+                )
+              }
+            }
+          }
+          if (guestCart.length) {
+            userCart.push(...filteredGuestCart)
+          }
+          let updatedCart = await Axios.post(
+            `/api/users/${userId}/cart`,
+            userCart
+          )
+          dispatch(getCart(updatedCart.data))
+          localStorage.setItem('myCart', JSON.stringify([]))
+        } else {
+          userCart = guestCart
+          let updatedCart = await Axios.post(
+            `/api/users/${userId}/cart`,
+            userCart
+          )
+          dispatch(getCart(updatedCart.data))
+          localStorage.setItem('myCart', JSON.stringify([]))
+        }
+      } else {
+        dispatch(getCart(userCart))
+      }
+    } catch (err) {
+      // } else {
+      //   dispatch(getCart(data))
+      // }
       // if (data.length) {
       //   if (JSON.parse(localStorage.getItem('myCart')).length) {
 
@@ -123,8 +173,6 @@ export const gotCart = userId => {
       //     dispatch(getCart(data))
       //   }
       // }
-      dispatch(getCart(data))
-    } catch (err) {
       console.error(err)
     }
   }
@@ -154,7 +202,7 @@ export const addProductToCartThunk = function(productToCart, userId) {
         productToCart
       )
 
-      dispatch(addProductToCart(data))
+      dispatch(addProductToCart(data, userId))
     } catch (err) {
       console.error(err)
     }
@@ -191,19 +239,19 @@ export const editCartThunk = function(product, quantity, userId) {
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART: {
-      if (action.user) {
-        return action.cart
+      if (action.userId) {
+        return action.product
       } else {
         let isUpdated = false
         let updatedState = state.map(product => {
-          if (action.cart.id === product.id) {
-            product.quantity += action.cart.quantity
+          if (action.product.id === product.id) {
+            product.quantity += action.product.quantity
             isUpdated = true
           }
           return product
         })
         if (!isUpdated) {
-          updatedState.push({...action.cart})
+          updatedState.push({...action.product})
         }
         localStorage.setItem('myCart', JSON.stringify(updatedState))
         return updatedState
