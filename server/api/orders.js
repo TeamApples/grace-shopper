@@ -11,19 +11,4 @@ router.get('/', protect, async (req, res, next) => {
   }
 })
 
-// router.put('/:orderId', async (req, res, next) => {
-//   try {
-//     // req.body should only contain order status info.
-//     const updatedOrder = await Order.update(req.body, {
-//       returning: true,
-//       where: {
-//         id: req.params.orderId
-//       }
-//     })
-//     res.json(updatedOrder)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
 module.exports = router
