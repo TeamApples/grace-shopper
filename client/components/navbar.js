@@ -37,7 +37,7 @@ const Navbar = ({handleClick, isLoggedIn, userId}) => (
           >
             My Account
           </NavLink>
-          <a href="#" onClick={handleClick} className="main-links">
+          <a href="#" onClick={handleClick} className="main-links" to="/home">
             Logout
           </a>
         </div>
