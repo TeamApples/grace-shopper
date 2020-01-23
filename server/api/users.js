@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const {User, Product, Order, OrderProduct} = require('../db/models')
 const {protect, protectById} = require('./securityUtils')
+const nodemailer = require('nodemailer')
 
+require('../../secrets')
 router.get('/', protect, async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -95,6 +97,30 @@ router.post('/:userId/checkout', protectById, async (req, res, next) => {
       })
     }
     req.session.cart = []
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'graceshopper1911@gmail.com',
+        pass: process.env.GOOGLE_DD
+      }
+    })
+
+    const mailOptions = {
+      from: 'graceshopper1911@gmail.com',
+      to: `${req.user.email}`,
+      subject: 'Order Confirmation',
+      text: `Thank you ${req.user.firstName} ${
+        req.user.lastName
+      }! Your order is now being processed. You can login to your account at any time to view your order info`
+    }
+
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('email sent ' + info.response)
+      }
+    })
     res.status(201).json(req.session.cart)
   } catch (err) {
     next(err)
