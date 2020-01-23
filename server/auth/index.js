@@ -34,7 +34,7 @@ router.post('/signup', async (req, res, next) => {
 })
 
 router.post('/logout', async (req, res) => {
-  const currentCart = req.session.cart
+  const currentCart = req.session.cart || []
   if (!currentCart.length) {
     const existingUserCart = await Order.findOne({
       where: {
