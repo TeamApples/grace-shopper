@@ -62,23 +62,15 @@ export const gotCart = userId => {
   return async dispatch => {
     try {
       let initialCart = await Axios.get(`/api/users/${userId}/cart`)
-      // if (userId) {
-
       let userCart = initialCart.data
       let guestCart = JSON.parse(localStorage.getItem('myCart'))
-      console.log('guestCart: ', guestCart)
 
       if (guestCart.length) {
-        //if there is a guest cart
         if (userCart.length) {
-          //if there is a user cart
           let filteredGuestCart
-          // let copyUserCart = [...userCart]
-          console.log('usercart ', userCart)
           for (let i = 0; i < guestCart.length; i++) {
             guestCart[i].orderId = userCart[0].orderId
             for (let j = 0; j < userCart.length; j++) {
-              console.log('guest in the loop: ', guestCart[i])
               if (guestCart[i].id === userCart[j].id) {
                 userCart[j].quantity += guestCart[i].quantity
                 filteredGuestCart = guestCart.filter(
@@ -109,70 +101,6 @@ export const gotCart = userId => {
         dispatch(getCart(userCart))
       }
     } catch (err) {
-      // } else {
-      //   dispatch(getCart(data))
-      // }
-      // if (data.length) {
-      //   if (JSON.parse(localStorage.getItem('myCart')).length) {
-
-      //     const inLocalStorage = JSON.parse(localStorage.getItem('myCart'))//array
-      //     const localStorageMap = {}
-      //     inLocalStorage.forEach((product) => {
-      //       localStorageMap[product.id] = {...product}
-      //     })
-      //     console.log("localStorageMap: ", localStorageMap)
-      //     const mergeCart = data.map(product => {
-      //       let formattedProduct = {...product}
-      //       if (formattedProduct.id in localStorageMap) {
-      //         formattedProduct.quantity += localStorageMap[product.id].quantity
-      //         delete localStorageMap[product.id]
-      //       }
-      //       return formattedProduct
-      //     })
-      //     for (let key in localStorageMap) {
-      //       if (localStorageMap.hasOwnProperty(key)) {
-      //         mergeCart.push(localStorageMap[key])
-      //       }
-      //     }
-      //     let lastToReturn
-      //     mergeCart.forEach(async (product, idx) => {
-      //       if (idx === mergeCart.length - 1) {
-      //         lastToReturn = await Axios.post(`/api/users/${userId}/cart`, product)
-      //       }
-      //       else {
-      //         await Axios.post(`/api/users/${userId}/cart`, product)
-      //       }
-      //     })
-      //     localStorage.setItem('myCart', JSON.stringify([]))
-      //     dispatch(getCart(lastToReturn.data))
-      //   }
-      //   else {
-      //     dispatch(getCart(data))
-      //   }
-      // }
-      // else {
-      //   // eslint-disable-next-line no-lonely-if
-      //   if (JSON.parse(localStorage.getItem('myCart')).length) {
-      //     const formattedLocalCart = JSON.parse(localStorage.getItem('myCart')).map((product) => {
-      //       const formattedProduct = {...product}
-      //       return formattedProduct
-      //     })
-      //     let lastToReturn;
-      //     formattedLocalCart.forEach(async (product, idx) => {
-      //       if (idx === formattedLocalCart.length - 1) {
-      //         lastToReturn = await Axios.post(`/api/users/${userId}/cart`, product)
-      //       }
-      //       else {
-      //         await Axios.post(`/api/users/${userId}/cart`, product)
-      //       }
-      //     })
-      //     localStorage.setItem('myCart', JSON.stringify([]))
-      //     dispatch(getCart(lastToReturn.data))
-      //   }
-      //   else {
-      //     dispatch(getCart(data))
-      //   }
-      // }
       console.error(err)
     }
   }
@@ -201,7 +129,6 @@ export const addProductToCartThunk = function(productToCart, userId) {
         `/api/users/${userId}/cart`,
         productToCart
       )
-
       dispatch(addProductToCart(data, userId))
     } catch (err) {
       console.error(err)
@@ -265,7 +192,6 @@ export const cartReducer = (state = initialState, action) => {
       localStorage.setItem('myCart', JSON.stringify([]))
       return action.cart
     }
-
     case REMOVE_STATE_PRODUCT: {
       if (action.userId) {
         return action.product
